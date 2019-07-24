@@ -1,0 +1,189 @@
+\chapter[Decentralized Cloud Storage --- Proofs of Theorems]{Securing Resources in Decentralized Cloud Storage\\--- Proofs of Theorems}
+\label{dcs:sec:proofs}
+
+\begin{proof}
+	\hfill\\
+	Let us assume, by contradiction, the existence of a
+    $(\nk,\nr)$-allocation for a resource split into $\ns = \nk <
+    \nk +1$ slices. Given \ns\ different slices, no more than
+    \ns\ nodes can be used to store one replica of the
+    slices. Since \ns=\nk, the allocation function is storing the
+    whole resource using at most \nk\ nodes. Therefore, it is not
+    \nk-protected.  Note that $\nk + 1$ slices are sufficient to
+    define a $(\nk,\nr)$-allocation. The \nr-replication
+    requirement is easily satisfied by replicating \nr\ times each
+    of the $\nk + 1$ slices. The \nk-protection requirement is
+    satisfied by storing each slice to a different node. Hence,
+    for each replica of the resource, each coalition of \nk\ nodes
+    misses one slice (the one stored at the $(\nk+1)$-th
+    node).
+    {\hfill $\square$}
+\end{proof}
+
+\medskip
+
+\begin{proof}
+	\hfill\\
+	Since there are $\nr \cdot (\nk+1)$ slices to be stored, a
+    $(\nk,\nr)$-allocation cannot use more than $\nr \cdot
+    (\nk+1)$ nodes.  However, a $(\nk,\nr)$-allocation with
+    $\ns=\nk+1$ cannot use less than $\nr \cdot (\nk+1)$
+    nodes. Let us consider the case where slices are not
+    replicated (i.e., $\nr=1$), since the same discussion applies
+    to each replica of the resource. Assume, by contradiction,
+    that a $(\nk,\nr)$-allocation stores more than one slice at
+    one of the nodes. If the function adopts $\nn=\nk+1$ nodes,
+    there will be at least one node that does not store any slice
+    (which is equivalent to say that $\nn \leq \nk$) as the number
+    of slices is $\nk+1$.  Then, \nk\ nodes store all the slices
+    composing the resource, thus violating \nk-protection.
+    {\hfill $\square$}
+\end{proof}
+
+\medskip
+
+\begin{proof}
+	\hfill\\
+	To guarantee \nr-replication, each slice should be stored at
+    (at least) \nr\ nodes. If allocation function \f\ is
+    \nk-protected, for each coalition \setnode{i} of \nk\ nodes,
+    there exists at least a slice \shard{j} that is not stored at
+    any of the nodes in \setnode{i}. To guarantee that \shard{j}
+    has \nr\ copies, there must exist at least \nr\ additional
+    nodes that store \shard{j}, and \nn\ should be at least equal
+    to $\nk + \nr$.  Note that $\nk + \nr$ nodes are sufficient to
+    define a $(\nk,\nr)$-allocation.  Consider, as an example,
+    $\ns=\binom{\nk+\nr}{\nk}$ slices, the set
+    $\setnode{1},\ldots,\setnode{\ns}$ of possible coalitions of
+    \nk\ nodes, and allocation function \f\ that assigns the
+    $i$-th slice to all the nodes in \Nodes, but the ones in the
+    $i$-th coalition: $\f(\shard{i})=\Nodes\ \setminus
+    \{\setnode{i}\}$. Function \f\ is \nk-protected, since each
+    coalition \setnode{i} cannot access slice \shard{i}, and
+    \nr-replicated, since slice \shard{i} is stored at each node
+    $\node{i} \in \Nodes\ \setminus \{\setnode{i}\}$, then at $\nn
+    - \nk = \nr$ nodes.
+    {\hfill $\square$}
+\end{proof}
+
+\medskip
+
+\begin{proof}
+	\hfill\\
+	An allocation function \f\ is \nk-protected if the set of
+    slices stored at any coalition \setnode{i} of \nk\ nodes is
+    not complete (i.e., at least one slice is missing). To
+    guarantee that \f\ is an allocation function each slice should
+    be stored at least on one node. If each coalition misses a
+    different slice, we are minimizing the number of slices
+    necessary to define an allocation function \f. Indeed, since
+    $\nn > \nk$, the missing slice for each coalition \setnode{i}
+    can be stored at the nodes in $\Nodes \setminus \setnode{i}$,
+    as they will miss another slice. Since there are
+    $\binom{\nk+\nr}{\nk}$ possible coalitions of \nk\ nodes in
+    \Nodes, \ns\ should be at least $\binom{\nk+\nr}{\nk}$ to
+    guarantee that each coalition misses a different slice.
+    Assume, by contradiction, that $\nr=1$,
+    $\ns=\binom{\nk+\nr}{\nk}-1$, and that \f\ is
+    \nk-protected. In this case, two coalitions \setnode{i} and
+    \setnode{j} will miss the same slice \shard{x}. That is, there
+    are at least $\nk+1$ nodes (the ones in $\setnode{i} \cup
+    \setnode{j}$) missing \shard{x}. However, if $\nn = \nk +1$
+    then \f\ cannot be an allocation function, since no node in
+    \Nodes\ stores \shard{x}. (The same reasoning applies with
+    larger values for \nr.)
+    {\hfill $\square$}
+ \end{proof}
+
+\medskip
+
+\begin{proof}
+	\hfill\\
+	{\em 1)\/} Since each coalition of \nk\ nodes should not be able to
+	reconstruct the resource, it should miss at least one slice. The
+	number of slices used by the allocation function is
+	$\ns=\binom{\nk+\nr}{\nk}$, which is sufficient for each coalition to
+	miss at least one slice. In fact, the number of possible coalitions of
+	\nk\ nodes is $\binom{\nk+\nr}{\nk}$. Let us assume, by contradiction,
+	that two coalitions \setnode{i} and \setnode{j} miss the same slice
+	\shard{x}. Therefore, there are $\nk+1$ nodes
+	(\setnode{i}$\cup$\setnode{j}) that do not store \shard{x}. However,
+	in this case \shard{x} would be stored at $\nn - (\nk +1)=\nr-1$
+	nodes. Hence, the allocation function would not be
+	\nr-replicated.
+	
+	\medskip
+	
+	\noindent {\em 2)\/} By definition of
+	$(\nk,\nr)$-allocation with $\nn = \nk+\nr$ nodes and
+	$\ns=\binom{\nn}{\nk}$ slices, each coalition of \nk\ nodes misses a
+	different slice. Let  us consider two coalitions \setnode{i} and
+	\setnode{j}  that differ in one node only. Coalition \setnode{j}
+	misses one slice, \shard{j}, while \setnode{i} misses \shard{i}. Since
+	\setnode{j} misses one slice only, it stores \shard{i}. Hence,
+	\setnode{i}$\cup$\setnode{j} includes $\nk+1$ nodes and stores all the
+	slices composing the resource.
+	{\hfill $\square$}
+\end{proof}
+
+\medskip
+
+\begin{proof}
+	\hfill\\
+	{\em \PF)\/} The probability to obtain back the original plaintext resource
+	corresponds to the probability that $\nk+1$ nodes, each storing a
+	different slice, do not fail. Since \pf\ is the probability that a
+	node fails, the probability that at least one of the \nr\ replicas of
+	a slice is available is $(1-(\pf)^{\nr})$, with $(\pf)^{\nr}$ the
+	probability that all \nr\ replicas of the slice are unavailable. 
+	The probability to obtain back all the $\nk+1$ slices, 
+	and then also the original plaintext resource, is then
+	$(1-(\pf)^{\nr})^{\nk+1}$ and $(1-(1-(\pf)^{\nr})^{\nk+1})$ is the
+	probability that the resource cannot be decrypted.
+	
+	\medskip
+	
+	\noindent {\em  \PC)\/} The probability that the resource is exposed 
+	is the probability that all the slices are
+	compromised, meaning that $\nk+1$ nodes are malicious.
+	Since $1-\pc$ is the probability that a node is not compromised and
+	each slice has \nr\ replicas, the probability that at least one
+	replica is exposed is $(1-(1-\pc)^{\nr})$, with
+	$(1-\pc)^{\nr}$ the probability that all \nr\ replicas of a slice
+	are not compromised. We can then conclude that the probability that
+	all $\K+1$ slices are exposed is $(1 - (1-\pc)^{\R})^{\K+1}$.
+	{\hfill $\square$}
+\end{proof}
+
+\medskip
+
+\begin{proof}
+	\hfill\\
+	{\em \PF)\/} To obtain back the original plaintext
+	resource, we need the slices stored on any combination of $\nk+1$
+	nodes, that is, $\nk+1$ nodes must not fail. A resource therefore
+	becomes unavailable when any combination of \nr\ or more nodes
+	fail. The probability that $i$ nodes fail, with
+	$i=\nr,\ldots,\nk+\nr$, and $\nk+\nr-i$ nodes do not fail is
+	equal to $ (\pf)^i (1 - \pf)^{{\K}+{\R}-i}$.  Since the number of
+	combinations of $i$ nodes out of $\nk+\nr$ is
+	${{\K+\R}\choose{i}}$, the probability that a resource is
+	unavailable is $\PF= \sum\limits_{i={\R}}^{{\K}+{\R}}
+	{{\K+\R}\choose{i}} (\pf)^i (1 - \pf)^{{\K}+{\R}-i}$.
+	
+	\medskip
+	
+	\noindent {\em  \PC)\/} A coalition can compromise the confidentiality
+	of the resource whenever it involves any combination of $\nk+1$
+	nodes, that is, at least $\nk+1$ nodes must be compromised. The
+	probability that $i$ nodes are compromised, with
+	$i=\nk+1,\ldots,\nk+\nr$, and $\nk+\nr-i$ nodes are not compromised
+	is equal to $(\pc)^i (1 - \pc)^{{\K}+{\R}-i}$.  Since the number of
+	combinations of $i$ nodes out of $\nk+\nr$ is the binomial
+	coefficient ${{\K+\R}\choose{i}}$, we can conclude that the
+	probability that any combination of at least $\K+1$ nodes are
+	compromised in a collection of $\R+\K$ nodes is $\PC=
+	\sum\limits_{i={\K}+1}^{{\K}+{\R}} {{\K+\R}\choose{i}} (\pc)^i (1 -
+	\pc)^{{\K}+{\R}-i}$.
+	{\hfill $\square$}
+ \end{proof}

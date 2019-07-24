@@ -1,0 +1,296 @@
+\chapter[Mix\&Slice Implementation]{Mix\&Slice Implementation}
+
+This appendix describes the open source implementation of the \emph{Mix\&Slice} encryption mode described in chapter~\ref{chap:waont}.
+
+The implementation is done in C and consists of single-threaded and a
+multi-threaded encryption/decryption functions that make use of AES as
+base symmetric encryption primitives. The use of OpenSSL EVP APIs
+leverages hardware-accelerated AES-NI primitives when available.
+
+\section{APIs}\label{usage}
+
+The file \texttt{includes/aes\_mix.h} contains the following three
+definitions:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{BLOCK\_SIZE}: number of bytes in a cipher block (16 bytes for
+  AES).
+\item
+  \texttt{MINI\_SIZE}: number of bytes in a miniblock.
+\item
+  \texttt{MINI\_PER\_MACRO}: number of mini-blocks in a macro-block.
+\end{itemize}
+
+\emph{These entities can be modified at compile time to experiment with
+different sizes.}
+
+\subsection{Single-thread APIs}\label{single-thread-apis}
+
+The file \texttt{includes/aes\_mix.h} contains the prototype of the only
+two methods that are necessary to use Mix\&Slice:
+
+\begin{minted}{c}
+void mixencrypt(const unsigned char* data, unsigned char* out,
+                const unsigned long size, const unsigned char* key,
+                const unsigned char* iv);
+
+void mixdecrypt(const unsigned char* data, unsigned char* out,
+                const unsigned long size, const unsigned char* key,
+                const unsigned char* iv);
+\end{minted}
+
+The parameters are as follows.
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{data}: pointer to the source buffer (plaintext in case of
+  \texttt{mixencrypt} and ciphertext in case of \texttt{mixdecrypt})
+\item
+  \texttt{out}: pointer to the destination buffer
+\item
+  \texttt{size}: number of bytes in source (and destination) buffers
+\item
+  \texttt{key}: symmetric key (string) used for the AES functions
+\item
+  \texttt{iv}: initialization vector for the AES functions
+\end{itemize}
+
+\subsection{Multi-thread APIs}\label{multi-thread-apis}
+
+The file \texttt{includes/aes\_mix\_multi.h} contains the prototypes of
+the only two methods that are necessary to use Mix\&Slice in
+multi-threaded mode:
+
+\begin{minted}{c}
+void t_mixencrypt(unsigned int thr, const unsigned char* data,
+                  unsigned char* out, const unsigned long size,
+                  const unsigned char* key, const unsigned char* iv);
+
+void t_mixdecrypt(unsigned int thr, const unsigned char* data,
+                  unsigned char* out, const unsigned long size,
+                  const unsigned char* key, const unsigned char* iv);
+\end{minted}
+
+The only additional parameter is \texttt{thr}, the number of threads to
+use.
+
+\subsection{Slicing phase}\label{slicing-phase}
+
+The mixing phase is the real encryption phase. The slicing phase
+strongly depends on the file management and should be implemented
+according to the ratio of policy updates with respect to decryption
+processes and can be easily sped up with as-hoc file management. Because
+of this, the performance of the mixing phase is a good proxy of the
+performance of the whole Mix\&Slice technique.
+
+The version implemented here keeps the fragments together. This benefits
+the policy update process, whereas the decryption process has to pay the
+overhead for rearranging the bytes before performing the unmixing phase.
+
+The file \texttt{includes/aes\_mixslice.h} contains the prototypes of
+the two methods that perform the whole Mix\&Slice encryption:
+
+\begin{minted}{c}
+void mixslice(unsigned int thr, const unsigned char* data,
+              unsigned char* fragdata, const unsigned long size,
+              const unsigned char* key, const unsigned char* iv);
+
+void unsliceunmix(unsigned int thr, const unsigned char* fragdata,
+                  unsigned char* out, const unsigned long size,
+                  const unsigned char* key, const unsigned char* iv);
+\end{minted}
+
+The \texttt{mixslice} method first uses \texttt{t\_mixencrypt} to
+perform the mixing phase. The slicing phase rearranges the output of the
+mixing phase in slices. The user is responsible for creating the buffer
+that will contain the \texttt{fragdata}. The slices are concatenated and
+written to the \texttt{fragdata} buffer. The user of the function, can
+read the fragments directly from there as follows:
+
+\begin{itemize}
+\tightlist
+\item
+  each fragment consists of
+  \texttt{fragsize\ =\ size\ /\ MINI\_PER\_MACRO} bytes;
+\item
+  the first fragment spans the \texttt{fragdata} bytes in range
+  \texttt{{[}0,\ fragsize)};
+\item
+  the second fragment spans the \texttt{fragdata} bytes in range
+  \texttt{{[}fragsize,\ fragsize*2)};
+\item
+  and so on until \texttt{{[}size\ -\ fragsize,\ size)}.
+\end{itemize}
+
+
+\subsection{Installation}
+
+Before proceeding please install the \texttt{openssl/crypto} library
+source and the \texttt{libtool} binary. In ubuntu you can proceed as
+follows:
+
+\begin{minted}{shell-session}
+$ sudo apt install libtool-bin libssl-dev
+\end{minted}
+
+To compile and install the dynamic library in your system you can:
+
+\begin{minted}{shell-session}
+$ make
+$ sudo make install
+\end{minted}
+
+To remove the library simply do:
+
+\begin{minted}{shell-session}
+$ sudo make uninstall
+\end{minted}
+
+\subsection{Test}\label{test}
+
+There are three test suites:
+
+\begin{itemize}
+\item
+  \emph{main}: main test suite that verifies that Mix\&Slice principles
+  are enforced.
+\item
+  \emph{blackbox}: test suite that verifies the Mix\&Slice principles in
+  an \emph{abstract} sense (without knowledge about the code).
+\item
+  \emph{multithread}: test suite that verifies that the Mix\&Slice
+  principles are enforced in the multi-threaded implementation.
+\end{itemize}
+
+\emph{make} is used for compilation and testing purposes. A basic
+\emph{compile-and-test} setup is made by the steps:
+
+\begin{minted}{shell-session}
+$ make
+$ make test
+\end{minted}
+
+See the \texttt{Makefile} for all the compile and test targets.
+
+
+\section{Python Wrapper}\label{aesmix-python}
+
+The python implementation
+wraps both the phases and offers a CLI tool that wraps the
+\texttt{libaesmix} library.
+
+The C implementation has been built with performance in mind, whereas
+the python wrapper and the CLI tool has been implemented to offer a more
+widespread access of the Mix\&Slice capabilities. The mixing and slicing
+phases use the C implementation, but the python conversion adds a big
+overhead since it has to materialize all the buffers in memory.
+
+Since the tool materializes all the buffers in memory and has to perform
+both the mixing and the slicing phases, you should only use the CLI tool
+on files that are at maximum as large as a third of your available
+memory.
+
+Please check the file \texttt{example.py} to understand how to use the
+library.
+
+\subsection{Requirements}\label{requirements}
+
+Before proceeding please install the \texttt{openssl/crypto} library
+source. In ubuntu you can proceed as follows:
+
+\begin{minted}{shell-session}
+$ sudo apt install libssl-dev
+\end{minted}
+
+\subsection{Installation}\label{installation}
+
+The package has been uploaded to PyPI at \url{https://pypi.org/project/aesmix} so, after installing the requirements, you can install the latest released version using pip:
+
+\begin{minted}{shell-session}
+$ pip install aesmix
+\end{minted}
+
+To install the version from this repository, you can use the commands:
+
+\begin{minted}{shell-session}
+$ make build
+$ sudo make install
+\end{minted}
+
+To install the package in a virtual environment, use:
+
+\begin{minted}{shell-session}
+python setup.py install
+\end{minted}
+
+The python wrapper will also compile the \texttt{libaesmix} library.
+
+\subsection{Command Line Interface}\label{command-line-interface}
+
+This package also installs the \texttt{mixslice} tool that can be used
+as follows.
+
+To encrypt a file:
+
+\begin{minted}{shell-session}
+$ mixslice encrypt sample.txt
+INFO: [*] Encrypting file sample.txt ...
+INFO: Output fragdir:   sample.txt.enc
+INFO: Public key file:  sample.txt.public
+INFO: Private key file: sample.txt.private
+\end{minted}
+
+To perform a policy update:
+
+\begin{minted}{shell-session}
+$ mixslice update sample.txt.enc
+INFO: [*] Performing policy update on sample.txt.enc ...
+INFO: Encrypting fragment #68
+INFO: Done
+\end{minted}
+
+To decrypt a file:
+
+\begin{minted}{shell-session}
+$ mixslice decrypt sample.txt.enc
+INFO: [*] Decrypting fragdir sample.txt.enc using key sample.txt.public ...
+INFO: Decrypting fragment #68
+INFO: Decrypted file: sample.txt.enc.dec
+
+$ sha1sum sample.txt sample.txt.enc.dec
+d3e92d3c3bf278e533f75818ee94d472347fa32a  sample.txt
+d3e92d3c3bf278e533f75818ee94d472347fa32a  sample.txt.enc.dec
+\end{minted}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\section{Key regression mechanism}\label{key-regression-mechanism}
+
+The key regression mechanism implementation is based on
+\href{https://eprint.iacr.org/2005/303.pdf}{``Key Regression: Enabling
+Efficient Key Distribution for Secure Distributed Storage''}.
+
+\subsubsection{Example}
+
+The key regression mechanism can be used as follows.
+
+\begin{minted}{python}
+from aesmix.keyreg import KeyRegRSA
+
+
+iters = 5
+stp = KeyRegRSA()
+
+print("== WINDING ==")
+for i in range(iters):
+    stp, stm = stp.wind()
+    print("k%i: %r" % (i, stm.keyder()))
+
+print("\n== UNWINDING ==")
+for i in range(iters - 1, -1, -1):
+    print("k%i: %r" % (i, stm.keyder()))
+    stm = stm.unwind()
+\end{minted}

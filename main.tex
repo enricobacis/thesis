@@ -1,0 +1,205 @@
+\documentclass[12pt,a4paper,oldfontcommands,openright]{memoir}
+
+% Improve page style
+\usepackage[left=30mm,right=30mm,top=30mm,bottom=30mm]{geometry}
+\linespread{1.5}
+
+% Punish offending text
+\clubpenalty=10000
+\widowpenalty=10000
+\tolerance=999
+
+% Import all packages
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{blindtext}
+\usepackage{booktabs}
+\usepackage{color}
+\usepackage{comment}
+\usepackage{framed}
+\usepackage{graphicx}
+\usepackage{import}
+\usepackage{lipsum}
+\usepackage{minted}
+\usepackage{paralist}
+\usepackage{pdfpages}
+\usepackage{tikz}
+\usepackage{tikz}
+\usepackage{times}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{xspace}
+\usepackage[export]{adjustbox}
+\usepackage[vlined, ruled, boxed]{algorithm2e}
+\usepackage[yyyymmdd,hhmmss]{datetime}
+\usepackage[utf8]{inputenc}
+\usepackage[caption=false,font=footnotesize]{subfig}
+\usepackage[normalem]{ulem}
+\usepackage[breaklinks=true,colorlinks=true,linkcolor=black,urlcolor=black,citecolor=black,bookmarks=true,bookmarksopenlevel=2]{hyperref}
+
+\setminted{
+obeytabs=true,
+tabsize=2,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+}
+
+\SetKwInOut{Parameter}{parameter}
+\FrameSep4pt
+
+\usetikzlibrary{matrix,positioning}
+\tikzset{ 
+	table/.style={
+		matrix of nodes,
+		row sep=-\pgflinewidth,
+		column sep=-\pgflinewidth,
+		nodes={rectangle,draw=black,text width=1.25ex,align=center},
+		text depth=0.25ex,
+		text height=1ex,
+		nodes in empty cells
+	},
+	texto/.style={font=\footnotesize\sffamily},
+	title/.style={font=\small\sffamily}
+}
+
+% Add box chapter style
+\makechapterstyle{box}{
+  \renewcommand*{\printchaptername}{}
+  \renewcommand*{\chapnumfont}{\normalfont\sffamily\huge\bfseries}
+  \renewcommand*{\printchapternum}{
+    \flushright
+    \begin{tikzpicture}
+      \draw[fill,color=black] (0,0) rectangle (2cm,2cm);
+      \draw[color=white] (1cm,1cm) node { \chapnumfont\thechapter };
+    \end{tikzpicture}
+  }
+  \renewcommand*{\chaptitlefont}{\normalfont\sffamily\Huge\bfseries}
+  \renewcommand*{\printchaptertitle}[1]{\flushright\chaptitlefont##1}
+}
+\chapterstyle{box}
+
+%%% STYLE OF SECTIONS, SUBSECTIONS, AND SUBSUBSECTIONS
+\setsecheadstyle{\Large\bfseries\sffamily\raggedright}
+\setsubsecheadstyle{\large\bfseries\sffamily\raggedright}
+\setsubsubsecheadstyle{\bfseries\sffamily\raggedright}
+\maxsecnumdepth{subsection}
+\maxtocdepth{subsection}
+
+% Plain style is used for chapter pages
+\makeevenfoot{plain}{}{}{\small\thepage}
+\makeoddfoot{plain}{}{}{\small\thepage}
+
+% Define mystyle
+\makepagestyle{mystyle}
+\makeevenhead{mystyle}{\scriptsize\leftmark}{}{\scriptsize\rightmark}
+\makeoddhead{mystyle}{\scriptsize\rightmark}{}{\scriptsize\leftmark}
+\makeheadrule{mystyle}{1\textwidth}{\normalrulethickness}
+\makeevenfoot{mystyle}{}{}{\small\thepage}
+\makeoddfoot{mystyle}{}{}{\small\thepage}
+\pagestyle{mystyle}
+
+% Import macros
+\subimport*{chapters/tops/}{macros}
+\subimport*{chapters/dcs/}{macros}
+\subimport*{chapters/ityt/}{macros}
+
+\begin{document}
+
+% ------------------- FRONT PAGE ------------------ %
+
+\includepdf[fitpaper=true, pages=-]{chapters/frontpage/frontpage.pdf}
+\cleardoublepage
+
+% ------------------- ABSTRACT ------------------ %
+\cleardoublepage
+\thispagestyle{empty}
+\vspace*{\stretch{1}}
+\begin{abstract}
+\subimport*{chapters/abstract/}{main}
+\end{abstract}
+\vspace{\stretch{5}}
+\cleardoublepage
+
+% --------------- TABLE OF CONTENTS --------------- %
+
+\pagenumbering{roman}
+
+%\renewcommand*\contentsname{Contents}
+%\renewcommand{\listfigurename}{List of Figures}
+%\renewcommand{\listtablename}{List of Tables}
+
+% The asterisk prevents these from showing up in the ToC
+\tableofcontents*
+\cleardoublepage
+
+\listoffigures*
+\cleardoublepage
+
+%\listoftables*
+%\cleardoublepage
+
+% -------------------- DEDICATION ------------------- %
+
+\cleardoublepage
+\thispagestyle{empty}
+\vspace*{\stretch{1}}
+\begin{flushright}
+	\itshape Dedicated to ...\\
+\end{flushright}
+\vspace{\stretch{2}}
+\cleardoublepage
+
+
+% -------------------- CONTENTS ------------------- %
+
+\pagenumbering{arabic}
+
+\chapter[Introduction]{Introduction}
+\label{chap:intro}
+\subimport*{chapters/intro/}{main}
+
+\chapter[White-Box All-Or-Nothing Transforms]{White-Box\\All-Or-Nothing Transforms}
+\label{chap:waont}
+\subimport*{chapters/tops/}{main}
+
+\chapter[Decentralized Cloud Storage]{Securing Resources in Decentralized Cloud Storage}
+\label{chap:dcs}
+\subimport*{chapters/dcs/}{main}
+
+\chapter[I Told You Tomorrow]{I {\em Told} You Tomorrow:\\Practical Time-Lock Encryption using Smart Contracts}
+\label{chap:ityt}
+\subimport*{chapters/ityt/}{main}
+
+\chapter[Conclusions]{Conclusions and Future Work}
+\label{chap:conclusions}
+\subimport*{chapters/conclusions/}{main}
+
+
+% -------------- ACKNOWLEDGMENTS ------------ %
+
+\chapter*{Acknowledgments}
+\label{chap:acknowledgments}
+\subimport*{chapters/acknowledgments/}{main}
+
+
+% ------------------ BIBLIOGRAPHY ----------------- %
+
+
+\bibliographystyle{unsrt}
+\bibliography{chapters/intro/bib/biblio,chapters/tops/bib/biblio,chapters/dcs/bib/biblio,chapters/ityt/bib/biblio}
+
+
+% -------------------- APPENDIX ------------------- %
+
+
+\appendix
+
+\subimport{chapters/tops/}{appendix}
+
+\subimport{chapters/dcs/}{appendix}
+
+\subimport{chapters/ityt/}{appendix}
+
+
+\end{document}

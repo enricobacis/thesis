@@ -1,0 +1,21 @@
+Time-Lock Encryption (TLE) enables the release of secret data at a specific future point in time. % in the future.
+%
+%\todo{TLE?\\Timed-Release Crypto?\\Timed-Released Secrets?\\Self-emerging secrets?}
+Current research efforts mostly rely on Proof of Sequential Work (PoSW) puzzles that provide guarantees about the time taken by the decryption process\mg{Decryption process VS solving puzzle?}.
+%
+These solutions, however, are  impractical: 
+%
+not only they require the interested parties to undergo a significant computational effort in order to solve the cryptographic puzzle, but also the estimation of the required time is error-prone.
+
+To address these problems, we propose {\em \name (\shortname)}, a novel way of implementing Time-Lock Encryption that leverages smart contracts and secure Multi-Party Computation to measure the elapse of time, effectively replacing PoSW with economic constraints. \mg{Do we use smart contracts + MPC to measure the passing of time or to safely distribute trust? (I'd say the latter)}
+%
+%In contrast to existing solution, \shortname leverages smart contracts to measure the elapse of time.
+%, thereby decoupling the timing aspect of TLE from PoW mechanisms.
+%
+This allows clients to be involved in multiple TLE instances without wasting computational resources, thus enabling TLE to be used in real world applications. \mg{The last part of the sentence is a strong claim. We do not provide any data to back it up in the paper!}
+
+We implement our approach in a prototype based on the Ethereum blockchain and the FRESCO sMPC framework.
+%
+The availability of a reliable and practical TLE mechanism could play a significant role in advancing decentralized consensus protocols. % and blockchain technology.
+
+\mg{What is the goal of last sentence? We never talk about decentralized consensus protocols. By the way, since we implement ITYT over blockchain, which relies on a decentralized consensus protocol, the statement is kid of circular.}

@@ -1,0 +1,121 @@
+
+\section{Cryptographic Analysis (Florian)}
+
+In this section we formally define the security of a new all-or-nothing-transform (AONT).
+The AONT receives a protected representation $I$ as input and produces an output $O$. %Particularly,
+We define a new attacker and security model for AONT that allows an adversary to execute the AONT
+%(or its inverse)
+on a specific input $I$ once, before a portion of $I$ is made unavailable, removing a given number {\em Miss} of blocks.
+
+The adversary may keep some state $S$ that can support the attack in the second round.
+Obviously, the adversary could store in $S$ the entire input $I$ and obtain in this way $O$ independently of the number of blocks becoming unavailable, but this attack is not preventable. We focus on the consideration of a storage-bound adversary.
+Let $|S|$ be the size of the state and assume that all inputs are ideally compressed, i.e.,~no further compression is possible.
+The security objective of our AONT is that, when the size of the missing blocks is larger than $|S|$, the size of the input the adversary can recover is smaller or equal to the size $|S|$ of the state.
+
+We begin by defining our elementary cryptographic operations and AONT.
+\begin{defn}
+A cryptographic operation is a function $f : \{0,1\}^{N} \times \{0,1\}^k \mapsto \{0,1\}^{N}$ where $N$ and $k$ are finite constants.
+The inverse operation is $f^{-1}: \{0,1\}^{N} \times \{0,1\}^k \mapsto \{0,1\}^{N}$, such that $f^{-1}(f(x, k), k) = x$.
+\end{defn}
+
+A cryptographic operation is supposed to provide diffusion, i.e.,~each output bit depends on each input bit, in its function and inverse.
+This property and definition is, for example, fulfilled by block encryption functions, such as AES.
+A mode that can combine several (usually two) block ciphers into such a function is the Optimal Asymmetric Encryption (OAEP) mode \cite{BelRog94}.
+In fact, OAEP has itself been proven to be an AONT \cite{Boy99}.
+
+\begin{defn}
+Let $m_0, m_1, \ldots, m_i, \ldots, m_{n-1}$ be $n$ message blocks of size $N$.
+An All-Or-Nothing-Transform (AONT) is a circuit $A: m_0, m_1, \ldots, m_{n-1} \mapsto c_0, c_1, \ldots, c_{n+c-1}$, such that
+
+\begin{itemize}
+
+\item $A$ is reversible.
+
+\item $A$ and its inverse $A^{-1}$ are both efficiently computable.
+
+\item given all, but one $c_i$ it is computationally infeasible to compute anything about any $m_i$.
+
+\item all gates of $A$ are cryptographic operations $f$.
+
+\end{itemize}
+
+\end{defn}
+
+Rivest presents the first AONT in \cite{r97}.
+However, in this paper we consider an adversary with white-box access to the transform at least once before.
+The adversary then has the ability to store either an intermediate state $S$ about the transform or an erasure code on $I$ and use it to support the reconstruction of $O$ (or portions of it) when a portion of $I$ is missing.
+
+The possibility to use an erasure code on $I$ mitigates the loss of input by offering the opportunity to reconstruct the original input after the loss. When no compression is available, an ideal erasure code of size $B$ is able to reconstruct the omission of exactly $B$ bits. In general, the code requires significant network and computational resources to be applied, as it requires to retrieve the whole input and build a dedicate supplementary code to be stored at the adversary side. Since the focus here is on storage space used by the adversary, we have to consider this possibility. In general, this attack is independent from the internals of the AONT and is guaranteed to work for every AONT structure. What is more interesting in this domain is to identify the specific features of the cryptographic structure of the AONT that can be exploited by an adversary to keep the ability to access a significant portion of the resource dedicating locally an amount of storage smaller than the size of the omitted portion of the resource.
+%We focus on how 
+
+%Why Rivest AONT and regular OAEP do not work here
+
+%Why our approach works
+
+We define a white-box AONT.
+
+\begin{defn}
+Let $C = \{ c_i \}$ be the output of an AONT for message $M = \{ m_i \}$ and $C^\star = C \ c_j$ be all of the output except block $c_j$.
+A white-box AONT (WB-AONT) is an AONT, such that an adversary $\mathcal{A}$'s output
+$$ \mathcal{A}(C) \rightarrow S, \mathcal{A}(C^\star, S) \in M \leq |S| $$
+\end{defn}
+
+Loosely speaking we say that the expected best that an adversary can do in white-box access is to store the message, i.e.~the adversary does not gain from white-box access to the transform.
+
+We now prove that the AONT $G$ of Bacis et al.~\cite{BacDeC16} is a WB-AONT.
+Wlog, let $n = 2^l$ for integer $l$.
+Their circuit consists $0 \leq i < \log_2(n)$ levels.
+Each level consists of $\frac{n}{2}$ gates $g_{i, j}$.
+Let $g^l_{i,j} | g^r_{i, j}$ be the output of gate $g_{i, j}$ divided into a left and right part.
+
+Let $k$ be a fixed key for a cryptographic function $f$.
+If $j \bmod 2^{i+1} < 2^i$ then gate $g_{i, j}$ is computed as follows:
+
+$$ g_{i, j} = f(g^l_{i+1, j} | g^r_{i+1, 2^{i+1} \lfloor \frac{j}{2^{i + 1}} \rfloor + (j + 2^i \bmod 2^{i + 1})}, k) $$
+
+Else it is computed as 
+
+$$ g_{i, j} = f(g^l_{i+1, 2^{i+1} \lfloor \frac{j}{2^{i + 1}} \rfloor + (j + 2^i \bmod 2^{i + 1})} | g^r_{i+1, j}, k) $$
+
+The input to gates at level $i = l - 1$ are the message blocks, i.e.~$g_{l, j} = m_j$, and the output of level $i = 0$ is the output $C$, i.e.~$c_j = g_{0, j}$ of the AONT.
+{\bf We also store the key in the last block: $c_{n} = k$. ????}
+
+\begin{thm}
+$G$ is a WB-AONT.
+\end{thm}
+
+\begin{myproof}
+Given only $C^\star$ no message block $m_i$ is recoverable, since each $c_j$ is input to each $m_i$ in $G^{-1}$ (diffusion).
+
+Let the adversary $\mathcal{A}$ store the output of a single gate $g_{i_j}$ in $G$ (and $k$).
+Gate $g_{i_j}$'s output in $G$ is input to $2^{i + 1}$ message blocks $m^\star$ in set $M^\star$ of $G^{-1}$.
+However, each message block can only be recovered with probability $Pr[\mathcal{A}(C^\star, \{ g_{i_j} \}) = m^\star] = \frac{1}{2^{i+1}}$, since each message block depends on $c_j$.
+
+Let the adversary $\mathcal{A}$ store the output of $s$ gates $S = \{ g_{i_j} \}$ in $G$.
+Each {\em distinct} gate $g_{i_j}$'s output in $G$ is a {\em distinct} input to each $2^{i + 1}$ message blocks $m^\star$ in set $M^\star$ of $G^{-1}$.
+Therefore for $i \neq i' \lor j \neq' j'$ it holds that $Pr[\mathcal{A}(C^\star, \{ g_{i_j}, g_{i'_{j'}} \}) = m^\star] = Pr[\mathcal{A}(C^\star, \{ g_{i_j} \}) = m^\star] + Pr[\mathcal{A}(C^\star, \{ g_{i'_{j'}} \}) = m^\star]$.
+Hence the adversary can recover at most 
+$$\mathcal{A}(C^\star, S) \in M^\star = \sum_{m^\star} \sum_{g_{i, j} \in S} Pr[\mathcal{A}(C^\star, g_{i_j}) = m^\star] \leq 2^{i+1} \cdot \frac{s}{2^{i+1}} = s$$
+blocks.
+\end{myproof}
+
+We can also prove that Rivest's AONT \cite{r97} is not a WB-AONT.
+Rivest's AONT proceeds as follows:
+Let $\oplus$ denote the ``exclusive-or'' operation, $k$ be a publicly known, static key and $h_{-1} = 0$.
+The encryptor chooses a secret key $k'$ for the AONT and computes for $0 \leq i < n$:
+
+$$ c_i = m_i \oplus f(i, k') $$
+$$ h_i = h_{i-1} \oplus f(c_i \oplus i, k) $$
+
+Then he computes
+
+$$ c_n = k' \oplus h_{n-1} $$
+
+Note that Rivest's AONT is more efficient than Bacis et al.'s, since it can be computed with a linear number of cryptographic operations (instead of $n \log n$ operations).
+However, we present the following white-box attack.
+The adversary is given $C$, reverses the AONT and stores $S = \{ k' \}$.
+One the second pass, it decrypts each $m_i = f^{-1}(c_i, k')$.
+The state is of size $1$ (one cryptographic key), however, the adversary can recover the entire $M \ m_j$, i.e. the entire input except the block corresponding to the withheld block in the AONT.
+
+We state without proof that Stinson's AONT construction \cite{Sti01} is a white-box AONT.
+His AONT requires $O(n^3)$ (non-cryptographic) operations and hence we do not consider it in comparison to Bacis et al.'s construction which requires $O(n \log n)$ -- cryptographic, however efficient -- operations.

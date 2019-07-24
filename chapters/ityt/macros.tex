@@ -1,0 +1,86 @@
+\newcommand{\shortname}{ITYT\xspace}
+\renewcommand{\name}{I Told You Tomorrow\xspace}
+
+\newcommand{\secret}{{\ensuremath{\mathcal{S}}}\xspace}
+\newcommand{\owner}{{\ensuremath{\mathcal{O}}}\xspace}
+\newcommand{\shareholder}{{\ensuremath{\mathcal{H}}}\xspace}
+\newcommand{\whistleblower}{{\ensuremath{\mathcal{W}}}\xspace}
+
+\newcommand{\PO}{{\ensuremath{P_{\owner}}}\xspace}
+\newcommand{\RO}{{\ensuremath{R_{\owner}}}\xspace}
+\newcommand{\RH}{{\ensuremath{R_{\shareholder}}}\xspace}
+\newcommand{\BH}{{\ensuremath{B_{\shareholder}}}\xspace}
+\newcommand{\profit}{{\ensuremath{\delta}}\xspace}
+\newcommand{\Wbonus}{{\ensuremath{W}}\xspace}
+\newcommand{\extrareward}{{\ensuremath{\beta}}\xspace}
+\newcommand{\lost}{{\ensuremath{\rho}}\xspace}
+
+\newcommand{\commitment}{{\ensuremath{C}}\xspace}
+\newcommand{\Csecret}{{\ensuremath{\commitment_{\secret}}}\xspace}
+\newcommand{\Cshare}[1]{{\ensuremath{\commitment_{\share_{#1}}}}\xspace}
+
+\renewcommand{\N}{{\ensuremath{n}}\xspace}
+\renewcommand{\K}{{\ensuremath{k}}\xspace}
+\newcommand{\V}{{\ensuremath{V}}\xspace}
+\newcommand{\share}{{\ensuremath{h}}\xspace}
+\newcommand{\td}{{\ensuremath{t_{d}}}\xspace}
+\newcommand{\te}{{\ensuremath{t_{term}}}\xspace}
+
+%new macros for cryptographic operations
+\newcommand{\cip}{{\ensuremath{ C }}\xspace}
+\newcommand{\cipextended}{{\ensuremath{\mathcal{ C \left( \cdot \right) }}}\xspace}
+\renewcommand{\enc}{{\ensuremath{\mathcal{ E }nc}}\xspace}
+\renewcommand{\dec}{{\ensuremath{\mathcal{ D }ec}}\xspace}
+\newcommand{\cipvocabulary}{{\ensuremath{\mathcal{ \cip } \left( \enc , \dec \right) }}\xspace}
+\newcommand{\onetimepad}{{\ensuremath{One\text{-}timePad \left( \oplus , \oplus  \right) }}\xspace}
+%cont.
+\renewcommand{\key}{{\ensuremath{\mathcal{ K }}}\xspace}
+\newcommand{\plaintext}{{\ensuremath{ PT }}\xspace}
+\newcommand{\ciphertext}{{\ensuremath{ CT }}\xspace}
+%cont.
+\newcommand{\wrap}{{\ensuremath{ \enc _{\key} \left( \plaintext \right) }}\xspace}
+\newcommand{\unwrap}{{\ensuremath{ \dec _{\key} \left( \ciphertext \right) }}\xspace}
+
+%new macro for malicious coalition
+\newcommand{\coalition}{{\ensuremath{\mathcal{ M }}}\xspace}
+
+\newcommand{\para}[1]{\smallskip\noindent\textbf{#1:}}
+
+\newcommand{\positive}{{\ensuremath{> 0}}\xspace}
+
+
+\newcommand{\protocol}[2]{
+	{
+		%\setlist[enumerate,1]{label=\arabic*.,leftmargin=*}
+		%\setlist[enumerate,2]{label=\alph*.}
+		%\setlist[enumerate,3]{label=\roman*.}
+		
+		\begin{framed}
+			\begin{center}
+				\noindent{\bf #1} \\[-0.8em]
+				\noindent\hrulefill
+			\end{center}
+			#2
+		\end{framed}
+	}
+}
+
+\newcommand{\guide}[1]{}
+\renewcommand{\guide}[1]{{\color{blue} {#1}}}
+
+\newcommand{\copied}[1]{}
+\renewcommand{\copied}[1]{{\em \color{orange} {#1}}}
+
+\newcommand{\drop}[1]{}
+\renewcommand{\drop}[1]{{\color{red} \sout{#1}}}
+
+\newcommand{\todo}[1]{}
+\newcommand{\namedtodo}[2]{}{}
+\renewcommand{\namedtodo}[2]{}
+
+\newcommand{\mg}[1]{}
+\newcommand{\mr}[1]{}
+\newcommand{\mrosa}[1]{}
+\newcommand{\eb}[1]{}
+\newcommand{\df}[1]{}
+\newcommand{\SP}[1]{}

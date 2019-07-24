@@ -1,0 +1,58 @@
+\section{Background}\label{sect:background}
+
+This section illustrates some background concepts that will be used in the following sections.
+
+
+\begin{comment}
+\begin{description}
+	\item [Economic Constraints] Each party willing to keep a share of the secret until the disclosure time has the possibility to gain a remuneration paid by the time-lock creator. In order to prevent collusion among parties, that would result in premature secret disclosure, \copied{the protocol requires every participant to pay a security deposit so that any detected misbehavior can result in the deposit being confiscated.}
+	We demonstrate that the best strategy of any rational party is to keep the share secret until the disclosure time, and then publish it --- effectively deploying the time-lock mechanism.
+	\smallskip
+\end{description}
+\end{comment}
+
+
+\paragraph{Threshold Cryptography}
+
+Threshold cryptography allows users to split a secret in $n$ shares.
+%
+The secret can be reconstructed only by combining multiple shares, usually $k$-out-of-$n$ shares.
+%
+The owner of the secret is entrusted to split it into shares, and distribute each share to a different participant.
+%
+In this context, the main advantages of threshold cryptography are (i) the distribution of trust (no single participant can recover the secret), and (ii) fault tolerance (only a subset of the participants is needed to recover the secret).
+%
+%Threshold cryptography (e.g., Shamir's Secret Sharing~\cite{Shamir:1979:SS:359168.359176}) is an encryption protocol that permits to share the ciphertext among several parties that have to cooperate in order to reconstruct it, avoiding the dependency on a single point of trust.
+%Not all the parties are needed to reconstruct the plaintext, thus providing a desirable fault tolerance property.
+%The owner is entrusted to generate the ciphertext, slice it into shares, and distribute each share to a different participant. 
+
+%In our scenario each participant is required to pay a security deposit to obtain the share, as penalties and rewards are associated with its management; thus it is important to prevent anyone else, including the owner, to gain any knowledge about it.
+
+\paragraph{Secure Multi-Party Computation}
+
+A {\em secure Multi-Party Computation (\em sMPC)}~\cite{DBLP:journals/corr/abs-1804-03548,yao82} is a cryptographic protocol that allows multiple parties to jointly compute a function over their inputs while keeping them private. sMPC can be used to generate the shares securely without a single point of trust.
+%In sMPC, inputs are never visible to the other participants of the protocol, and the outputs of the functions can be made available to a subset of them. 
+%After~\cite{yao82,yao86}, which firstly introduced the concept of MPC by computing a logic function between two parties, a lot of progress has been made~\cite{DBLP:journals/corr/abs-1804-03548}.
+Current MPC frameworks are able to perform efficient modular arithmetic operations computed between several parties (even with dishonest majority) enforcing {\em semi-homomorphic encryption}~\cite{spdz,keller2018overdrive} and {\em oblivious transfer}~\cite{mascot,rabin2005exchange}.
+\mg{Do we leverage any of these properties? If so, which ones?}
+
+\paragraph{Blockchains and smart contracts}
+
+The advent of blockchain technology has been expected to fundamentally change many aspects of the current IT infrastructure, since we can now leverage a distributed third party able to trustfully run transactions (e.g., Bitcoin) and execute code in form of smart contracts (e.g., Ethereum).
+Smart contracts~\cite{szabo1997formalizing} are built upon blockchains, and offer a way to program tamper-proof protocols, as their correctness is verified by the whole network.
+Even if smart contracts are a big milestone in the evolution of decentralized protocols, there is still a lack in confidentiality for the data that they store. The code of a smart contract has in fact to be publicly available in order to be executed and verified by multiple parties, but this requirement makes it difficult to create protocols in which the data has to remain private.
+Indeed, any piece of data stored in a smart contract can be verified by any peer of the network, and read by anyone.
+%
+%Several blockchain-based architectures have been proposed to overcome this limitation. Enigma~\cite{enigma} by Zyskind et al. and Hawk~\cite{hawk} by Kosba et al. address the issue by leveraging Multi-Party Computation~\cite{DBLP:journals/corr/abs-1804-03548,yao82} to allow several actors to execute functions over secret inputs without getting to know the underlying plaintext.
+%%
+%Yet, these architectures can not be used in the TLE setting, as they require the data holder to actively take part in the computation.
+%
+%\drop{Blockchains can be integrated with TLE, as suggested in~\cite{gwern}, to reduce the uncertainty of the efficiency of squaring (or hashing) by adopting the {\em honeypot/moneypot} strategy. Similarly to some longstanding Bitcoin rewards for breaking hash functions~\cite{bitcoin-reward}, the content of a Time-Lock puzzle could be associated with the private key controlling large monetary rewards. This would be an incentive for people to unlock them as efficiently as possible in order to claim the reward. Even so, it would be hard to prove that the Time-Locked ciphertext contains the key; another pitfall is that the owner knows the key, so she can always withdraw the reward and jeopardize the progress that anyone else could have made.}
+
+%
+Smart contracts use network consensus to derive a notion of time that allows users to lock funds for a certain amount of time. These capabilities make them a technology perfectly fitted to our approach. We can run a smart contract to handle security deposits, pay rewards, and trigger penalties, in order to enforce the correct execution of our time-lock scheme without the need of any trusted party.
+%
+Smart contracts are used to form agreements with non-trusted parties using the blockchain. By minimizing trust, the human factor is taken out of the loop, thus allowing complete automation.
+There are multiple types of primitives that can be used in smart contracts. The particularly important ones for our proposal are the {\em timelock primitive}, which restricts contract actions until a specific future time, and the {\em hashlock primitive}, which restricts contract actions until a specific piece of data is publicly revealed.
+
+\mg{This section is kind of boring. Alternative: present the protocol with a running example and explain the background concepts/assumptions in the meanwhile.}
