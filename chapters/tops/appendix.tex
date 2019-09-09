@@ -32,13 +32,15 @@ The file \texttt{includes/aes\_mix.h} contains the prototype of the only
 two methods that are necessary to use Mix\&Slice:
 
 \begin{minted}{c}
-void mixencrypt(const unsigned char* data, unsigned char* out,
-                const unsigned long size, const unsigned char* key,
-                const unsigned char* iv);
+void mixencrypt(
+        const unsigned char* data, unsigned char* out,
+        const unsigned long size, const unsigned char* key,
+        const unsigned char* iv);
 
-void mixdecrypt(const unsigned char* data, unsigned char* out,
-                const unsigned long size, const unsigned char* key,
-                const unsigned char* iv);
+void mixdecrypt(
+        const unsigned char* data, unsigned char* out,
+        const unsigned long size, const unsigned char* key,
+        const unsigned char* iv);
 \end{minted}
 
 The parameters are as follows.
@@ -65,13 +67,15 @@ the only two methods that are necessary to use Mix\&Slice in
 multi-threaded mode:
 
 \begin{minted}{c}
-void t_mixencrypt(unsigned int thr, const unsigned char* data,
-                  unsigned char* out, const unsigned long size,
-                  const unsigned char* key, const unsigned char* iv);
+void t_mixencrypt(
+        unsigned int thr, const unsigned char* data,
+        unsigned char* out, const unsigned long size,
+        const unsigned char* key, const unsigned char* iv);
 
-void t_mixdecrypt(unsigned int thr, const unsigned char* data,
-                  unsigned char* out, const unsigned long size,
-                  const unsigned char* key, const unsigned char* iv);
+void t_mixdecrypt(
+        unsigned int thr, const unsigned char* data,
+        unsigned char* out, const unsigned long size,
+        const unsigned char* key, const unsigned char* iv);
 \end{minted}
 
 The only additional parameter is \texttt{thr}, the number of threads to
@@ -94,13 +98,15 @@ The file \texttt{includes/aes\_mixslice.h} contains the prototypes of
 the two methods that perform the whole Mix\&Slice encryption:
 
 \begin{minted}{c}
-void mixslice(unsigned int thr, const unsigned char* data,
-              unsigned char* fragdata, const unsigned long size,
-              const unsigned char* key, const unsigned char* iv);
+void mixslice(
+        unsigned int thr, const unsigned char* data,
+        unsigned char* fragdata, const unsigned long size,
+        const unsigned char* key, const unsigned char* iv);
 
-void unsliceunmix(unsigned int thr, const unsigned char* fragdata,
-                  unsigned char* out, const unsigned long size,
-                  const unsigned char* key, const unsigned char* iv);
+void unsliceunmix(
+        unsigned int thr, const unsigned char* fragdata,
+        unsigned char* out, const unsigned long size,
+        const unsigned char* key, const unsigned char* iv);
 \end{minted}
 
 The \texttt{mixslice} method first uses \texttt{t\_mixencrypt} to
@@ -237,6 +243,7 @@ To encrypt a file:
 
 \begin{minted}{shell-session}
 $ mixslice encrypt sample.txt
+
 INFO: [*] Encrypting file sample.txt ...
 INFO: Output fragdir:   sample.txt.enc
 INFO: Public key file:  sample.txt.public
@@ -247,6 +254,7 @@ To perform a policy update:
 
 \begin{minted}{shell-session}
 $ mixslice update sample.txt.enc
+
 INFO: [*] Performing policy update on sample.txt.enc ...
 INFO: Encrypting fragment #68
 INFO: Done
@@ -256,11 +264,14 @@ To decrypt a file:
 
 \begin{minted}{shell-session}
 $ mixslice decrypt sample.txt.enc
-INFO: [*] Decrypting fragdir sample.txt.enc using key sample.txt.public ...
+
+INFO: [*] Decrypting fragdir sample.txt.enc
+          using key sample.txt.public ...
 INFO: Decrypting fragment #68
 INFO: Decrypted file: sample.txt.enc.dec
 
 $ sha1sum sample.txt sample.txt.enc.dec
+
 d3e92d3c3bf278e533f75818ee94d472347fa32a  sample.txt
 d3e92d3c3bf278e533f75818ee94d472347fa32a  sample.txt.enc.dec
 \end{minted}
@@ -279,7 +290,6 @@ The key regression mechanism can be used as follows.
 
 \begin{minted}{python}
 from aesmix.keyreg import KeyRegRSA
-
 
 iters = 5
 stp = KeyRegRSA()

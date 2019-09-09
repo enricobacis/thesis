@@ -49,6 +49,13 @@ Rational agents will always comply to the protocol, as correctly behaving is eco
 As rewards and penalties are associated with correct management of the shares, it is important to securely generate and distribute them, even in the presence of a dishonest secret's owner.
 In our prototype, we address this by using {\em secure Multi-Party Computation (sMPC)} to have guarantees about the information that every participant gets to know.
 
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\textwidth]{fig/models}
+	\caption{Comparison of active roles of the actors in different time-lock techniques.}
+	\label{fig:models}
+\end{figure}
+
 Figure~\ref{fig:models} compares \shortname with the existing Time-Lock techniques:
 
 \begin{compactitem}
@@ -74,13 +81,6 @@ The main contributions of this paper can be summarized as follows.
  	\item We describe how to technically realize an implementation based on the Ethereum blockchain~\cite{wood2014ethereum} and the FRESCO secure Multi-Party Computation framework~\cite{damgaard2016mpc} characterized by a low overhead and limited gas cost of execution.
 
 \end{enumerate}
-
-\begin{figure}[t]
-	\centering
-	\includegraphics[width=\textwidth]{fig/models}
-	\caption{Comparison of active roles of the actors in different time-lock techniques.}
-	\label{fig:models}
-\end{figure}
 
 
 \medskip\textbf{Outline.} The remainder of the paper is organized as follows.

@@ -1,11 +1,11 @@
 % !TeX document-id = {f433bf4d-0077-4a60-8688-7267f4ce1e5f}
 % !TeX TXS-program:compile = txs:///pdflatex/[--shell-escape]
 
-\documentclass[12pt,a4paper,oldfontcommands,openright]{memoir}
+\documentclass[12pt,a4paper,oldfontcommands,openright,oneside]{memoir}
 
 % Improve page style
-\usepackage[left=30mm,right=30mm,top=30mm,bottom=30mm]{geometry}
-\linespread{1.5}
+%\usepackage[left=40mm,right=40mm,top=40mm,bottom=40mm]{geometry}
+\linespread{1.25}
 
 % Punish offending text
 \clubpenalty=10000
@@ -32,7 +32,7 @@
 \usepackage{pdfpages}
 \usepackage{tikz}
 \usepackage{times}
-\usepackage{url}
+\usepackage[hyphens]{url}
 \usepackage{xcolor}
 \usepackage{xspace}
 \usepackage[export]{adjustbox}
@@ -107,10 +107,8 @@ fontsize=\footnotesize,
 \makeoddfoot{mystyle}{}{}{\small\thepage}
 \pagestyle{mystyle}
 
-% Import macros
-\subimport*{chapters/tops/}{macros}
-\subimport*{chapters/dcs/}{macros}
-\subimport*{chapters/ityt/}{macros}
+
+
 
 \begin{document}
 
@@ -165,6 +163,7 @@ fontsize=\footnotesize,
 
 \chapter[Introduction]{Introduction}
 \label{chap:intro}
+\subimport*{chapters/tops/}{macros}
 \subimport*{chapters/intro/}{main}
 
 \chapter[White-Box All-Or-Nothing Transforms]{White-Box\\All-Or-Nothing Transforms}
@@ -173,10 +172,12 @@ fontsize=\footnotesize,
 
 \chapter[Decentralized Cloud Storage]{Securing Resources in Decentralized Cloud Storage}
 \label{chap:dcs}
+\subimport*{chapters/dcs/}{macros}
 \subimport*{chapters/dcs/}{main}
 
 \chapter[I Told You Tomorrow]{I {\em Told} You Tomorrow:\\Practical Time-Locked Secrets using Smart Contracts}
 \label{chap:ityt}
+\subimport*{chapters/ityt/}{macros}
 \subimport*{chapters/ityt/}{main}
 
 \chapter[Conclusions]{Conclusions and Future Work}
