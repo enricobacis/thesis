@@ -3,13 +3,11 @@
 This section describes our protocol from a game theory standpoint and analyzes a configuration of $(k,n) = (2,3)$. 
 
 \begin{itemize}
-
 	\item In our solution, we do not deal with a trusted third party but we leverage the use of the blockchain. This introduces several unknown actors that cannot be considered as trusted. A blockchain itself assumes that 50\%+1 participants are honest, otherwise the history of the ledger could be forked and currency could be double spent.
 
 	\item Our system enforces remuneration and disincentive strategies in order to regulate actions of users.
 
 	\item The underlying mechanism of regulation is a non sum zero game. This means that expected value received by users when they behave honestly is supposed to be positive (negative on the contrary), with negative disincentive being more penalizing that the positive benefit that they could receive.
-
 \end{itemize}
 
-{\bf LOCKED BY: MARCO GUARNIERI}
+We have four players: $\owner, \shareholder_1, \shareholder_2, \shareholder_3$.

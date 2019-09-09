@@ -13,6 +13,7 @@
 \tolerance=999
 
 % Import all packages
+\usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{array}
@@ -20,21 +21,25 @@
 \usepackage{booktabs}
 \usepackage{color}
 \usepackage{comment}
+\usepackage{cite}
 \usepackage{framed}
 \usepackage{graphicx}
 \usepackage{import}
+\usepackage{listings}
 \usepackage{lipsum}
 \usepackage{minted}
 \usepackage{paralist}
 \usepackage{pdfpages}
-\usepackage{tikz}
 \usepackage{tikz}
 \usepackage{times}
 \usepackage{url}
 \usepackage{xcolor}
 \usepackage{xspace}
 \usepackage[export]{adjustbox}
-\usepackage[vlined, ruled, boxed]{algorithm2e}
+%packages to insert pseudocode
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+%\usepackage[vlined, ruled, boxed]{algorithm2e}
 \usepackage[yyyymmdd,hhmmss]{datetime}
 \usepackage[utf8]{inputenc}
 \usepackage[caption=false,font=footnotesize]{subfig}
@@ -48,7 +53,7 @@ baselinestretch=1.2,
 fontsize=\footnotesize,
 }
 
-\SetKwInOut{Parameter}{parameter}
+%\SetKwInOut{Parameter}{parameter}
 \FrameSep4pt
 
 \usetikzlibrary{matrix,positioning}
@@ -170,7 +175,7 @@ fontsize=\footnotesize,
 \label{chap:dcs}
 \subimport*{chapters/dcs/}{main}
 
-\chapter[I Told You Tomorrow]{I {\em Told} You Tomorrow:\\Practical Time-Lock Encryption using Smart Contracts}
+\chapter[I Told You Tomorrow]{I {\em Told} You Tomorrow:\\Practical Time-Locked Secrets using Smart Contracts}
 \label{chap:ityt}
 \subimport*{chapters/ityt/}{main}
 
@@ -202,7 +207,7 @@ fontsize=\footnotesize,
 
 \subimport{chapters/dcs/}{appendix}
 
-\subimport{chapters/ityt/}{appendix}
+%\subimport{chapters/ityt/}{appendix}
 
 
 \end{document}

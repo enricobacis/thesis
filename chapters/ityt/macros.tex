@@ -1,86 +1,111 @@
 \newcommand{\shortname}{ITYT\xspace}
+\newcommand{\shortnamempc}{ITYT_{sMPC}\xspace}
 \renewcommand{\name}{I Told You Tomorrow\xspace}
 
+% variables
 \newcommand{\secret}{{\ensuremath{\mathcal{S}}}\xspace}
 \newcommand{\owner}{{\ensuremath{\mathcal{O}}}\xspace}
 \newcommand{\shareholder}{{\ensuremath{\mathcal{H}}}\xspace}
 \newcommand{\whistleblower}{{\ensuremath{\mathcal{W}}}\xspace}
-
 \newcommand{\PO}{{\ensuremath{P_{\owner}}}\xspace}
 \newcommand{\RO}{{\ensuremath{R_{\owner}}}\xspace}
 \newcommand{\RH}{{\ensuremath{R_{\shareholder}}}\xspace}
 \newcommand{\BH}{{\ensuremath{B_{\shareholder}}}\xspace}
 \newcommand{\profit}{{\ensuremath{\delta}}\xspace}
-\newcommand{\Wbonus}{{\ensuremath{W}}\xspace}
+\newcommand{\Wshare}{{\ensuremath{W_{\share}}}\xspace}
+\newcommand{\Wsecret}{{\ensuremath{W_{\secret}}}\xspace}
+\newcommand{\Wer}{{\ensuremath{W_{er}}}\xspace}
 \newcommand{\extrareward}{{\ensuremath{\beta}}\xspace}
 \newcommand{\lost}{{\ensuremath{\rho}}\xspace}
-
 \newcommand{\commitment}{{\ensuremath{C}}\xspace}
 \newcommand{\Csecret}{{\ensuremath{\commitment_{\secret}}}\xspace}
-\newcommand{\Cshare}[1]{{\ensuremath{\commitment_{\share_{#1}}}}\xspace}
-
+\newcommand{\Cshare}{{\ensuremath{\commitment_{\share}}}\xspace}
 \renewcommand{\N}{{\ensuremath{n}}\xspace}
 \renewcommand{\K}{{\ensuremath{k}}\xspace}
+\newcommand{\KofN}{{\ensuremath{k}}{\it{-of-}}{\ensuremath{n}}\xspace}
 \newcommand{\V}{{\ensuremath{V}}\xspace}
 \newcommand{\share}{{\ensuremath{h}}\xspace}
 \newcommand{\td}{{\ensuremath{t_{d}}}\xspace}
 \newcommand{\te}{{\ensuremath{t_{term}}}\xspace}
+\newcommand{\jopt}{{\ensuremath{j^{*}}}\xspace}
 
-%new macros for cryptographic operations
+% smart contract data
+\newcommand{\state}{{\ensuremath{state}}\xspace}
+\newcommand{\states}{{\ensuremath{states}}\xspace}
+\newcommand{\shares}{{\ensuremath{shares}}\xspace}
+\newcommand{\numpending}{{\ensuremath{num\_pending}}\xspace}
+\newcommand{\numdisclosed}{{\ensuremath{num\_disclosed}}\xspace}
+
+% new macros for cryptographic operations
 \newcommand{\cip}{{\ensuremath{ C }}\xspace}
 \newcommand{\cipextended}{{\ensuremath{\mathcal{ C \left( \cdot \right) }}}\xspace}
 \renewcommand{\enc}{{\ensuremath{\mathcal{ E }nc}}\xspace}
 \renewcommand{\dec}{{\ensuremath{\mathcal{ D }ec}}\xspace}
 \newcommand{\cipvocabulary}{{\ensuremath{\mathcal{ \cip } \left( \enc , \dec \right) }}\xspace}
 \newcommand{\onetimepad}{{\ensuremath{One\text{-}timePad \left( \oplus , \oplus  \right) }}\xspace}
-%cont.
 \renewcommand{\key}{{\ensuremath{\mathcal{ K }}}\xspace}
 \newcommand{\plaintext}{{\ensuremath{ PT }}\xspace}
 \newcommand{\ciphertext}{{\ensuremath{ CT }}\xspace}
-%cont.
 \newcommand{\wrap}{{\ensuremath{ \enc _{\key} \left( \plaintext \right) }}\xspace}
 \newcommand{\unwrap}{{\ensuremath{ \dec _{\key} \left( \ciphertext \right) }}\xspace}
 
-%new macro for malicious coalition
+% new macros for malicious coalition
 \newcommand{\coalition}{{\ensuremath{\mathcal{ M }}}\xspace}
-
-\newcommand{\para}[1]{\smallskip\noindent\textbf{#1:}}
-
+\newcommand{\users}{{\ensuremath{\mathcal{U}}}\xspace}
+\newcommand{\smartcontracts}{{\ensuremath{\mathcal{SC}}}\xspace}
+\newcommand{\principals}{{\ensuremath{\mathcal{P}}}\xspace}
+\newcommand{\wallet}[1]{\mathit{wlt}(#1)}
 \newcommand{\positive}{{\ensuremath{> 0}}\xspace}
 
+%macros for algorithms and primitives
+\newcommand{\primget}[2]{{\ensuremath{\texttt{get(} #1, #2 \texttt{)} }}\xspace}
+\newcommand{\primset}[3]{{\ensuremath{\texttt{set(} #1, #2, #3 \texttt{)} }}\xspace}
+\newcommand{\primtime}{{\ensuremath{\texttt{time()}}}\xspace}
+\newcommand{\primpay}[3]{{\ensuremath{\texttt{pay(} #1, #2, #3 \texttt{)} }}\xspace}
+\newcommand{\primwithdraw}[4]{{\ensuremath{\texttt{allow\textunderscore withdraw(} #1, #2, #3, #4 \texttt{)} }}\xspace}
+\newcommand{\primhash}[1]{{\ensuremath{\texttt{hash(} #1 \texttt{)} }}\xspace}
+\newcommand{\primgenerateshares}[2]{{\ensuremath{\texttt{generate\_shares(} #1, #2 \texttt{)} }}\xspace}
+\newcommand{\priminit}[1]{{\ensuremath{\texttt{initialize\_sc(} #1 \texttt{)} }}\xspace}
+\newcommand{\statepending}{{\ensuremath{\texttt{PENDING}}}\xspace}
+\newcommand{\statelocked}{{\ensuremath{\texttt{LOCKED}}}\xspace}
+\newcommand{\statepaid}{{\ensuremath{\texttt{PAID}}}\xspace}
+\newcommand{\statefailed}{{\ensuremath{\texttt{FAILED}}}\xspace}
+\newcommand{\statedisclosed}{{\ensuremath{\texttt{DISCLOSED}}}\xspace}
+\newcommand{\statewblowed}{{\ensuremath{\texttt{WHISTLEBLOWED}}}\xspace}
 
+\newcommand{\algoinit}{Init}
+\newcommand{\algoparticipate}{Participate}
+\newcommand{\algowhistleblowshare}{WhistleblowShare}
+\newcommand{\algowhistleblowsecret}{WhistleblowSecret}
+\newcommand{\algodisclose}{Disclose}
+
+
+% protocol blocks
 \newcommand{\protocol}[2]{
 	{
-		%\setlist[enumerate,1]{label=\arabic*.,leftmargin=*}
-		%\setlist[enumerate,2]{label=\alph*.}
-		%\setlist[enumerate,3]{label=\roman*.}
+		\setlist[enumerate,1]{label=\arabic*.,leftmargin=*}
+		\setlist[enumerate,2]{label=\alph*.}
+		\setlist[enumerate,3]{label=\roman*.}
 		
 		\begin{framed}
 			\begin{center}
 				\noindent{\bf #1} \\[-0.8em]
 				\noindent\hrulefill
 			\end{center}
-			#2
+			{#2}
 		\end{framed}
 	}
 }
 
-\newcommand{\guide}[1]{}
-\renewcommand{\guide}[1]{{\color{blue} {#1}}}
+% algorithms
+\newcommand{\Desc}[2]{\Statex\hspace{\algorithmicindent}\makebox[2em][l]{#1}#2}
+\newcommand{\MyAlgBlock}[1]{\vspace{0.6em}\Statex\textbf{#1}}
 
-\newcommand{\copied}[1]{}
-\renewcommand{\copied}[1]{{\em \color{orange} {#1}}}
+% paragraphs
+\newcommand{\para}[1]{\smallskip\noindent\textbf{#1:}}
 
-\newcommand{\drop}[1]{}
-\renewcommand{\drop}[1]{{\color{red} \sout{#1}}}
-
-\newcommand{\todo}[1]{}
-\newcommand{\namedtodo}[2]{}{}
-\renewcommand{\namedtodo}[2]{}
-
-\newcommand{\mg}[1]{}
-\newcommand{\mr}[1]{}
-\newcommand{\mrosa}[1]{}
-\newcommand{\eb}[1]{}
-\newcommand{\df}[1]{}
-\newcommand{\SP}[1]{}
+% this is needed only if we want to include svg figures
+%\newcommand{\incfig}[1]{%
+%	\def\svgwidth{\columnwidth}
+%	\import{./fig/}{#1.pdf_tex}
+%}
