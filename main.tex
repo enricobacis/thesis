@@ -1,11 +1,11 @@
 % !TeX document-id = {f433bf4d-0077-4a60-8688-7267f4ce1e5f}
 % !TeX TXS-program:compile = txs:///pdflatex/[--shell-escape]
 
-\documentclass[12pt,a4paper,oldfontcommands,openright,oneside]{memoir}
+\documentclass[12pt,a4paper,oldfontcommands,openright]{memoir}
 
 % Improve page style
-%\usepackage[left=40mm,right=40mm,top=40mm,bottom=40mm]{geometry}
-\linespread{1.25}
+\usepackage[left=40mm,right=40mm,top=45mm,bottom=45mm]{geometry}
+\linespread{1.2}
 
 % Punish offending text
 \clubpenalty=10000
@@ -19,6 +19,7 @@
 \usepackage{array}
 \usepackage{blindtext}
 \usepackage{booktabs}
+\usepackage{caption}
 \usepackage{color}
 \usepackage{comment}
 \usepackage{cite}
@@ -45,6 +46,8 @@
 \usepackage[caption=false,font=footnotesize]{subfig}
 \usepackage[normalem]{ulem}
 \usepackage[breaklinks=true,colorlinks=true,linkcolor=black,urlcolor=black,citecolor=black,bookmarks=true,bookmarksopenlevel=2]{hyperref}
+
+\captionsetup{font=footnotesize}
 
 \setminted{
 obeytabs=true,
@@ -151,7 +154,7 @@ fontsize=\footnotesize,
 \thispagestyle{empty}
 \vspace*{\stretch{1}}
 \begin{flushright}
-	\itshape Dedicated to Giusi and Gian\\
+	\itshape to Giusi and Gian\\
 \end{flushright}
 \vspace{\stretch{2}}
 \cleardoublepage
@@ -166,7 +169,7 @@ fontsize=\footnotesize,
 \subimport*{chapters/tops/}{macros}
 \subimport*{chapters/intro/}{main}
 
-\chapter[White-Box All-Or-Nothing Transforms]{White-Box\\All-Or-Nothing Transforms}
+\chapter[Mix\&Slice]{Mix\&Slice:\\Efficient Access Revocation\\in the Cloud}
 \label{chap:waont}
 \subimport*{chapters/tops/}{main}
 

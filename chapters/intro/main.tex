@@ -1,10 +1,112 @@
-\lipsum[1]
+With the considerable advancements in IT solutions, users and companies are finding increasingly appealing to rely on external services for storing resources and making them available to others. In such contexts, a promising approach to enforce access control to externally stored resources is via encryption: resources are encrypted for storage and only authorized users have the keys that enable their decryption. There are several advantages that justify the use of encryption for enforcing access control. First, robust encryption has become computationally inexpensive, enabling its introduction in domains that are traditionally extremely sensitive to performance (like cloud-based applications and management of large resources). Second, encryption provides protection against the service provider itself, which - while trustworthy for providing access - cannot typically be considered authorized to know the content of the resources it stores ({\em honest-but-curious\/} scenario) and hence also to enforce access control. Third, encryption solves the need of having a trusted party for policy enforcement: resources enforce self-protection, since only authorized users, holding the keys, will be able to decrypt them.
 
-\medskip
+One of the complex aspects in using encryption to enforce access control policy concerns access revocation. If granting an authorization is easy (it is sufficient to give the newly authorized user access to the key), revoking an authorization is a completely different problem. There are essentially two approaches to enforce revocation: {\em i)\/} re-encrypt the resource with a new key or {\em ii)\/} revoke access to the key itself. Re-encryption of the resource entails, for the data owner, downloading the resource, decrypting it and re-encrypting it with a new key, re-uploading the resource, and re-distributing the key to the users who still hold authorizations. If decryption, re-encryption, and even key management (for this specific context) can be considered a trivial issue, the remaining challenge is represented by the need to download and re-upload the resource, with a considerable overhead for the data owner. This overhead will continue to grow as usage of cloud resources grows, in particular in the context of emerging big data applications. The alternative approach of enforcing revocation on the resource by preventing access to the key with which the resource is encrypted cannot be considered a solution. As a matter of fact, it protects the key, not the resource itself, and it is inevitably fragile against a user who - while having been revoked from an access - has maintained a local copy of the key.
+
+A clear recent trend in information technology is the rent by many
+users and enterprises of the storage/computation services from other
+parties. With cloud technology, what was in the past managed
+autonomously now sees the involvement of servers, often in an unknown
+location, immediately reachable wherever an Internet connection is
+present.  Today the use of these Internet services typically assumes
+the presence of a Cloud Service Provider (CSP) managing the service.
+There are a number of factors that explain the current status. In
+general, the procurement and management of IT resources exhibit
+significant scale economies, and large-scale CSPs can provide services
+at costs that are less than those incurred by smaller players. Still,
+many users have an excess of computational, storage, and network
+capacity in the systems they own and they would be interested in
+offering these resources to other users in exchange of a rent
+payment. In the classical behavior of markets, the existence of an
+infrastructure that supports the meeting of supply and demand for IT
+services would lead to a significant opportunity for the creation of
+economic value from the use of otherwise under-utilized resources.
+
+
+This change of landscape is witnessed by the increasing attention of
+the research and development community toward the realization of {\em
+	Decentralized Cloud Storage\/} (DCS) services, characterized by the
+availability of multiple nodes that can be used to store resources in
+a decentralized manner. In such services, individual resources are
+fragmented in {\em shards\/} allocated (with replication to provide
+availability guarantees) to different nodes.  Access to a resource
+requires retrieving all its shards.  The main characteristics of a DCS
+is the cooperative and dynamic structure formed by independent nodes
+(providing a multi-authority storage network) that can join the
+service and offer storage space, typically in exchange of some reward.
+This evolution has been facilitated by blockchain-based technologies
+providing an effective low-friction electronic payment system
+supporting the remuneration for the use of the service.  On platforms
+such as {\em Storj}~\cite{wilkinson2014storj}, {\em SAFE Network
+	Vault}~\cite{irvine2010maidsafe,paul2014security}, {\em
+	IPFS}~\cite{benet2014ipfs}, and {\em Sia}~\cite{vorick2014sia},
+users can rent out their unused storage and bandwidth to offer a
+service to other users of the network, who pay for this service with a
+network crypto-currency~\cite{sc-distributed-content-delivery}.
+
+
+However, if security concerns and perception of (or actual) {\em loss
+	of control} have been an issue and slowing factor for centralized
+clouds, they are even more so for a decentralized cloud storage, where
+the dynamic and independent nature of the network may hint to a
+further decrease of control of the owners on where and how their
+resources are managed.  Indeed, in centralized cloud systems, the CSP
+is generally assumed to be honest-but-curious and is then trusted to
+perform all the operations requested by authorized users (e.g., delete
+a file when requested by the owner)~\cite{hbcm02}. The CSP is
+discouraged to behave maliciously, since this would clearly impact its
+reputation. On the contrary, the nodes of a decentralized system may
+behave maliciously when their misbehavior can provide economic
+benefits without impacting reputation (e.g., sell the content of
+deleted files).  Client-side encryption typically assumed in DCSs
+provides a first crucial layer of protection, but it leaves resources
+exposed to threats, especially in the long term.  For instance,
+resources are still vulnerable in case the encryption key is exposed,
+or in case of malicious nodes not deleting their shards upon the
+owner's request to try reconstructing the resource in its entirety.
+
+
+Protection of the encryption key is therefore not sufficient in DCS
+scenarios, as it remains exposed to the threats above. A general
+security principle is to rely on more than one layer of defense.  In
+this chapter, we propose an additional and orthogonal layer of
+protection, which is able to mitigate these risks.
+
+On the positive side, however, we note that the decentralized nature
+of DCS systems also increases the reliability of the service, as the
+involvement of a collection of independent parties reduces the risk
+that a single malfunction can limit the accessibility to the stored
+resources. In addition to this, the independent structure
+characterizing DCS systems - if coupled with effective resource
+protection and careful allocation to nodes in the network - makes them
+promising for actually strengthening security guarantees for owners
+relying on the decentralized network for storing their data.
+
+Trusted notaries~\cite{10.1007/BFb0032349} or services~\cite{rabin2006time} are not suitable for all the scenarios~\cite{Abelson:1997:RKR:275079.275104}, as the data owner has to completely entrust a third party.
+Therefore, cryptographers have been designing encryption techniques, known as Time-Lock Encryption (TLE)~\cite{may1993timed}, that replace a trusted notary with Time-Lock {\em Puzzles}~\cite{mahmoody-tl,Bitansky:2016:TPR:2840728.2840745}.
+In the TLE setting, the data are encrypted so that in order to recover the plaintext, it is required to execute the decryption algorithm $N$ times.
+During the encryption process, the sender can tune $N$ to her needs.
+Hence, as long as the time to run the decryption algorithm does not change significantly, it is possible to time-lock data for arbitrarily long periods of time.
+Thus, TLE can be used to create Time-Locks, yet it is worth noting that the disclosure time is not fixed, but relative to the start of the decryption process.
+
+
+
+
+\bigskip
+
+\section{Problem Statement}
+
+{\em Cloud Storage has became the prevalent solution for data storage adopted by the majority of the IT industry. Due to this, it is important to study the properties of access revocation and secure deletion in centralized and distributed cloud storage systems. This thesis presents how a carefully chosen encryption policy can efficiently map an access policy in centralized and distributed cloud storage.}
+
+\bigskip
 
 \section{Document Structure}
 
-This thesis is organized in five chapters. This first chapter illustrates the problem statement and provides a general overview of the thesis contributions.
+
+This thesis is organized in five chapters.
+
+\smallskip
+
+\paragraph*{Chapter~\ref{chap:intro}} illustrates the scenario, depicts the problem statement and provides a general overview of the thesis overview and contributions.
 
 \paragraph*{Chapter~\ref{chap:waont}}
 describes an encryption mode, named \name, that enables efficient access revocation on resources stored at external cloud providers. By leveraging a technique known as {\em All-Or-Nothing Transform}, \name allows the data owner to perform access revocation by re-encrypting a small portion of the file, while providing guarantees about the \ldots
@@ -86,7 +188,17 @@ The chapter is organized as follows.
 
 \paragraph*{Chapter~\ref{chap:conclusions}} draws the conclusions of the thesis and presents possible future work in the area. In this chapter we also illustrate how the results obtained in Chapter~\ref{chap:ityt} can be used to improve the schema described in Chapter~\ref{chap:dcs}. 
 
-\clearpage
+\bigskip
+
+\section{Contributions}
+
+The contributions of this document can be summarized as follows.
+
+\begin{itemize}
+	\item 
+\end{itemize}
+
+\bigskip
 
 \section{Publications}
 

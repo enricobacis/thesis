@@ -7,7 +7,7 @@ We consider the threat coming from a user whose access to the resource has been 
 The inability of the user to reconstruct a resource if some fragments have been overwritten is because, without such fragments, the user cannot retrieve the corresponding original version (the one encrypted with \key{0}) needed to correctly reconstruct the resource plaintext. A potential threat can then come if the user maintains a local storage with the original version of part of the resource. We distinguish two cases, depending on whether the user stores complete fragments or portions of them across the whole resource.
 
 \begin{figure}[!t]
-\begin{scriptsize}
+\begin{footnotesize}
 \hrule          %
 \begin{tabbing}
 \hfill\\
@@ -25,7 +25,8 @@ The inability of the user to reconstruct a resource if some fragments have been 
 \num{11:~} \1 update  \resource's descriptor \comm{including the new \seed{l}}
 \end{tabbing}
 \hrule
-\end{scriptsize}
+\vspace{.5em}
+\end{footnotesize}
 \caption{\label{ms:fig:revoke}Revoke on resource \resource}
 \end{figure}
 
@@ -35,7 +36,7 @@ The inability of the user to reconstruct a resource if some fragments have been 
 Suppose a user locally stores (when authorized) some fragments of the resource. Even if such fragments are later overwritten for revoking access to the user, and then their most recent version stored at the server is unintelligible to her, she has them available for reconstructing the resource. However, the fragment to be overwritten in a policy revocation is chosen randomly by the owner. Therefore, the user can still reconstruct the resource after one fragment has been overwritten if the fragment that the owner has overwritten is the same fragment that the user has also stored locally, which has probability ${1}/{\fnum}$ to occur. Generalizing the reasoning to the consideration of the user locally storing more than one fragment and the policy naturally changing even after the specific user revocation, we determine the probability $P_A$ of the user's ability to access the resource assuming local storage of \floc\ fragments to be $P_A=(\floc/\fnum)^{\fmiss}$. The probability clearly increases with the number of fragments stored locally, but quickly reaches extremely low values after a few updates of the policy, approximating zero even for high percentage of fragments locally stored. The low probability (and the high storage effort requested to the user) essentially makes such attack not suitable: if the user has to pay a storage cost that approaches the maintenance of the whole resource, then the user would have stored the plaintext resource when authorized in the first place. We note also that a possible extension of our approach could consider overwriting, instead of pre-defined fragments, a randomly chosen set of mini-blocks (ensuring coverage of all macro-blocks), to enforce a revocation. In this case, the probability of the user storing \mloc\ mini-blocks per macro-block (also randomly chosen) to be able to access the resource immediately after her revocation would be $(\mloc/(\mnumb\cdot\bnum))^{\Mnum}$, which would become $(\mloc/(\mnumb\cdot\bnum))^{\Mnum\cdot \mmiss}$, (i.e., negligible), if she misses \mmiss\ mini-blocks per macro-block. We note however that overwriting randomly picked mini-blocks across the resource would considerably increase the complexity in the management of fragments, and it would make it harder to provide an efficient physical structure for fragments (Section~\ref{ms:sec:expe}). Given the observations above about the high storage cost that would be required to the user and the low probability of her success as policy changes, we argue that the regular structure for the fragments is preferable.
 
 \begin{figure}[!t]
-\begin{scriptsize}
+\begin{footnotesize}
 \hrule          %
 \begin{tabbing}
 \hfill\\
@@ -51,7 +52,8 @@ Suppose a user locally stores (when authorized) some fragments of the resource. 
 \num{~~\!9:~}\2     decrypt \macroblock{\var{j}}
 \end{tabbing}
 \hrule
-\end{scriptsize}
+\vspace{.5em}
+\end{footnotesize}
 \caption{\label{ms:fig:access}Access to resource \resource}
 \end{figure}
 

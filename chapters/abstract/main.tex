@@ -1,1 +1,35 @@
-\lipsum[1]
+We present an approach to enforce access revocation on resources stored at external cloud providers. The approach relies on a resource transformation that provides strong mutual inter-dependency in its encrypted representation. To revoke access on a resource, it is then sufficient to update a small portion of it, with the guarantee that the resource as a whole (and any portion of it) will become unintelligible to those from whom access is revoked. The extensive experimental evaluation on a variety of configurations confirmed the effectiveness and efficiency of our solution, which showed excellent performance and compatibility with several implementation strategies
+
+
+Decentralized Cloud Storage services represent a promising opportunity
+for a different cloud market, meeting the supply and demand for IT
+resources of an extensive community of users.  The dynamic and
+independent nature of the resulting infrastructure introduces security
+concerns that can represent a slowing factor towards the realization
+of such an opportunity, otherwise clearly appealing and promising for
+the expected economic benefits.  In this chapter, we present an approach
+enabling resource owners to effectively protect and securely delete
+their resources while relying on decentralized cloud services for
+their storage. Our solution combines All-Or-Nothing-Transform for
+strong resource protection, and carefully designed strategies for
+slicing resources and for their decentralized allocation in the
+storage network.  We address both availability and security
+guarantees, jointly considering them in our model and enabling
+resource owners to control their setting.
+
+
+Time-Locks enable the release of secret data at a specific future point in time.
+Current research efforts mostly bind the recovery of the secret with the solution of cryptographic puzzles.
+These solutions, however, are  impractical: 
+not only they require the interested parties to undergo a significant computational effort in order to solve the puzzle, but also they provide no precise timing guarantees.
+
+To address these problems, we propose ITYT, a novel way of implementing time-locked secrets based on smart contracts to remove the need of any trusted party.
+We leverage blockchains as a distributed source of time, and we combine threshold cryptography with economic incentives (or penalties) to effectively replace cryptographic puzzles.
+
+%This way, clients can be involved in multiple TL instances without wasting computational resources.
+
+We implement a prototype of our approach on top of the Ethereum blockchain. Our prototype leverages secure Multi-Party Computation to avoid any single point of trust.
+We also analyze resiliency to attacks with the help of economic games theory.
+The experiments demonstrate the low costs and resource consumption associated with our approach.  
+
+

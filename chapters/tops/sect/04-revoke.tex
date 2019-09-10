@@ -3,7 +3,7 @@
 Accessing a resource (or a macro-block in the resource, resp.) requires availability of all its fragments (its mini-blocks in all the fragments, resp.), and of the key used for encryption. Policy changes corresponding to granting access to new users can be simply enforced, as usual, by giving them the encryption key. In principle, policy changes corresponding to revocation of access would instead normally entail downloading the resource, re-encrypting it with a new key, re-uploading the resource, and distributing the new encryption key to all the users who still hold authorizations. Our approach enables the enforcement of access revocation to a resource by simply making any of its fragments unavailable to the users from whom the access is revoked. Since lack of a fragment implies lack of a mini-block for each macro-block of a resource, and lack of a mini-block prevents reconstruction of the whole macro-block, lack of a fragment equates to complete inability, for the revoked users, to reconstruct the plaintext resource or any portion of it. In other words, it equates to revocation.
 
 \begin{figure}[!t]
-\begin{scriptsize}
+\begin{footnotesize}
 \hrule          %
 \begin{tabbing}
 \hfill\\
@@ -19,7 +19,8 @@ Accessing a resource (or a macro-block in the resource, resp.) requires availabi
 \num{9:~}\3         \fragment{\var{j}}{}[\var{i}] := \macroblock{\var{i}}$[j]$
 \end{tabbing}
 \hrule
-\end{scriptsize}
+\vspace{.5em}
+\end{footnotesize}
 \caption{\label{ms:fig:algoenc}Algorithm for encrypting a resource \resource}
 \end{figure}
 
