@@ -30,4 +30,5 @@ find sections/ -type f -exec $SED -i -E '/\\(DF|df|EB|eb|MG|mg|MR|mr|SP|sp|todo|
 find sections/ -type f -exec $SED -i -E 's@(includegraphics.*?\{)fig/@\1@g' '{}' \;
 find sections/ -type f -exec $SED -i -E 's@(includegraphics.*?\{)@\1fig/@g' '{}' \;
 
-ag 'sect:analysis'
+echo "[*] manual fixes needed to exclude analysis"
+ag 'sect:analysis' sections/
