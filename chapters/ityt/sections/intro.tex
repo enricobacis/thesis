@@ -1,73 +1,65 @@
 \section{Introduction}\label{sect:introduction}
 
-Humans have always been trying to monitor the passing of time and to hand down information for posterity.
-The 1989 Oxford English Dictionary~\cite{dictionary1989oxford} defines a {\em time capsule} as ``{\em a container used to store for posterity a selection of objects thought to be representative of life at a particular time}''.
-After storing documents and memories inside the time capsule, they are generally buried underground, sometimes even sent out to space~\cite{jarvis2015time}.
-Time capsules can also be employed to unconditionally reveal secrets at a future date.
+%Humans have always been trying to monitor the passing of time and to hand down information for posterity.
+%The 1989 Oxford English Dictionary~\cite{dictionary1989oxford} defines a {\em time capsule} as ``{\em a container used to store for posterity a selection of objects thought to be representative of life at a particular time}''.
+%After storing documents and memories inside the time capsule, they are generally buried underground, sometimes even sent out to space~\cite{jarvis2015time}.
+%Time capsules can also be employed to unconditionally reveal secrets at a future date.
 
-Starting from the 90's, researchers have been designing techniques to create a digital counterpart of the physical time capsule~\cite{may1993timed}.
+%Starting from the 90's, researchers have been designing techniques to create a digital counterpart of the physical time capsule~\cite{may1993timed}.
 
 A \textit{Time-Lock} (TL) is a primitive that implements the following scheme:
 the data owner entrusts a notary with a secret to be disclosed at a future time, the notary keeps the secret private until then, and finally, she discloses it publicly. Once the notary has been entrusted with the secret, the data owner is not needed anymore for the disclosure to happen.
-Such primitive can be used in many real-world scenarios as voting, inheritance management, and delegated challenge-response protocols.
+Such primitive can be used in many real-world scenarios such as voting, inheritance management, and delegated challenge-response protocols.
 
-Trusted notaries~\cite{10.1007/BFb0032349} or services~\cite{rabin2006time} are not suitable for all the scenarios~\cite{Abelson:1997:RKR:275079.275104}, as the data owner has to completely entrust a third party.
-Therefore, cryptographers have been designing encryption techniques, known as Time-Lock Encryption (TLE)~\cite{may1993timed}, that replace a trusted notary with Time-Lock {\em Puzzles}~\cite{mahmoody-tl,Bitansky:2016:TPR:2840728.2840745}.
+Trusted notaries~\cite{10.1007/BFb0032349}~\cite{rabin2006time} are not suitable for all the scenarios~\cite{Abelson:1997:RKR:275079.275104}, as the data owner has to completely rely on a third party.
+Therefore, cryptographers have been designing encryption techniques, known as Time-Lock Encryption (TLE)~\cite{may1993timed}, which enable the deployment of Time-Lock {\em Puzzles}~\cite{mahmoody-tl,Bitansky:2016:TPR:2840728.2840745}.
 In the TLE setting, the data are encrypted so that in order to recover the plaintext, it is required to execute the decryption algorithm $N$ times.
 During the encryption process, the sender can tune $N$ to her needs.
-Hence, as long as the time to run the decryption algorithm does not change significantly, it is possible to time-lock data for arbitrarily long periods of time.
+Hence, as long as the time to run the decryption algorithm can be considered approximately stable, it is possible to time-lock data for arbitrarily long periods of time.
 Thus, TLE can be used to create Time-Locks, yet it is worth noting that the disclosure time is not fixed, but relative to the start of the decryption process.
 
-The first implementation of TLE was proposed by Rivest, Shamir and Wagner in 1996~\cite{Rivest:1996:TPT:888615}.
-The schema leveraged a trapdoor function so that the receiver has to undergo a computing effort that is orders of magnitude greater compared to the one of the sending party. Their approach also required the decryption algorithm to proceed in an inherently sequential order.
-Such kinds of technique are also known as {\em Proof of Sequential Work} ({\em PoSW})~\cite{posw,cohen2018}.
+The first TLE scheme was proposed by Rivest, Shamir and Wagner~\cite{Rivest:1996:TPT:888615}.
+The scheme relies on a trapdoor function so that the receiver has to undergo a computing effort that is orders of magnitude greater compared to the one of the sending party. Their approach also required the decryption algorithm to proceed in an inherently sequential order.
+Such kinds of technique are also known with the name {\em Proof of Sequential Work} ({\em PoSW})~\cite{posw,cohen2018}.
 
 An alternative to trapdoor functions are {\em weak hash-chains}~\cite{gwern}, in which the decrypter has to brute-force a chain of weak hashes to obtain the final key.
 The use of a chain in place of a single stronger hash permits to reduce the variance of the process. 
 However, since this approach does not impose any parallelization threshold, the estimated disclosure time is far less reliable.
 These approaches are often associated with {\em Proof of Work (PoW)}~\cite{pow} algorithms.
 
-Yet, several aspects of TLE are impractical. For instance, 
+Yet, two aspects of TLE make them impractical. First,
 %Current research efforts mostly rely on Proof-of-Work puzzles that provide guarantees about the time taken by the decryption process.
 %These solutions, however, are not practical.
 %
-the owner has to make assumptions on the computing power of the architectures that will be available in the future. 
-This task is far from being trivial, as demonstrated by Rivest's LCS35 time-lock puzzle~\cite{lcs35}, whose decryption time was estimated to be 35 years. Conversely, the puzzle was cracked in 2019 in just 2 months by means of dedicated hardware~\cite{lcs35-crack-open}.
+the owner has to make assumptions on future computing power. 
+This is far from trivial.
+As an example, Rivest's LCS35 time-lock puzzle~\cite{lcs35}, whose decryption time was estimated to be 35 years, was cracked in 2019 in just 2 months using dedicated hardware~\cite{lcs35-crack-open}.
  %
 %the breakdown in CPU clock-speed and the advent of quantum computing are two examples of hitches in this process\footnote{As a matter of fact, Rivest used his scheme to build a time capsule in 1999. Being his computing power estimate based on the Moore's law, which is not valid anymore, his original estimated time of 35 years to solve the puzzle appears way too optimistic now.}.
 %
-Another concern is that TLE schemes require the revealer to run the decryption procedure continuously for a long time, which poses a question about incentives.
+Secondly, TLE schemes require the receiving party to run the decryption procedure continuously for a long time, which poses a question about incentives.
 
 
-\medskip\textbf{Our approach.} In this paper, we present a practical Time-Lock protocol, named {\em \name} ({\em \shortname}), based neither on a single point of trust nor on cryptographic puzzles.
+\medskip\textbf{Our approach.} In this chapter, we present a practical Time-Lock protocol, named {\em \name} ({\em \shortname}), based neither on a single point of trust nor on cryptographic puzzles.
 
-The basic idea of our approach is to first split a secret into shares using {\em threshold cryptography} (i.e., Shamir's Secret Sharing~\cite{Shamir:1979:SS:359168.359176}), and then assign them to users so that no one can recover the secret unless \KofN shares are available.
-To avoid collusion between users, we rely on economic incentives and penalties enforced by a smart contract.
-The contract rewards users for revealing their share only after the disclosure time, and penalizes any other misbehavior. 
+The basic idea of our approach is to first split a secret into shares using {\em threshold cryptography} (i.e., Shamir's Secret Sharing~\cite{Shamir:1979:SS:359168.359176}), and assign them to users so that no one can recover the secret unless \KofN shares are available.
+To ensure the TL behavior, we rely on economic incentives and penalties enforced by a smart contract.
+The contract rewards users for revealing their share only after the disclosure time, and penalizes any other misbehavior (i.e., the disclosure of it). 
 Rational agents will always comply to the protocol, as correctly behaving is economically advantageous, thus effectively deploying a distributed time-lock mechanism.
 
 As rewards and penalties are associated with correct management of the shares, it is important to securely generate and distribute them, even in the presence of a dishonest secret's owner.
 In our prototype, we address this by using {\em secure Multi-Party Computation (sMPC)} to have guarantees about the information that every participant gets to know.
 
-\begin{figure}[t]
-	\centering
-	\includegraphics[width=\textwidth]{fig/models}
-	\caption{Comparison of active roles of the actors in different time-lock techniques.}
-	\label{fig:models}
-\end{figure}
-
 Figure~\ref{fig:models} compares \shortname with the existing Time-Lock techniques:
 
 \begin{compactitem}
-	\item {\em Trusted-Third Party} benefits from a short setup time, but requires entrusting the notary;
+	\item Trusted Third Party benefits from a short setup time, but requires relying of trust assumption;
 	
-	\item {\em Time-Lock Encryption} does not depend on trust assumptions, but it requires the decrypter to continuously execute the decryption routine from enforcing to disclosure time, indeed it is subject to decryption time variance;
+	\item Time-Lock Encryption does not depend on trust assumptions, but it requires the receiving party to continuously execute the decryption routine from enforcing to disclosure time;
 	
 	\item {\em \name} allows the owner of a secret to practically disclose it at a future point in time without requiring her to take part in the disclosure protocol. It relies only on economic incentives.
 \end{compactitem}
 
-
-The main contributions of this paper can be summarized as follows.
 
 \begin{enumerate}
 
@@ -82,8 +74,15 @@ The main contributions of this paper can be summarized as follows.
 
 \end{enumerate}
 
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\columnwidth]{fig/models}
+	\caption{Activities comparison for subjects involved in different TL approaches}
+	\label{fig:models}
+\end{figure}
 
-\medskip\textbf{Outline.} The remainder of the paper is organized as follows.
+
+\medskip\textbf{Outline.} The remainder of the chapter is organized as follows.
 %
 Section~\ref{sect:background} introduces the basic concepts we build our proposal on. 
 %
@@ -91,9 +90,9 @@ Section~\ref{sect:model} describes the \shortname protocol from a high-level per
 %
 Section~\ref{sect:constraints} illustrates how to impose constraints on the parameters to protect the resulting protocol from rational adversaries.
 %
-Section~\ref{sect:analysis} presents an analysis of our protocol based on game theory.
-%
 Section~\ref{sect:realization} describes the details of our reference implementation based on the Ethereum blockchain and the FRESCO sMPC framework.
+%
+Section~\ref{sect:impl_attacks} discusses the possible attacks the implementation can be subject to, and the respective countermeasures.
 %
 Section~\ref{sect:evaluation} illustrates the experimental evaluation confirming its applicability.
 %

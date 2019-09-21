@@ -1,13 +1,5 @@
 \section{The \shortname protocol}\label{sect:model}
 
-
-\begin{figure}[tp]
-	\centering
-	\includegraphics[width=0.6\textwidth]{fig/proposal}
-	\caption{\name (\shortname) reference diagram.}
-	\label{fig:model}
-\end{figure}
-
 %\subsection{Terminology}
 
 %We describe \shortname's  protocol using the following terminology:
@@ -65,7 +57,7 @@
 
 ITYT is an instance of the TL abstraction: a mechanism that keeps a secret \secret private until its {\em disclosure time} \td and publishes it afterwards.
 %
-\shortname implements TL by distributing the secret, provided by the {\em owner}, among several users (named {\em shareholders}, each obtaining a share \share), so that a single user can't see  \secret before the disclosure time \td.
+\shortname implements TL by distributing the secret, provided by the {\em owner}, among several users (named {\em shareholders}, each obtaining a share \share), so that a single user can not see  \secret before the disclosure time \td.
 
 \shortname leverages economic incentives and penalties to ensure that (i) each user keeps its share secret until \td, and (ii) users disclose the shares to reconstruct the secret after \td.
 %
@@ -116,6 +108,7 @@ The \shortname smart contract is a data structure with functions.
 Its initialization and functions will be described in Section~\ref{sect:sc_init} and \ref{sect:sc_functions} respectively. The data structure is composed by the following entries.
 Moreover, we will use the notation $sc.x$ to reference to the smart contract variable $x$.
 
+
 \begin{tabular}{ll}
 	& \\
 	
@@ -146,10 +139,10 @@ We now define the primitives used in the \shortname smart contract algorithms.
 	transfers $v$ from $\wallet{p_1}$ to $\wallet{p_2}$.
 	
 	\item \primwithdraw{sc}{p}{v}{predicate}:
-	allows principal $p$ to withdraw the amount $v$ from $\wallet{sc}$, if $predicate$ holds. The predicate can also involve time constraints.
+	allows principal $p$ to withdraw the amount $v$ from $\wallet{sc}$, if $predicate$ holds. The predicate can also involve time conditions.
 	
 	\item \primgenerateshares{\secret}{[users]}: 
-	generates the shares $\share_1, \ldots, \share_n$ using \KofN secret sharing~\cite{Shamir:1979:SS:359168.359176}, then it securely distributes them to the parties.
+	generates the shares $\share_1, \ldots, \share_n$ using \KofN secret sharing~\cite{Shamir:1979:SS:359168.359176}, and it securely distributes them to the parties.
 	The primitive guarantees that the (a) $i$-th shareholder is the only principal who learns the share $\share_i$, and (b) the owner learns only the commitment $hash(\share_i)$, for all the shares. 
 	We discuss in Section~\ref{sect:realization} how our prototype implements this primitive by leveraging sMPC.	
 	
@@ -180,8 +173,8 @@ We now define the primitives used in the \shortname smart contract algorithms.
 		\State $sc.\Cshare{}[i]\gets \Cshare{}[i]$
 		\State $sc.states[i]\gets \statepending$
 		\EndFor
-		\State $sc.numpending\gets \N$
-		\State $sc.numdisclosed\gets 0$
+		\State $sc.num\textunderscore pending\gets \N$
+		\State $sc.num\textunderscore disclosed\gets 0$
 		\State \textbf{return} $sc$\Comment{The smart contract id}
 		\EndProcedure	
 	\end{algorithmic}
@@ -190,13 +183,14 @@ We now define the primitives used in the \shortname smart contract algorithms.
 
 \subsection{Roles}
 
+
 %
-In \shortname, each user $u \in \users$ plays one of the following roles: {\em owner}, or {\em shareholder}. In addition to her role, a user can also play the role of the {\em whistleblower}, needed to enforce the execution of the economic penalties.
+In \shortname, each user $u \in \users$ plays one of the following roles: {\em owner}, {\em shareholder} and {\em whistleblower}.
 
 \begin{asparaitem}
 \item {\bf Owner:}	An owner \owner is someone willing to delegate the disclosure of a secret \secret to a Time-Lock, so that the owner is \textit{not} involved in the disclosure of \secret at disclosure time \td.
 The owner \owner sets up the TL as well as the corresponding parameters.
-In particular, \owner sets (i) \N the total number of shares \share of \secret, (ii) \K, the number of shares needed to recover \secret, and (iii) all the bids and the rewards that define the instance.
+In particular, \owner sets (i) \N the total number of shares \share of \secret, (ii) \K, the number of shares needed to recover \secret, (iii) the disclosure time \td, and (iv) all the bids and the rewards that define the instance.
 
 % MG: Is the owner's pawn $\PO$ part of the parameters? If yes, shouldn't we check whether all the bids and rewards are well-formed?
 % DF: As the abstraction is based on economic assumptions, a game with incorrect/inconsistent parameters won't be played by anyone. Indeed, shareholders are able to opt out (updated below).
@@ -204,11 +198,11 @@ In particular, \owner sets (i) \N the total number of shares \share of \secret, 
 
 \item {\bf Shareholder:}
 A shareholder \shareholder is entrusted by the owner \owner to keep a share \share of the secret \secret confidential until \td, and to publicly disclose it afterwards.
-In exchange for her service, $\shareholder_{i}$ will receive a reward paid by the smart contract whenever the following two conditions hold: (i) her share $\share_{i}$ is disclosed only after \td, and (ii) the secret \secret is not revealed before \td.
+In exchange for her service, $\shareholder$ will receive a reward paid by the smart contract whenever the following two conditions hold: (i) her share $\share$ is disclosed only after \td, and (ii) the secret \secret is not revealed before \td.
 
 \item {\bf Whistleblower:}
-A whistleblower \whistleblower reports misbehavior in return for economic incentives.
-Whenever \whistleblower possesses either a share \share or the secret \secret before \td, \whistleblower can submit it and receive a reward.
+A whistleblower \whistleblower reports misbehavior of other parties in return for economic incentives.
+Whenever \whistleblower possesses a share \share or the secret \secret before \td, \whistleblower can submit it and receive a reward.
 \end{asparaitem}
 
 
@@ -224,12 +218,14 @@ Whenever \whistleblower possesses either a share \share or the secret \secret be
 		\vspace*{0.6em}
 		\Procedure{\algoparticipate}{$sc,i,\shareholder_i$}
 		
+		\If{$sc.\state = \statepending$}
 		\If{$sc.\states[i] = \statepending$}
 		\State $\primpay{\shareholder_i}{sc}{sc.\BH}$
 		\State $sc.\states[i]\gets \statepaid$
 		\State $sc.\numpending\ -= 1$
 		\If{$sc.\numpending = 0$}
 		\State $sc.\state\gets \statelocked$
+		\EndIf
 		\EndIf
 		\EndIf
 		\EndProcedure
@@ -308,7 +304,7 @@ In detail, \whistleblower sends a secret, $\secret'$ to the contract.
 If the commitment matches, then the TL is marked as failed and the secret whistleblow bonus \Wsecret ($>\RH$) is payed to the whistleblower.
 In that event, all the shareholders would be subject to an economic penalty that results in the loss of the bid already paid, and the remaining smart contract funds are destroyed.
 The function is illustrated is Algorithm~\ref{algo:whistleblow_secret}.
-The need for both \texttt{\algowhistleblowshare} and \texttt{\algowhistleblowsecret} will be discussed in details in Section~\ref{sect:analysis}.
+The need for both \texttt{\algowhistleblowshare} and \texttt{\algowhistleblowsecret} will be discussed in the following.
 
 \begin{algorithm}[t]
 	\caption{SC function to whistleblow the secret before \td}\label{algo:whistleblow_secret}

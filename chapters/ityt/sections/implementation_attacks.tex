@@ -1,54 +1,53 @@
-\section{Implementation attacks}\label{sect:impl_attacks}
+\section{Discussion}\label{sect:impl_attacks}
+
+In this section we highlight the vulnerabilities to which the implementation of \shortname can be subject to, and then we discuss the proper countermeasures.  
 
 \subsection{Protection against adversarial sMPC protocols}\label{sect:impl_mpc}
 
-The discussion so far has focused on the single user perspective regarding the sMPC protocol, namely its role was primarily considered defensive. 
-The shareholder $\shareholder_{i}$ is in fact guaranteed that no other user, including the owner, will have visibility on the $i$-th share, $\share_{i}$. 
-The latter and further capabilities are fundamental in order to limit the knowledge of each single user about each instance of the TL protocol, hence making it possible to model it as an economic game. 
+The discussion so far has focused on the single user perspective regarding the sMPC cryptographic technique.
+In fact, its usage guarantees to each shareholder \shareholder, that no one but her (i.e., neither the owner) will have visibility on her share, \share.
+This capability limits the knowledge of each single user about an istance \shortname, hence it makes possible to model \shortname as an economic game. 
 
-If we consider the perspective of a group of users, and not of a single individual, the role of sMPC protocols reverses. 
-Actually, a malicious coalition of shareholders, \coalition, could devise a strategy that permits the reconstruction of \secret without incurring in economic penalties. 
-Such a strategy would have been successful if it didn't allow anyone to perform the whistleblow action. 
-By referring to the notation introduced in~\ref{sect:ityt_exec}, we say that a strategy is successful if it permits to reconstruct \plaintext without exposing \key. 
-As a matter of fact, the malicious coalition can successfully attack the protocol by instantiating an offensive sMPC that receives as input at least $k$-of-$n$ shares plus the ciphertext, \ciphertext.
-Such a protocol would internally perform both the reconstruction of \key and the extraction of the plaintext, \plaintext $=$ \unwrap; and finally would output to all the participants only \plaintext, and not \key. 
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=0.9\columnwidth]{fig/mpc_rev_1.pdf}
+	\caption{Single-phase sMPC protocol jointly executed by all the participants}
+	\label{fig:mpc1}
+\end{figure}
 
-In order to prevent the execution of a successful attack by \coalition, it is then required to select a cryptosystem \cipvocabulary such that there is no sMPC protocol that can permit to execute \dec by producing \plaintext as the only output.
+Nevertheless, \shortname is a game played by rational adversaries, so the participants could look at sMPC techniques from another perspective.
+Actually, the malicious coalition of shareholders, \coalition, could devise a strategy that permits to recover and sell \secret without incurring in economic penalties. 
+Such a strategy would have been successful if it did not allow anyone to satisfy the smart contract commitments.
+In our setting, it means to recover \secret without exposing \key, and therefore preventing anyone to invoke the \texttt{WhistleblowSecret} function.
+As a matter of fact, the malicious coalition can instantiate an offensive sMPC that receives as input at least $k$-of-$n$ shares plus the ciphertext, \ciphertext.
+Then, the sMPC internally perform both the reconstruction of \key and the extraction of the secret by \unwrap.
+Finally, it outputs to all the attackers only \secret. 
+
+To prevent the execution of the attack it is sufficient to select a cryptosystem \cipvocabulary such that there is no sMPC protocol that permits to execute \dec by producing \secret as the only output.
 We identified two possible alternatives to satisfy the previous requirement.
 
 \begin{enumerate}
-	\item Use a cryptosystem that ensure that the exposure of \plaintext implies exposing also the \key (by the key it is possible to perform the whistleblow protocol).
+	\item Use a cryptosystem that ensure that the exposure of \secret implies exposing also the \key (by the key it is possible to perform the whistleblow protocol).
 	\item Use a cryptosystem whose execution is not compatible with sMPC protocols.
 \end{enumerate}
 
 We can satisfy the first condition by selecting $ \mathcal{\cip}=$$ \text{ }\onetimepad$. 
-It is easy to prove that given two among $\{ \ciphertext , \plaintext , \key \}$ the third is implied. 
-Thus, each member of the malicious coalition could execute the whistleblow protocol after obtaining \plaintext. 
-The drawback of using \onetimepad, is that $|\plaintext| = |\key|$ by construction. 
-This limitation can be overcome by selecting a cryptosystem that satisfies the second condition; however devising a strategy to construct such a cryptosystem goes beyond the scope of this paper.
+It is easy to prove that given two among $\{ \ciphertext , \secret , \key \}$ the third is implied. 
+Thus, each member of the malicious coalition could invoke the \texttt{WhistleblowSecret} function after obtaining \secret. 
+The drawback of using \onetimepad, is that $|\secret| = |\key|$ by construction. 
+This limitation can be overcome by selecting a cryptosystem that satisfies the second condition; however devising a strategy to construct such a cryptosystem goes beyond the scope of this chapter.
 
-\subsection{Additional features}
+The consideration that stem from the use of adversarial sMPC are interesting, as this kind of attacks (i.e., programming the logic of a protocol inside a sMPC to bypass hashlocks) are applicable to all protocols that involve rewards, penalties and are played by rational adversaries.
 
-In order to meet the functionalities presented in sections~\ref{sect:model} and ~\ref{sect:constraints}, we introduced some additional features.  
+\subsection{DOS Attacks and Deadlocks prevention}
+%In order to meet the functionalities presented in sections~\ref{sect:model} and ~\ref{sect:constraints}, we introduced some additional features.  
+%As mentioned in Subsection~\ref{sect:mal_sha}, we allowed the owner to set a maximum disclosure time deadline, or rather a time instant to which the registration of less than $k$ shares determines the failure of \shortname. The extra remuneration, $\delta$, for the fastest $k$ registering shareholders has also been integrated. 
 
-\begin{compactitem}
-	
-	\item {\em Timely disclosure} As mentioned in Subsection~\ref{sect:mal_sha}, we allowed the owner to set a maximum disclosure time deadline, or rather a time instant to which the registration of less than $k$ shares determines the failure of \shortname. The extra remuneration, $\delta$, for the fastest $k$ registering shareholders has also been integrated. 
-	
-	\item {\em DOS Attacks and Deadlocks prevention} Since all the users have to submit a pawn or a bid for the contract to become \texttt{initialised}, then a small fraction of them could perform a denial of service attack by taking part in many \shortname protocols refusing to deposit bids, to commit or to correctly execute the sMPC. 
-	To mitigate these kind of disruptions it is possible to introduce a reputation system, so that the owner can select parties that are willing to co-operate. 
-	Obviously this would be an ideal choice that could benefit also other parts of our model. However, as the introduction of a reputation model is not always possible, we decided to model the smart contract \texttt{pre considered} state. 
-	Specifically, all the participants (including the owner) are required to pay a small service pawn that will be returned only if the smart contract will reach the \texttt{LOCK} state. 
-	It has been proved that introducing a small fee to access a service can prevent many DOS attacks~\cite{ddos-payments,ddos-survey}. 
-	Furthermore, some malfunctions or network errors may imply the time thresholds set by the owner not being met.
-	The deadlock to which the protocol would lead to can be solved by the presence of a final state \texttt{expired}. 
-	In that event, all the participants are allowed to withdraw the money locked by the contract itself.  
-	
-\end{compactitem}
-
-...
-\newline
-To execute the sMPC protocol the owner has to input the random key, \key, together with the total number of shareholders, $n$, and the reconstruction threshold, $k$. Each shareholder, instead, submits a random seed that will be interpreted as the $x$ coordinate in the Shamir's Secret Sharing algorithm. 
-Nonetheless, the submission of the random seed by the owner is optional, as it only has an impact on the entropy of the protocol. 
-As output of the sMPC protocol, $\owner$ receives $\key$ and a commitment $\commitment _i$ of any share generated\footnote{By share commitment we denote the hash of the share.}, while each shareholder receives her share $\share_{i}$, a commitment of the key $ \commitment _ \key $, $n$ and $k$ 
-...(mettere ref a figura smpc)
+A denial of service attack could be performed by some users who take part in many \shortname protocol instances refusing to deposit the bids, to commit or to correctly execute the sMPC. 
+To mitigate these kind of disruptions it is possible to introduce a reputation system, so that the owner can select parties that are willing to co-operate. 
+Obviously this would be an ideal choice that could benefit also other parts of our model. However, as the introduction of a reputation model is not always possible, we decided to model the smart contract \texttt{PRE\textunderscore CONSIDERED} state. 
+Specifically, all the participants (including the owner) are required to pay an additional small service pawn that will be returned only if the smart contract will reach the \texttt{LOCKED} state. 
+It has been proved that introducing a small fee to access a service can prevent many DOS attacks~\cite{ddos-payments,ddos-survey}. 
+Furthermore, some malfunctions or network errors may imply the time thresholds set by the owner not being met.
+The deadlock to which the protocol would lead to can be solved by the presence of the final state \texttt{EXPIRED}. 
+In that event, all the participants are allowed to withdraw their funds locked in the contract.  

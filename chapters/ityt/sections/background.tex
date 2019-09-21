@@ -1,14 +1,26 @@
 \vspace*{-2pt}
 \section{Background}\label{sect:background}
 
+\begin{figure}[tp]
+	\centering
+	\includegraphics[width=.75\columnwidth]{fig/proposal}
+	\vspace*{11pt}
+	\caption{\name (\shortname) reference diagram}
+	\label{fig:model}
+\end{figure}
 
-This section illustrates the background concepts that will be used in the remainder of the paper.
+
+
+%This section illustrates the background concepts that will be used in the remainder of the chapter.
 
 \paragraph*{Threshold Cryptography}
 
-Threshold cryptography~\cite{Shamir:1979:SS:359168.359176} enables the owner of a secret to share it among a group of participants. For each of the \N participants, a share of the secret is allocated. 
+Threshold cryptography~\cite{Shamir:1979:SS:359168.359176} enables the owner of a secret to share it among a group of participants. 
+In a \KofN threshold scheme, each of the \N participants gets a share of the secret. 
 To reconstruct the secret, a sufficient number, \K, of different shares have to be combined together, therefore setting the threshold to be \KofN.
-The main advantages of threshold cryptography are (i) distribution of trust (at least \K participants are required to reconstruct the secret), and (ii) fault tolerance (a subset of \K participants is sufficient).
+The main advantages of threshold cryptography are (i) distribution of trust (at least \K participants are required to reconstruct the secret), and (ii) fault tolerance (a subset of \N participants is sufficient).
+
+\smallskip
 
 \paragraph*{Secure Multi-Party Computation}
 
@@ -17,11 +29,13 @@ A {\em secure Multi-Party Computation (\em sMPC)}~\cite{DBLP:journals/corr/abs-1
 %After~\cite{yao82,yao86}, which firstly introduced the concept of MPC by computing a logic function between two parties, a lot of progress has been made~\cite{DBLP:journals/corr/abs-1804-03548}.
 Current sMPC frameworks are able to execute binary or modular arithmetic algorithms computed among several parties (even with dishonest majority) by leveraging {\em semi-homomorphic encryption}~\cite{spdz,keller2018overdrive} and {\em oblivious transfer}~\cite{mascot,rabin2005exchange}.
 
+\smallskip
+
 \paragraph*{Smart contracts}
 
-A blockchain is a growing list of blocks linked together via cryptographic properties. The past blocks in the blockchain are non-mutable and can be used to keep a permanent history of transactions.
+A blockchain is a growing list of blocks linked together via cryptographic properties. The blocks in the blockchain are non-mutable and are used to keep a permanent history of transactions.
 Smart contracts~\cite{szabo1997formalizing} are frameworks built on top of blockchains.
-A smart contract permits to program tamper-proof protocols whose correctness is a property verifiable by the whole network.
+A smart contract permits to program tamper-proof protocols whose outcome is verifiable by the whole network.
 %
 %Indeed, any piece of data stored in a smart contract can be verified by any peer of the network, and read by anyone.
 %
@@ -29,13 +43,17 @@ A smart contract permits to program tamper-proof protocols whose correctness is 
 %%
 %Yet, these architectures can not be used in the TL setting, as they require the data holder to actively take part in the computation.
 We rely on smart contracts to pay incentives, trigger penalties, and in general to enforce the correct execution of our scheme without the need of a trusted party.
-Specifically, our approach makes use of the {\em timelock} and {\em hashlock} primitives, which are used to conditionally execute actions based on time and submitted data, respectively.
-We remark that the timelock primitive differs from TL in that it does not keep any data confidential.
+Specifically, our approach makes use of the {\em time} and {\em hash} primitives, which are used to conditionally execute actions based on time and submitted data, respectively.
+We remark that the {\em time} primitive differs from TL in that it does not keep any data confidential.
+
+\smallskip
 
 \paragraph*{Rational adversaries}
 
-A malicious adversary~\cite{Hazay10anote} is someone who is willing to perform any action to attack a protocol. A rational adversary~\cite{Groce2012}, instead, has a stake in the protocol success, and therefore tries to violate the protocol, such as colluding with other parties, only when the expected outcome is greater than the one obtained by complying with the rules. This enables the use of game theoretic concepts to analyze cryptographic protocols executed by rational actors~\cite{Asharov2016,raap,Provi07summaryreport}.
+A malicious adversary~\cite{Hazay10anote} is someone who is willing to perform any action to attack a protocol. A rational adversary~\cite{Groce2012}, instead, subverts the protocol only if it is economically convenient.
+%has a stake in the protocol success, and therefore tries to violate the protocol, such as colluding with other parties, only when the expected outcome is greater than the one obtained by complying with the rules. 
+This enables the use of game theoretic concepts to analyze cryptographic protocols executed by rational actors~\cite{Asharov2016,raap,Provi07summaryreport}.
 %
 %Rational cryptography~\cite{raap}, \cite{Provi07summaryreport} analyzes cryptographic protocols, run by rational adversaries, by the application of game theory methodology.
 %It has been shown that game theoretic concepts can be used to capture the cryptographic notion of security.
-\shortname models all the participants as rational, thus it does not impose any trust or honesty assumption on them.
+\shortname models all the participants as rational, thus it does not rely on any trust or honesty assumption on them.

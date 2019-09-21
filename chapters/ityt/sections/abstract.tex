@@ -1,13 +1,13 @@
 Time-Locks enable the release of secret data at a specific future point in time.
-Current research efforts mostly bind the recovery of the secret with the solution of cryptographic puzzles.
-These solutions, however, are  impractical: 
-not only they require the interested parties to undergo a significant computational effort in order to solve the puzzle, but also they provide no precise timing guarantees.
+Current research approaches mostly bind the recovery of the secret to the solution of cryptographic puzzles.
+These solutions, however, are  impractical, as solving the puzzle requires a significant computation effort and provides no timing guarantees.
 
 To address these problems, we propose {\em \name (\shortname)}, a novel way of implementing time-locked secrets based on smart contracts to remove the need of any trusted party.
-We leverage blockchains as a distributed source of time, and we combine threshold cryptography with economic incentives (or penalties) to effectively replace cryptographic puzzles.
+We leverage blockchains as a distributed source of time, and we combine threshold cryptography with economic incentives and penalties, to effectively replace cryptographic puzzles.
 
 %This way, clients can be involved in multiple TL instances without wasting computational resources.
 
-We implement a prototype of our approach on top of the Ethereum blockchain. Our prototype leverages secure Multi-Party Computation to avoid any single point of trust.
+We implement a prototype of \shortname on top of the Ethereum blockchain. 
+Our prototype leverages secure Multi-Party Computation to avoid any single point of trust.
 We also analyze resiliency to attacks with the help of economic games theory.
 The experiments demonstrate the low costs and resource consumption associated with our approach.  

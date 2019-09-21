@@ -1,5 +1,5 @@
 \section{Security Analysis}\label{sect:analysis}
-
+\begin{comment}
 This section describes our protocol from a game theory standpoint and analyzes a configuration of $(k,n) = (2,3)$. 
 
 \begin{itemize}
@@ -10,4 +10,526 @@ This section describes our protocol from a game theory standpoint and analyzes a
 	\item The underlying mechanism of regulation is a non sum zero game. This means that expected value received by users when they behave honestly is supposed to be positive (negative on the contrary), with negative disincentive being more penalizing that the positive benefit that they could receive.
 \end{itemize}
 
+
 We have four players: $\owner, \shareholder_1, \shareholder_2, \shareholder_3$.
+
+\begin{compactitem}
+
+\item[\textbf{Players $\owner, \shareholder_1, \shareholder_2, \shareholder_3$ are controlled by distinct users:}]
+	%
+	There are two cases:
+	\begin{compactitem}
+	\item [\textbf{Owner $\owner$ is honest:}]
+	%
+	There are three cases depending on whether shareholders collude:
+	%
+	\begin{compactitem}
+	\item [\textbf{No collusion:}]
+	%
+	Each shareholder $\shareholder_i$ has only two options.
+	%
+	\begin{compactitem}
+	\item [\textbf{Honest behavior}:]
+	%
+	The  payoff is $-\BH + \RH$.
+	%
+	Observe that $-\BH + \RH > 0$ (since $\RH - \BH > 0$ see equation ??).
+	
+	\item [\textbf{Whistleblow share $\share_i$}:]
+	%
+	The  payoff is $-\BH +  \Wbonus_{\share}$.
+	%
+	\end{compactitem}
+	%
+	Hence, a rational shareholder will follow the protocol and disclose his share only at $\td$.
+	
+	
+	\item  [\textbf{Two shareholders collude:}]
+	%
+	For simplicity, we assume that $\shareholder_1$ and $\shareholder_2$ collude, while $\shareholder_3$ does not collude (other groups of colluding shareholders can be handled in an analogous way).
+	%
+	The analysis for the non-colluding user $\shareholder_3$ is similar as before, hence $\shareholder_i$ will follow the protocol and disclose $\share_3$ only at $\td$.
+	%
+	The colluding users $\shareholder_1$ and $\shareholder_2$ have multiple alternatives:
+	\begin{compactitem}
+		\item [\textbf{Honest behavior}:]
+		%
+		The coalition payoff is $-2\BH + 2\RH$.
+		%
+		Observe that $-2\BH + 2\RH > 0$ since $\RH - \BH > 0$.
+		
+		\item [\textbf{$\shareholder_1$ behaves honestly and $\shareholder_2$ whistleblows $\share_2$}:]
+		%
+		The coalition payoff is $-2\BH + \RH + \Wbonus_{\share}$.
+		%
+		
+		
+		\item [\textbf{$\shareholder_2$ behaves honestly and $\shareholder_1$ whistleblows $\share_1$}:]
+		%
+		Same as case above.
+		
+		\item [\textbf{$\shareholder_1, \shareholder_2$  whistleblow $\secret$}:]
+		%
+		The coalition payoff is $-2\BH + \Wbonus_{\secret}$.
+		%
+		Payoff is negative (see (3)).
+		
+		\item [\textbf{$\shareholder_1, \shareholder_2$  sell $\secret$}:]
+		%
+		The coalition payoff is $-2\BH + V$.
+		%
+		Payoff is negative (see (3)).
+		
+		
+		\begin{compactitem}
+			\item[\textbf{Both wbl. shares and S and sell secret:}]
+			%
+			The coalition payoff is $-2\BH + 2\Wbonus_{\share} + \Wbonus_{\secret} + V$.
+			
+
+			%
+			
+			\item[\textbf{Whistleblow secret and sell secret:}]
+			%
+			The coalition payoff is $-2\BH + \Wbonus_{\secret} + V$.
+			%
+		\end{compactitem}
+		
+		
+	\end{compactitem}
+
+	\item  [\textbf{Three shareholders collude:}]
+	%
+	Alternatives:
+	%
+	\begin{compactitem}
+		\item [\textbf{Honest behavior}:]
+		%
+		The coalition payoff is $-3\BH + 3\RH$.
+		%
+		Observe that $-3\BH + 3\RH > 0$ since $\RH - \BH > 0$.
+		
+		
+		\item[\textbf{All whistleblow shares and secret and sell secret:}]
+		%
+		The coalition payoff is $-3\BH + 3\Wbonus_{\share} + \Wbonus_{\secret} + V$.
+		
+		\item[\textbf{$\shareholder_1$ behaves honestly and $\shareholder_2, \shareholder_3$ whblow shares}:] 
+		%
+		The coalition payoff is $-3\BH + \RH + 2\Wbonus_{\share}$.
+		%
+		
+		\item [\textbf{$\shareholder_1$ behaves honestly and $\shareholder_2$ whistleblows $\share_2$}:]
+		%
+		The coalition payoff is $-2\BH + \RH + \Wbonus_{\share}$.
+		%
+		
+		
+		\item [\textbf{Other cases}:]
+		%
+		They should all be subsumed by cases above so not so interesting. We can spell them out alter.
+		
+		
+	\end{compactitem}
+
+
+	\end{compactitem}
+	
+	 
+	\item [\textbf{Owner $\owner$ is dishonest:}]	
+	\end{compactitem}
+
+\item[\textbf{Players $\owner, \shareholder_1, \shareholder_2, \shareholder_3$ are not controlled by distinct users:}]
+%
+	
+\end{compactitem}
+
+
+\subsection{Sketch}
+\end{comment}
+
+\newcommand{\wait}{\mathtt{wait}}
+\newcommand{\wShare}[1]{\mathtt{wbShare}(#1)}
+\newcommand{\wSecret}[1]{\mathtt{wbSecret}(#1)}
+\newcommand{\nxt}[1]{\mathtt{nxt}(#1)}
+\newcommand{\coalitionActions}[1]{\overline{A(#1)}}
+\newcommand{\schedulerActions}{\coalitionActions{s}}
+\newcommand{\coalitionSchema}{\mathcal{C}}
+\newcommand{\finishgame}{\mathtt{end}}
+\newcommand{\elt}[2]{#1[#2]}
+\newcommand{\prefix}[2]{#1\mathord{\mid}_{#2}}
+\newcommand{\disclosed}[1]{\mathit{discl}(#1)}
+\newcommand{\disclosedByCoalition}[2]{\mathit{discl}(#1,#2)}
+\newcommand{\Nat}{\mathbb{N}}
+\newcommand{\payoffs}{\mathit{payoffs}}
+\newcommand{\honest}{\mathit{honest}}
+\newcommand{\game}[1]{\mathcal{G}(#1)}
+
+
+This section, analyzes the interaction among coalitions using game theory to prove that they are incentivized to stick to honest behavior.
+
+\para{Assumptions}
+%
+We make the following assumptions:
+\begin{compactenum} 
+\item The owner is honest (i.e., she is not part of the game).
+
+\item After $\td$, all shareholders immediately disclose their secrets (we only model the behavior from when the contract's state is set to \texttt{LOCKED} to $\td$).
+
+\item Players in the game consists of disjoint groups of shareholders.
+%
+That is, each player in our game represents a coalition of one or more shareholders.
+%
+We assume that these coalitions are common knowledge among the players.
+
+\item We assume that each player has 3 actions: 
+\begin{compactitem}
+\item \textit{Wsecret} denoting the disclosure of the secret (and its selling).
+\item \textit{Wshare(S)} denoting the disclosure of a subset $S$ of the shares controlled by the player.
+\item \textit{Wait} denoting that the player waits, i.e., delays his action.
+\end{compactitem}
+
+\item We assume that players are aware of all actions performed in the past (since they are visible in the blockchain). , and (2) actions are not concurrent.
+%
+Hence, we model the ITYT as an extensive game with perfect knowledge. 
+
+\end{compactenum}
+
+\para{Shareholders}
+%
+$\shareholder = \{\shareholder_1, \ldots, \shareholder_n\}$ is a set of shareholders.
+
+\para{Sharing scheme}
+%
+We consider an \shortname instance with $k-n$ secret sharing.
+
+\para{Coalition Schemas}
+%
+A coalition schema $\coalitionSchema$ over $\shareholder$ is a partition of $\shareholder$, i.e., a set $\coalitionSchema = \{ C_1, \ldots, C_m\}$ such that $\bigcup_{i}C_i = C$, $C_i \cap C_j = \emptyset$ whenever $i \neq j$, and $C_i \neq \emptyset$ for all $i$.
+%
+In the following, we fix a coalition $C$.
+
+
+\para{Coalition's actions}
+%
+A coalition $C$ can perform actions from the set $\coalitionActions{C} := \{\wait\} \cup \{ \wShare{S} \mid S \subseteq C \wedge S \neq \emptyset\} \cup \{ \wSecret{S} \mid S \subseteq C\}$.
+
+\para{Scheduler's action}
+%
+We explicitly consider the actions of a scheduler $s$ that determines which player is moving next.
+%
+The scheduler for a coalition schema $\coalitionSchema$ can perform actions from the set $\schedulerActions = \{\nxt{C} \mid C \in \coalitionSchema \} \cup \{ \finishgame \}$.
+
+
+\para{Executions}
+%
+An execution is a (possibly infinite) alternating sequence of actions from $\schedulerActions$ and $\coalitionActions{C}$ for some coalition $C$.
+%
+Given a coalition schema $\coalitionSchema$, an execution is a finite sequence $s_1a_1s_2a_2 \ldots s_na_n$ such that for all $1 \leq i \leq n$, $s_i \in \schedulerActions$ and there exists a $C \in \coalitionSchema$ such that $a_i \in \coalitionActions{C}$.
+
+Given an execution $e$, we denote by $\disclosed{e}$ the set of all shares disclosed in $e$, i.e., $\disclosed{e} = \bigcup_{\wShare{S} \in e} S$.
+%
+Moreover, $\disclosedByCoalition{e}{C}$ is the set of all shares disclosed in $e$ by coalition $C$, i.e., $\disclosed{e} = \bigcup_{ \exists i.\ e[i]=\nxt{C} \wedge e[i+1]=\wShare{S}} S$
+
+\para{Valid Executions}
+%
+We now characterize all valid executions, i.e., those modeling ITYT executions.
+%
+We say that an execution $e$ is a \textit{valid complete execution} iff the following conditions hold:
+\begin{compactitem}
+\item For all $1 \leq i \leq n$, if $\elt{e}{i} = \nxt{C}$, then $\elt{e}{i+1} \in \coalitionActions{C}$.
+\item $\elt{e}{|e|} = \finishgame$.
+\item For all $1 \leq i < |e|$, $\elt{e}{i} \neq \finishgame$.
+\item Whenever $\elt{e}{i} = \finishgame$, then $i = |e|$.
+\item Whenever $\elt{e}{i} = \nxt{C}$ and $\elt{e}{i+1}  = \wSecret{S}$:
+\begin{compactitem}
+\item $|C \cup \disclosed{\prefix{e}{i}}| \geq k$.
+\item $|S \cup \disclosed{\prefix{e}{i}}| < k$.
+\item if $|e|>i+1$, then $\elt{e}{i+1} = \finishgame$.
+\end{compactitem}
+\item Whenever $\elt{e}{i} = \nxt{C}$ and $\elt{e}{i+1}  = \wShare{S}$:
+\begin{compactitem}
+\item $|S \cup \disclosed{\prefix{e}{i}}| \leq k$.
+\item if $|S \cup \disclosed{\prefix{e}{i}}| = k$ and $|e|>i+1$, then $\elt{e}{i+1} = \finishgame$.
+\end{compactitem}
+\end{compactitem}
+%
+We denote by $\mathit{FV}(\coalitionSchema)$ the set of all full valid executions for the coalition schema $\coalitionSchema$.
+%
+We denote by $\mathit{V}(\coalitionSchema)$ the set of all prefixes of executions in $\mathit{FV}(\coalitionSchema)$, i.e., $V(\coalitionSchema) = \{\prefix{e}{i} \mid i \in \Nat \wedge e \in FV(\coalitionSchema)\}$.
+
+
+\para{Payoffs}
+%
+The payoff function $\payoffs: \mathit{valid}(\coalitionSchema) \to (\coalitionSchema \to \Nat^{|\coalitionSchema|})$ is as follows:
+%
+\begin{compactitem}
+\item If there is an $i$ such that 	$\elt{e}{|e|-2} = \nxt{C}$ and $\elt{e}{|e|-1}  = \wSecret{S}$, then:
+\begin{compactitem}
+\item $\payoffs(e)(C) = |S| \cdot \Wbonus_h + V + \Wbonus_s - |C| \cdot \BH$.
+\item $\payoffs(e)(C') = |\disclosedByCoalition{e}{C'}| \cdot  \Wbonus_h - |C'| \cdot \BH$ for all $C' \in \coalitionSchema\setminus\{C\}$.
+\end{compactitem}
+\item If $|\disclosed{e}| = k$, then: % This is implicit:  $\forall S \subseteq \mathcal{H}.\ \wSecret{S} \not\in e$
+\begin{compactitem}
+\item $\payoffs(e)(C) = |\disclosedByCoalition{e}{C}| \cdot  \Wbonus_h - |C| \cdot \BH$ for all $C \in \coalitionSchema$.
+\end{compactitem}
+\item Otherwise:
+\begin{compactitem}
+\item $\payoffs(e)(C) = |\disclosedByCoalition{e}{C}| \cdot  \Wbonus_h + |C \setminus \disclosedByCoalition{e}{C}| \cdot \RH  - |C| \cdot \BH$ for all $C \in \coalitionSchema$.
+\end{compactitem}
+\end{compactitem}
+
+\para{Player function}
+%
+The player function for a coalition schema $C$ is the function $P: V(\coalitionSchema) \to \coalitionSchema \cup \{\mathtt{sched}\}$ defined as follows:
+%
+$P(e) = C$ if $\elt{e}{|e|} = \nxt{C}$, and $P(e) = \mathtt{sched}$ if $\elt{e}{|e|} \in \bigcup_{C \in \coalitionSchema} \coalitionActions{C}$.
+
+
+\para{Game}
+%
+Given a coalition schema $\coalitionSchema$,  $\game{\coalitionSchema}$ is the extensive game with perfect information where the set of players is $\coalitionSchema$, the set of histories is $\mathit{V}(\coalitionSchema)$, the set of terminal histories is $\mathit{FV}(\coalitionSchema)$, the player function is $P$, and the preference relation $\preceq_C$, for each player $C \in \coalitionSchema$, is as follows: $e \preceq e'$ iff $\payoffs(e)(C) \leq \payoffs(e')(C)$.
+%
+\textcolor{red}{Marco: Not sure if the way in which we're currently handling the player function $P$ (and the scheduling) is correct! Double check this!}
+
+
+\para{Strategy}
+%
+A \textit{strategy} for the game $\game{\coalitionSchema}$ and player $C \in \coalitionSchema$ is a function $s_C$ that assigns to each execution $e \in V(\coalitionSchema) \setminus FV(\coalitionSchema)$ such that $P(e) = C$ an action $a \in \coalitionActions{C}$ such that $e \cdot a \in V(\coalitionSchema)$.
+%
+A \textit{strategy profile} is a function $s$ mapping each player $C \in \coalitionSchema$ to a strategy $s_C$. 
+
+The \textit{honest strategy $\honest_C$ for the player $C \in \coalitionSchema$} is the function mapping each execution $e \in V(\coalitionSchema) \setminus FV(\coalitionSchema)$ such that $P(e) = C$ to the action $\wait$.
+
+
+\para{Correctness}
+%
+We now show that the honest behavior is the \textit{only} rational choice.
+
+\begin{theorem}
+Let $\coalitionSchema$ be a coalition schema.
+%
+The strategy $\lambda C \in \coalitionSchema.\ \honest_C$ is the unique sub-game perfect equilibrium for the game $\game{\coalitionSchema}$.
+\end{theorem}
+
+\begin{proof}
+Let $\coalitionSchema$ be a coalition schema.
+%
+In the following, $\honest$ denotes the strategy $\lambda C \in \coalitionSchema.\ \honest_C$.
+%
+To show that $\honest$ is a unique sub-game perfect equilibrium for the game $\game{\coalitionSchema}$, we need to show that (1) $\honest$ is a sub-game perfect equilibrium for $\game{\coalitionSchema}$, and (2) no other sub-game perfect equilibrium exists.
+
+\para{$\honest$ is a sub-game perfect equilibrium for $\game{\coalitionSchema}$}
+%
+To show that $\honest$ is a sub-game perfect equilibrium for $\game{\coalitionSchema}$, we need to show that for every player $C \in \coalitionSchema$ and every non-terminal execution $e \in V(\coalitionSchema) \setminus FV(\coalitionSchema)$ such that $P(e) = C$, ..\textcolor{red}{Marco: FILL ME!}	
+
+\textcolor{red}{Marco: TODO!}	
+
+\para{$\honest$ is the unique sub-game perfect equilibrium for $\game{\coalitionSchema}$}
+
+\textcolor{red}{Marco: TODO!}	
+\end{proof}
+
+
+
+
+\begin{comment}
+\para{Whistleblowing choices}
+%
+A whistleblowing choice $w$ for a coalition $C$ is a function $w : C \to 2^{\shareholder}$ such that $w(C) = C'$ such that $C' \subseteq C$.
+
+\para{Ordering}
+%
+An ordering $O$ for a coalition $C$ is a permutation of $C$.
+
+\para{Strategies}
+%
+A strategy $s$ for a coalition $C$ is a function $s : \{1, \ldots, |C|\} \to \{ wShare, wSecret, wait\}$.
+%
+We denote by $honest$ the strategy picking the action $wait$ for all  $i$.
+
+
+\para{Valid strategies}
+%
+A strategy $s$ is valid for a coalition $C$, an ordering $O$, and a $w$ if the following conditions are satisfied:
+%
+\begin{compactitem}
+\item Whenever $s(i) = wSecret$, then $|O[i] \cup \bigcup_{j < i} ( w(O[j]) \cap \{ h \in \shareholder \mid s(j) = wShare \}	)| \geq k$.
+\item Whenever $s(i) = wSecret$, then $|w(O[i]) \cup \bigcup_{j < i} ( w(O[j]) \cap \{ h \in \shareholder \mid s(j) = wShare \}	)| \leq k-1$.
+\item Whenever $s(i) = wSecret$, then for all $j \neq i$, $s(j) \neq wSecret$.
+\item Whenever $s(i) = wSecret$, then for all $j > i$, $s(j) = wait$.
+\item Whenever $s(i) = wShare$, then $|w(O[i]) \cup \bigcup_{j < i} ( w(O[j]) \cap \{ h \in \shareholder \mid s(j) = wShare \}	)| \leq k$.
+\item Whenever $s(i) = wShare$, if $|w(O[i]) \cup \bigcup_{j < i} ( w(O[j]) \cap \{ h \in \shareholder \mid s(j) = wShare \}	)| = k$, then for all $j > i$, $s(j) = wait$.
+\end{compactitem}
+
+
+
+\para{Payoffs}
+%
+The payoff function for a valid strategy $s$ given $C$, $O$, and $w$ is defined as follows:
+%
+\begin{compactitem}
+\item Whenever $s(i) = wait$, then 
+\begin{compactitem}
+\item if there is no $l$ such that (1) $s(l) = wSecret$, or (2) $s(j) = wShare$ and $|w(O[l]) \cup \bigcup_{j < l} ( w(O[j]) \cap \{ h \in \shareholder \mid s(j) = wShare \}	)| = k$, then $\payoffs(C,O,w,s)[i] = |O[i]| \cdot (\RH - \BH)$.
+\item otherwise  $\payoffs(C,O,w,s)[i] = - |O[i]| \cdot \BH$.
+\end{compactitem}
+\item Whenever $s(i) = wShare$, then: 
+\begin{compactitem}
+\item if there is no $l$ such that (1) $s(l) = wSecret$, or (2) $s(j) = wShare$ and $|w(O[l]) \cup \bigcup_{j < l} ( w(O[j]) \cap \{ h \in \shareholder \mid s(j) = wShare \}	)| = k$, then $\payoffs(C,O,w,s)[i] = |w(O[i])| \cdot \Wbonus_\shareholder + (|O[i]| - |w(O[i])|) \cdot \RH - |O[i]| \cdot \BH $.
+\item otherwise $\payoffs(C,O,w,s)[i] = |w(O[i])| \cdot \Wbonus_\shareholder - |O[i]| \cdot \BH $.
+\end{compactitem}
+\item Whenever $s(i) = wSecret$, then $\payoffs(C,O,w,s)[i] = |w(O[i])| \cdot \Wbonus_\shareholder  + V + \Wbonus_\secret  - |O[i]| \cdot \BH $.	
+\end{compactitem}
+
+\para{Nash equilibrium}
+%
+A strategy $s$ is a Nash equilibrium for $C$, $O$, and $w$ if for all strategies $s'$, if $s' = s[i \mapsto a]$, then $\mathit{payoffs}(C, O, w, s') \leq \mathit{payoffs}(C,O,w, s)$.
+
+
+\para{Correctness 1}
+We want to prove that for all coalition $C$, all whistleblowing choices $w$, and all orderings $O$, the strategy $\honest$ is a Nash equilibrium.
+
+Let $C$ be a coalition, $w$ be a choice for $C$, and $O$ be an ordering for $C$.
+%
+Moreover, let $s$ be an arbitrary valid strategy such that $s = \honest[i \mapsto a]$ for some index $i$ and action $a$.
+%
+We claim that $\mathit{payoffs}(C, O, w, s') \leq \mathit{payoffs}(C,O,w, \honest)$.
+%
+Since $C$, $w$, $O$, and $s$ are all picked arbitrarily, $\honest$ is a Nash equilibrium for all $C$, $w$, and $O$.
+
+We now show that $\mathit{payoffs}(C, O, w, s') \leq \mathit{payoffs}(C,O,w, \honest)$.
+%
+Observe that for all $j \neq i$, $\mathit{payoffs}(C, O, w, s')[j] = \mathit{payoffs}(C,O,w, \honest)[j]$, so we just need to show that  $\payoffs(C, O, w, s')[i] < \payoffs(C,O,w, \honest)[i]$.
+%
+Observe also that $\payoffs(C,O,w, \honest)[i] = |O[i]| \cdot (\RH - \BH)$.
+%
+There are two cases:
+\begin{compactitem}
+	\item[$a = wShare$:]
+	%
+	Then, $\mathit{payoffs}(C,O,w, s)[i]$ is either $\payoffs(C,O,w,s)[i] = |w(O[i])| \cdot \Wbonus_\shareholder + (|O[i]| - |w(O[i])|) \cdot \RH - |O[i]| \cdot \BH $ (if $|w(O[i])| = k$) or $|w(O[i])| \cdot \Wbonus_\shareholder - |O[i]| \cdot \BH $ (if $|w(O[i])| < k$) since all other players' actions are $wait$.
+	%
+	In the first case, we have:
+	\begin{equation*}
+		\begin{split}
+			\payoffs(C,O,w, s)[i] 
+			&= |w(O[i])| \cdot \Wbonus_\shareholder + \\
+			& \qquad (|O[i]| - |w(O[i])|) \cdot \RH \\
+			& \qquad - |O[i]| \cdot \BH \\
+			&= k \cdot \Wbonus_\shareholder + (|O[i]| - k) \cdot \RH \\
+			& \qquad - |O[i]| \cdot \BH \\ % |w(O[i])| = k
+			&\leq  k \cdot \BH + (|O[i]| - k) \cdot \RH \\
+			& \qquad - |O[i]| \cdot \BH \\ % \Wbonus_\shareholder < \BH
+			&\leq  k \cdot \RH + (|O[i]| - k) \cdot \RH \\
+			& \qquad - |O[i]| \cdot \BH \\ % BH < RH
+			&=  |O[i]| (\RH - \BH) \\ 
+			&= 	\payoffs(C,O,w, honest)[i]	
+		\end{split}
+	\end{equation*}
+	%
+	In the second case, we have:
+	\begin{equation*}
+		\begin{split}
+	\payoffs(C,O,w, s)[i] 
+	&= |w(O[i])| \cdot \Wbonus_\shareholder - |O[i]| \cdot \BH \\
+	&\leq |w(O[i])| \cdot \BH - |O[i]| \cdot \BH \\ % \Wbonus_\shareholder < \BH
+	&= (|w(O[i])| - |O[i]|) \cdot \BH \\
+	&\leq (|O[i]| - |w(O[i])|) \cdot \RH + \\
+	& \qquad (|w(O[i])| - |O[i]|) \cdot \BH \\ % RH>0 and |w(O[i])| - |O[i]| <= 0
+	&= |O[i]| \cdot (\RH - \BH) + \\
+	& \qquad |w(O[i])| \cdot (\BH - \RH) \\
+	&= \payoffs(C,O,w, honest)[i] + \\
+	& \qquad |w(O[i])| \cdot (\BH - \RH) \\
+	&\leq \payoffs(C,O,w, honest)[i] % BH < RH
+	\end{split}
+	\end{equation*}
+
+	
+	
+	\item[$a = wSecret$:]
+	%
+	Then,  $\payoffs(C,O,w,s)[i] = |w(O[i])| \cdot \Wbonus_\shareholder  + V + \Wbonus_\secret  - |O[i]| \cdot \BH $.	
+	%
+	Since all other players pick the action $wait$, we have that $|w(O[i])| \leq k-1$ and $|O[i]| \geq k$.
+	%
+	Therefore, we have:
+	\begin{equation*}
+		\begin{split}
+	\payoffs(C,O,w, s)[i] 
+	&= |w(O[i])| \cdot \Wbonus_\shareholder  + V + \Wbonus_\secret  \\
+	& \qquad - |O[i]| \cdot \BH \\
+	&\leq (k-1) \cdot \Wbonus_\shareholder  + V + \Wbonus_\secret  \\
+	& \qquad - |O[i]| \cdot \BH \\  % |w(O[i])| \leq k-1
+	&\leq k \cdot \BH - |O[i]| \cdot \BH \\ % k \cdot \BH > V + \Wbonus_\secret + k-1 \Wbonus_\shareholder
+	&\leq k \cdot \RH - |O[i]| \cdot \BH \\ % \BH < \RH
+	&\leq |O[i]| \cdot \RH - |O[i]| \cdot \BH \\ % |O[i]| \geq k
+	&= |O[i]| (\RH - \BH)\\
+	&= \payoffs(C,O,w, honest)[i] 
+	\end{split}
+	\end{equation*}
+\end{compactitem}
+
+
+
+\para{Correctness 2}
+%
+We want to prove that for all coalition $C$, all whistleblowing choices $w$, and all orderings $w$, 
+for all valid strategies $s$:  $\mathit{payoffs}(C, O, w, s) \leq \mathit{payoffs}(C,O,w, honest)$.
+
+\textcolor{red}{This might not hold!}
+\end{comment}
+\begin{comment}
+\para{Sketch}
+%
+We now show that for all $i$, $\mathit{payoffs}(C, O, w, s)[i] \leq \mathit{payoffs}(C,O,w, honest)[i]$.
+%
+Observe that $\mathit{payoffs}(C,O,w, honest)[i]$ is always $|O[i]| \cdot (\RH - \BH)$.
+%
+There are three cases:
+\begin{compactitem}
+\item[$s(i) = wait$:]
+Then, $\mathit{payoffs}(C,O,w, s)[i]$ is either $|O[i]| \cdot (\RH - \BH)$ or $- |O[i]| \cdot \BH$.
+%
+In the first case, we have $\mathit{payoffs}(C,O,w, s)[i] = \mathit{payoffs}(C,O,w, honest)[i]$.
+%
+In the second case, we have 
+\begin{equation*}
+	\begin{split}
+\payoffs(C,O,w, s)[i] 
+ &= - |O[i]| \cdot \BH\\
+ & < |O[i]| \cdot \RH -  |O[i]| \cdot \BH \\ % $\RH > 0$
+ & = |O[i]| \cdot (\RH - \BH) \\
+ & = \mathit{payoffs}(C,O,w, honest)[i]
+\end{split}
+\end{equation*}
+
+
+\item[$s(i) = wShare$:]
+%
+Then, $\mathit{payoffs}(C,O,w, s)[i]$ is either $\payoffs(C,O,w,s)[i] = |w(O[i])| \cdot \Wbonus_\shareholder + (|O[i]| - |w(O[i])|) \cdot \RH - |O[i]| \cdot \BH $  or $|w(O[i])| \cdot \Wbonus_\shareholder - |O[i]| \cdot \BH $.
+%
+In the first case, we have ???
+%
+In the second case, we have 
+\begin{equation*}
+	\begin{split}
+\payoffs(C,O,w, s)[i] 
+&= |w(O[i])| \cdot \Wbonus_\shareholder - |O[i]| \cdot \BH \\
+&< |w(O[i])| \cdot \BH - |O[i]| \cdot \BH \\ % \Wbonus_\shareholder < \BH
+&= (|w(O[i])| - |O[i]|) \cdot \BH \\
+&< (|O[i]| - |w(O[i])|) \cdot \RH + \\
+& \qquad (|w(O[i])| - |O[i]|) \cdot \BH \\ % RH>0 and |w(O[i])| - |O[i]| <= 0
+&= |O[i]| \cdot (\RH - \BH) + \\
+& \qquad |w(O[i])| \cdot (\BH - \RH) \\
+&= \payoffs(C,O,w, honest)[i] + \\
+& \qquad |w(O[i])| \cdot (\BH - \RH) \\
+&< \payoffs(C,O,w, honest)[i] % BH < RH
+\end{split}
+\end{equation*}
+
+\item[$s(i) = wSecret$:]
+
+\end{compactitem}
+\end{comment}
+
