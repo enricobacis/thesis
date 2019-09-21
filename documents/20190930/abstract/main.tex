@@ -1,0 +1,33 @@
+\documentclass[12pt,a4paper]{memoir}
+
+%\usepackage[italian]{babel}
+%\usepackage[T1]{fontenc} 
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage{pdfpages}
+
+\usepackage{balance}
+
+% Punish offending text
+\clubpenalty=10000
+\widowpenalty=10000
+\tolerance=999
+
+% Improve page style
+\usepackage[left=30mm,right=30mm,top=35mm,bottom=35mm]{geometry}
+\linespread{1.5}
+
+\begin{document}
+\sloppy{
+
+% ------------------- FRONT PAGE ------------------ %
+
+\thispagestyle{empty}
+\includepdf[fitpaper=true, pages=-]{sections/frontpage_summary.pdf}
+\clearpage
+
+\thispagestyle{empty}
+\input{sections/abstract.tex}
+
+}
+\end{document}
