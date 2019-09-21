@@ -369,7 +369,7 @@ will be dictated by such a lower bound.  The following definition
 formalizes the replication degree of an allocation function.
 
 \smallskip
-\begin{definition}[\label{dcs:def:replicated}\nr-Replicated allocation function]
+\begin{definition}[\label{dcs:def:replicated}\texorpdfstring{$\boldsymbol{\nr}$}{r}-Replicated allocation function]
 Let \Shards\ be a set of slices composing a resource, \Nodes\ be a set
 of nodes, and \f\ be an allocation function. Function \f\ is {\em
   \nr-replicated} iff $\forall \shard{i}\in\Shards$, $|\f(\shard{i})|
@@ -385,7 +385,7 @@ the minimum number of nodes required to reconstruct a resource, as
 formalized by the following definition.
 
 \smallskip
-\begin{definition}[\label{dcs:def:protected}\nk-Protected allocation function]
+\begin{definition}[\label{dcs:def:protected}\texorpdfstring{$\boldsymbol{\nk}$}{k}-Protected allocation function]
 Let \Shards\ be a set of slices composing a resource, \Nodes\ be a set
 of nodes, and \f\ be an allocation function. Function \f\ is {\em
   \nk-protected} iff for each $\setnode{i} \subset \Nodes$, with
@@ -837,10 +837,10 @@ misses slice \shard{9}.
 
 \subsection{Discussion}
 We have discussed two alternative strategies for producing a
-$(\nk,\nr)$-allocation, aimed to minimize the number of slices ({\em
-  Min\_slices\/}, with coarse-grained slicing and consistent
-replication) and to minimize the number of involved nodes ({{\em
-    Min\_nodes\/}, with fine-grained slicing and diversified
+$(\nk,\nr)$-allocation, aimed to minimize the number of slices (
+  \diagonal, with coarse-grained slicing and consistent
+replication) and to minimize the number of involved nodes (\compact
+    , with fine-grained slicing and diversified
   replication).  When no replication is used (i.e., $\nr=1$) these two
   strategies are equivalent, as each would imply the use of the same
   number of slices $\ns=k+1$ and nodes $\nn=k+1$. On the contrary,
@@ -852,11 +852,11 @@ replication) and to minimize the number of involved nodes ({{\em
   then represent a reference for the definition and analysis of
   intermediate configurations.
 
-We note that the structure of the {\em Min\_nodes\/} strategy has a
+We note that the structure of the \compact strategy has a
 correspondence with {\em secret sharing}~\cite{shamir1979share}. In
 ($m$,$d$) secret sharing, the goal is to build $d$ shares of a secret
 such that at least $m$ of them are necessary to reconstruct a
-secret. Given a {\em Min\_nodes\/} $(\nk,\nr)$-allocation, with
+secret. Given a \compact $(\nk,\nr)$-allocation, with
 $\nk+\nr$ shares, the use of a ($\K+1$, $\K+\nr$) secret sharing
 scheme would then satisfy the requirement that at least $\K+1$ nodes
 have to cooperate to access the resource, tolerating the loss of up to
@@ -985,7 +985,7 @@ guarantees.
     \caption{\label{dcs:fig:diagonal} Probability that the resource is unavailable (a,c) and that it is exposed (b,d) using a $(\nk,\nr)$-allocation that minimizes the number of slices, with \nr=5 varying \nk\ between 1 and 25 (a,b), and with \nk=5 varying \nr\ between 1 and 25 (c,d)}
 \end{figure}
 
-\subsection{Min\_slices allocation}\label{dcs:sec:minslice}
+\subsection{\diagonal allocation}\label{dcs:sec:minslice}
 Using a $(\nk,\nr)$-allocation with the minimum number of slices,
 unavailability of a resource happens when, for any of the $\nk+1$
 slices composing the resources, all the \nr\ nodes storing the replica
@@ -1074,7 +1074,7 @@ stored on a compromised node increases.
 		varying \nr\ between 1 and 25 (c,d)}
 \end{figure}
 
-\subsection{Min\_nodes allocation}\label{dcs:sec:minnode}
+\subsection{\compact allocation}\label{dcs:sec:minnode}
 
 Using a $(\nk,\nr)$-allocation with the minimum number of nodes, the
 unavailability of the resource occurs when any combination of \nr\ (or
@@ -1157,7 +1157,7 @@ configuration minimizing the number of slices and of nodes (i.e.,
 \end{figure}
 
 
-\subsection{Setting $\boldsymbol{\nk}$\ and $\boldsymbol{\nr}$}\label{dcs:sec:paramenters}
+\subsection{Setting \texorpdfstring{$\boldsymbol{\nk}$}{k} and \texorpdfstring{$\boldsymbol{\nr}$}{r}}\label{dcs:sec:paramenters}
 
 Our modeling of the probability that a resource is not available (\PF)
 and that it is exposed (\PC) can be used to set appropriate values for
