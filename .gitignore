@@ -129,15 +129,15 @@ sympy-plots-for-*.tex/
 .DS_Store
 
 # Never send main files
-main.pdf
-main.ps
-main.jpg
-main.xcp
-main.zip
-00-main.pdf
-00-main.ps
-00-main.jpg
-00-main.xcp
+/main.pdf
+/main.ps
+/main.jpg
+/main.xcp
+/main.zip
+/00-main.pdf
+/00-main.ps
+/00-main.jpg
+/00-main.xcp
 
 # vim session
 *.vim
