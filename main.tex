@@ -20,6 +20,7 @@
 \usepackage{blindtext}
 \usepackage{booktabs}
 \usepackage{caption}
+\usepackage{cite}
 \usepackage{color}
 \usepackage{comment}
 \usepackage{framed}
@@ -109,7 +110,7 @@ fontsize=\footnotesize,
 \makeoddfoot{mystyle}{}{}{\small\thepage}
 \pagestyle{mystyle}
 
-
+\newcommand{\declarecommand}[1]{\providecommand{#1}{}\renewcommand{#1}}
 
 
 \begin{document}
@@ -180,6 +181,7 @@ fontsize=\footnotesize,
 \chapter[I Told You Tomorrow]{I {\em Told} You Tomorrow:\\Practical Time-Locked Secrets using Smart Contracts}
 \label{chap:ityt}
 \subimport*{chapters/ityt/}{macros}
+\subimport*{chapters/ityt/}{draft}
 \subimport*{chapters/ityt/}{main}
 
 \chapter[Conclusions]{Conclusions and Future Work}
@@ -197,7 +199,7 @@ fontsize=\footnotesize,
 % ------------------ BIBLIOGRAPHY ----------------- %
 
 
-%\bibliographystyle{unsrt}
+\bibliographystyle{unsrt}
 \bibliography{chapters/intro/bib/biblio,chapters/tops/bib/biblio,chapters/dcs/bib/biblio,chapters/ityt/bib/biblio}
 
 
