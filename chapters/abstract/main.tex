@@ -4,8 +4,8 @@ this raises new challenges to manage access control and data confidentiality in
 these environments.
 
 The first part of this doctoral thesis analyzes centralized cloud storage
-providers. In this setting, the cloud service is considered honest-but-curious:
-it always comply with users' requests, but it might access unprotected data. A
+providers (CSP). In this setting, the CSP is considered honest-but-curious: it
+always complies with users' requests, but it might access unprotected data. A
 possible defense is to encrypt the data; however, standard encryption modes
 would introduce relevant overheads when performing access revocation. To
 address this problem, we present an approach that relies on a resource
@@ -25,14 +25,14 @@ misbehaving nodes, to stop paying for their service and migrate the data to new
 peers. This process has to work even when the data owner is offline and without
 imposing trust or honesty assumption on any of the involved parties. To address
 this problem, in the third part of this thesis, we detail a novel way of
-deploying self-releasing time-locked secrets. The use of this technique can be
-used to implement delegated challenge-response protocols that, in turn, can be
-used to guarantee data confidentiality and retrievability properties. Our
-solution leverages smart contracts and economic incentives to regulate a game
-among the mutually distrusting users that compose a blockchain, thus removing
-the need of any trusted party.
+deploying self-releasing time-locked secrets. This technique can be used to
+implement delegated challenge-response protocols that, in turn, can guarantee
+data confidentiality and retrievability properties in decentralized systems.
+Our solution leverages smart contracts and economic incentives to regulate a
+game among the mutually distrusting users that compose a blockchain, thus
+removing the need of any trusted party.
 
 The technologies detailed in this thesis push the state of the art as regards
 resource protection and access regulation in centralized and decentralized
-cloud storage systems. Moreover, the implementations have been released with
-open source licenses and can be readily applied to real systems.
+cloud storage systems. The implementations have been released under
+open-source licenses and can be readily integrated with real systems.
