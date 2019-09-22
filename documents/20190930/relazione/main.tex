@@ -11,7 +11,7 @@
 
 \begin{document}
 
-\title{Relazione finale di dottorato}
+\title{Relazione Finale di Dottorato}
 \author{Enrico Bacis}
 \date{30/09/2019}
 
@@ -21,19 +21,21 @@
 
 \subsubsection*{Attività di Ricerca}
 
-Nel corso del primo anno di dottorato (XXXII ciclo) in Ingegneria e Scienze Applicate presso l'Università degli Studi di Bergamo abbiamo affrontato il tema della security nell'ambito dei servizi cloud centralizzati. In questo scenario, il Cloud Service Provider (CSP) è considerato ``{\em honest-but-curious}'': esegue sempre le richieste dell'utente ma potrebbe accedere ai dati, se non protetti. Una semplice difesa è quella di applicare uno strato di cifratura, tuttavia le modalità di cifratura classica richiederebbero di effettuare una ri-cifratura ogni qualvolta si voglia revocare l'accesso ad un utente. Abbiamo quindi proposto una modalità di cifratura con forte inter-dipendenza mutua nella rappresentazione cifrata. In questo modo, per revocare l'accesso è sufficiente ri-cifrare una porzione della risorsa. Lo sviluppo di questa tecnica ha dato luogo ad una pubblicazione alla conferenza ACM Conference on Computer and Communications Security~\cite{ccs}.
+Nel corso del primo anno di dottorato (XXXII ciclo) in {\em Ingegneria e Scienze Applicate} presso l'{\em Università degli Studi di Bergamo}, abbiamo affrontato il tema della security nell'ambito dei servizi cloud centralizzati. In questo scenario, il Cloud Service Provider (CSP) è considerato ``{\em honest-but-curious}'', ossia esegue sempre le richieste dell'utente ma potrebbe accedere ai dati, se non protetti. Una semplice difesa è quella di applicare uno strato di cifratura, tuttavia le modalità di cifratura classiche richiederebbero di effettuare una ri-cifratura ogni qualvolta si voglia revocare l'accesso ad un utente. Abbiamo quindi proposto una modalità di cifratura con forte inter-dipendenza mutua nella rappresentazione cifrata. In questo modo, per revocare l'accesso è sufficiente ri-cifrare una porzione della risorsa. Lo sviluppo di questa tecnica ha dato luogo ad una pubblicazione alla conferenza {\em ACM Conference on Computer and Communications Security}~\cite{ccs}.
 
 \medskip
-Durante il secondo anno abbiamo studiato come le garanzie di sicurezza ottenute nei sistemi centralizzati durante il corso del primo anno potessero essere applicate ad ambienti di cloud storage decentralizzato. In questi ambienti, i dati vengono suddivisi tra vari partecipanti di una rete peer-to-peer in cambio di un pagamento. Tuttavia, questi partecipanti potrebbero agire in maniera disonesta e ignorare le richieste di cancellazione o revocata inviate dal proprietario, al fine di massimizzare il loro guadagno. Abbiamo proposto una soluzione che bilancia disponibilità e sicurezza dei dati e che permette al proprietario di impostare i valori richiesti e che permette di sfruttare la dinamicità delle reti decentralizzate per minimizzare il re-upload. Questo lavoro ha dato luogo a una pubblicazione a conferenza internazionale~\cite{tifs} e ad un articolo su rivista~\cite{globecomm}.
-Durante il secondo anno, ho anche collaborato alla scrittura del capitolo di libro ``{\em From Database to Cyber Security}''~\cite{sushil}, pubblicato da Springer.
+Durante il secondo anno abbiamo studiato come le garanzie di sicurezza nei sistemi centralizzati, analizzate durante il corso del primo anno, potessero essere applicate ad ambienti di cloud storage decentralizzato. In questi ambienti, i dati vengono suddivisi tra vari partecipanti di una rete peer-to-peer in cambio di un pagamento. Tuttavia, questi partecipanti potrebbero agire in maniera disonesta e ignorare le richieste di cancellazione/revocata inviate dal proprietario, al fine di massimizzare il loro guadagno.
+Abbiamo proposto una soluzione che bilancia disponibilità e sicurezza dei dati e che permette inoltre al proprietario di impostare i valori di soglia richiesti. La tecnica proposta sfrutta la dinamicità delle reti decentralizzate per minimizzare il re-upload.
+Questo lavoro ha dato luogo a una pubblicazione alla conferenza internazionale {\em  IEEE Global Communications Conference (GLOBECOM)}~\cite{globecom} e ad un articolo sulla {\em IEEE Transactions on Information Forensics and Security (TIFS)}~\cite{tifs}.
+Durante il secondo anno, ho anche collaborato alla scrittura del capitolo ``{\em Protecting Resources and Regulating Access in Cloud-based Object Storage}'' del libro ``{\em From Database to Cyber Security}''~\cite{sushil}, pubblicato da {\em Springer}.
 
 \medskip
-Quando si tratta con ambienti di storage decentralizzati, un aspetto importante da considerare è come individuare attori malevoli. Una volta individuati, è possibile smettere di remunerarli e migrare i dati verso nuovi attori. Questo processo deve tuttavia poter avvenire anche quando il proprietario è offline e senza dover imporre vincoli di fiducia su alcuno dei partecipanti della rete. Per risolvere questo problema, durante il terzo anno abbiamo proposto un nuovo modo per il rilascio automatizzato di informazioni segrete in un istante di tempo futuro. Questa tecnica può essere utilizzata per creare dei protocolli di {\em Delegated Challenge-Response} che, a loro volta, possono essere utilizzati per fornire le proprietà di confidenzialità e affidabilità ai sistemi di storage completamente distribuiti. Questo lavoro ha dato luogo ad un articolo che si trova attualmente in fase di revisione~\cite{ityt}.
+Quando si tratta con ambienti di storage decentralizzati, un aspetto importante da considerare è l'individuazione di attori malevoli. Una volta individuati, è possibile smettere di remunerarli e spostare i dati verso nuovi attori. Questo processo deve tuttavia poter avvenire anche quando il proprietario è off-line e senza dover imporre vincoli di fiducia su alcuno dei partecipanti della rete. Per risolvere questo problema, durante il terzo anno abbiamo proposto un nuovo modo per il rilascio automatizzato di informazioni segrete ad istanti di tempo futuri. Questa tecnica può essere utilizzata per creare dei protocolli di {\em delegated challenge-response} che, a loro volta, possono essere utilizzati per garantire le proprietà di confidenzialità e affidabilità ai sistemi di storage completamente distribuiti. Questo lavoro ha dato luogo ad un articolo che si trova attualmente in fase di revisione~\cite{ityt}.
 
 \subsubsection*{Collaborazione in Progetti Europei}
 
-Grazie alla guida del mio advisor Prof. Stefano Paraboschi, durante il primo ed il secondo anno di dottorato ho avuto la possibilità di collaborare al progetto europeo EscudoCloud (nell’ambito del programma Horizon 2020). Questo mi ha dato l’opportunità di conoscere e lavorare con gli altri partner del progetto, tra i quali vi sono sia partner accademici (Università degli Studi di Milano e TUD Damstadt) che industriali (Dell EMC, IBM, SAP, British Telecom, Wellness Telecom).
-Il progetto europeo ha coinvolto il nostro gruppo di ricerca nella realizzazione di diversi strumenti open source (disponibili all’indirizzo \url{https://github.com/escudocloud}), nonché alla scrittura di articoli per conferenze~\cite{wiscs,cscloud,cns,spc} e di deliverable di progetto, tra cui quelli che ci hanno visto maggiormente coinvolti sono stati~\cite{d26,d35,d44}.
+Grazie alla supervisione del mio advisor Prof. Stefano Paraboschi, durante il primo ed il secondo anno di dottorato ho avuto la possibilità di collaborare al progetto europeo EscudoCloud (nell’ambito del programma Horizon 2020). Questo mi ha dato l’opportunità di conoscere e lavorare con gli altri partner del progetto, tra i quali vi sono sia partner accademici (Università degli Studi di Milano e TUD Damstadt) che industriali (Dell EMC, IBM, SAP, British Telecom, Wellness Telecom).
+Il progetto europeo ha coinvolto il nostro gruppo di ricerca nella realizzazione di diversi strumenti open source (disponibili all’indirizzo \url{https://github.com/escudocloud}), nonché alla scrittura di articoli per conferenze~\cite{wiscs,cscloud,cns,spc} e di deliverable di progetto, tra cui quelli che ci hanno visto maggiormente coinvolti sono stati~\cite{d23,d26,d34,d35,d43,d44}.
 
 \medskip
 
@@ -59,6 +61,7 @@ Durante il terzo anno, invece, ho collaborato al progetto europeo MOSAICrOWN (ne
 \smallskip
 \noindent Corsi di dottorato:
 
+\sloppy{
 \begin{itemize}
 	\item \textit{Introduzione alla Programmazione Scientifica}, Prof. Francesco Fassò, presso Università degli Studi di Bergamo
 	\item \textit{Internet Economics}, Prof. Nicola Gatti, presso Politecnico di Milano
@@ -67,6 +70,7 @@ Durante il terzo anno, invece, ho collaborato al progetto europeo MOSAICrOWN (ne
 	\item \textit{Data Security and Privacy in the Cloud}, Prof.ssa Sara Foresti, presso Università degli Studi di Bergamo
 	\item \textit{Practical Approaches to Cloud Assurance and Security}, Prof. Claudio Ardagna, presso Università degli Studi di Milano
 \end{itemize}
+}
 
 \smallskip
 \noindent Scuole per dottorandi:
@@ -116,7 +120,8 @@ Per quanto concerne le attività di dottorato ed i crediti formativi, allego a q
 
 \vspace{20px}
 
-\bibliography{bib/biblio}
 \bibliographystyle{plain}
+\bibliography{bib/biblio}
+
 
 \end{document}
