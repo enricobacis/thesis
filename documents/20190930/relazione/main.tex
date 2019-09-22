@@ -1,3 +1,4 @@
+% !TeX spellcheck = it_IT
 \documentclass{article}
 
 \usepackage[italian]{babel}
@@ -18,44 +19,100 @@
 
 \vspace{40px}
 
-Nel corso del primo anno di dottorato (XXXII ciclo) in Ingegneria e Scienze Applicate presso l’Universita` degli Studi di Bergamo, ho affrontato principalmente il tema della security nell’ambito dei servizi cloud centralizzati.
-\\
+\subsubsection*{Attività di Ricerca}
 
-Durante il secondo anno, abbiamo applicato le tecniche e le conoscenze sviluppate nel corso del primo anno ai sistemi di cloud storage decentralizzati. In questo modo abbiamo potuto studiare ...
-\\
+Nel corso del primo anno di dottorato (XXXII ciclo) in Ingegneria e Scienze Applicate presso l'Università degli Studi di Bergamo abbiamo affrontato il tema della security nell'ambito dei servizi cloud centralizzati. In questo scenario, il Cloud Service Provider (CSP) è considerato ``{\em honest-but-curious}'': esegue sempre le richieste dell'utente ma potrebbe accedere ai dati, se non protetti. Una semplice difesa è quella di applicare uno strato di cifratura, tuttavia le modalità di cifratura classica richiederebbero di effettuare una ri-cifratura ogni qualvolta si voglia revocare l'accesso ad un utente. Abbiamo quindi proposto una modalità di cifratura con forte inter-dipendenza mutua nella rappresentazione cifrata. In questo modo, per revocare l'accesso è sufficiente ri-cifrare una porzione della risorsa. Lo sviluppo di questa tecnica ha dato luogo ad una pubblicazione alla conferenza ACM Conference on Computer and Communications Security~\cite{ccs}.
 
-Nel corso del terzo anno invece, abbiamo affrontato il problema di come automatizzare il rilascio di informazioni segrete in un istante di tempo futuro. ...
+\medskip
+Durante il secondo anno abbiamo studiato come le garanzie di sicurezza ottenute nei sistemi centralizzati durante il corso del primo anno potessero essere applicate ad ambienti di cloud storage decentralizzato. In questi ambienti, i dati vengono suddivisi tra vari partecipanti di una rete peer-to-peer in cambio di un pagamento. Tuttavia, questi partecipanti potrebbero agire in maniera disonesta e ignorare le richieste di cancellazione o revocata inviate dal proprietario, al fine di massimizzare il loro guadagno. Abbiamo proposto una soluzione che bilancia disponibilità e sicurezza dei dati e che permette al proprietario di impostare i valori richiesti e che permette di sfruttare la dinamicità delle reti decentralizzate per minimizzare il re-upload. Questo lavoro ha dato luogo a una pubblicazione a conferenza internazionale~\cite{tifs} e ad un articolo su rivista~\cite{globecomm}.
+Durante il secondo anno, ho anche collaborato alla scrittura del capitolo di libro ``{\em From Database to Cyber Security}''~\cite{sushil}, pubblicato da Springer.
 
-\subsubsection*{Pubblicazioni}
-
-Ho collaborato a quattro pubblicazioni nell’ambito della security in cloud per conferenze internazionali [3, 5, 4, 6].
-
-Ho collaborato a due pubblicazioni nell'ambito della security in cloud per conferenze internazionali: ``{\em Distributed shuffle index: Analysis and implementation in an industrial testbed}'' \cite{8228695} and ``{\em EncSwift and key management: An integrated approach in an industrial setting}'' \cite{8228711}. Un'altra pubblicazione è attualmente in revisione \cite{dcs}.
-\\
+\medskip
+Quando si tratta con ambienti di storage decentralizzati, un aspetto importante da considerare è come individuare attori malevoli. Una volta individuati, è possibile smettere di remunerarli e migrare i dati verso nuovi attori. Questo processo deve tuttavia poter avvenire anche quando il proprietario è offline e senza dover imporre vincoli di fiducia su alcuno dei partecipanti della rete. Per risolvere questo problema, durante il terzo anno abbiamo proposto un nuovo modo per il rilascio automatizzato di informazioni segrete in un istante di tempo futuro. Questa tecnica può essere utilizzata per creare dei protocolli di {\em Delegated Challenge-Response} che, a loro volta, possono essere utilizzati per fornire le proprietà di confidenzialità e affidabilità ai sistemi di storage completamente distribuiti. Questo lavoro ha dato luogo ad un articolo che si trova attualmente in fase di revisione~\cite{ityt}.
 
 \subsubsection*{Collaborazione in Progetti Europei}
 
-Grazie alla guida del mio advisor Prof. Stefano Paraboschi, ho avuto la possibilità di collaborare al progetto europeo EscudoCloud (nell’ambito del programma Horizon 2020). Questo mi ha dato l’opportunità di conoscere e lavorare con gli altri partner del progetto, tra i quali vi sono sia partner accademici (Università di Milano e TUD Damstadt) che e industriali (Dell EMC, IBM, SAP, British Telecom, Wellness Telecom).
-Il progetto europeo ha coinvolto il nostro gruppo di ricerca nella realizzazione di diversi strumenti open source (disponibili all’indirizzo https://github.com/ escudocloud), nonché nella stesura di alcuni deliverable di progetto [1, 2].
+Grazie alla guida del mio advisor Prof. Stefano Paraboschi, durante il primo ed il secondo anno di dottorato ho avuto la possibilità di collaborare al progetto europeo EscudoCloud (nell’ambito del programma Horizon 2020). Questo mi ha dato l’opportunità di conoscere e lavorare con gli altri partner del progetto, tra i quali vi sono sia partner accademici (Università degli Studi di Milano e TUD Damstadt) che industriali (Dell EMC, IBM, SAP, British Telecom, Wellness Telecom).
+Il progetto europeo ha coinvolto il nostro gruppo di ricerca nella realizzazione di diversi strumenti open source (disponibili all’indirizzo \url{https://github.com/escudocloud}), nonché alla scrittura di articoli per conferenze~\cite{wiscs,cscloud,cns,spc} e di deliverable di progetto, tra cui quelli che ci hanno visto maggiormente coinvolti sono stati~\cite{d26,d35,d44}.
 
-Come nell'anno precedente, grazie alla guida del mio advisor Prof. Stefano Paraboschi, ho avuto la possibilità di collaborare al progetto europeo {\em ESCUDO-CLOUD} (nell'ambito del programma Horizon 2020). Questo mi ha dato l'opportunità di collaborare con gli altri partner del progetto, tra i quali vi sono sia partner accademici (Università di Milano e TUD Damstadt) sia industriali (Dell EMC, IBM, SAP, British Telecom, Wellness Telecom).
-Durante questo anno, il progetto europeo ha coinvolto il nostro gruppo di ricerca nella realizzazione di diversi strumenti open source (disponibili all'indirizzo \url{https://github.com/escudocloud}), nonché tre deliverable di progetto \cite{D26, D35, D44}.
-\\
+\medskip
+
+Durante il terzo anno, invece, ho collaborato al progetto europeo MOSAICrOWN (nell'ambito del programma Horizon 2020), che coinvolge sia partner accademici (Università degli Studi di Milano) che industriali (Dell EMC, SAP, Mastercard, W3C). Il progetto ha già portato alla realizzazione di una demo presentata durante la conferenza internazionale IEEE International Conference on Pervasive Computing and Communications~\cite{percom}.
 
 \subsubsection*{Periodi di ricerca all'estero}
 
-Nei mesi di Luglio, Agosto e Settembre 2017, ho svolto un periodo di ricerca all'estero a Monaco di Baviera (DE) presso l'ente di ricerca Google Germany GmbH, su tematiche relative alla sicurezza del linguaggio WebAssembly, attualmente supportato da tutti i browser più diffusi.
-\\
+\begin{itemize}
+	\item Nei mesi da Luglio a Settembre 2017 ho svolto un periodo di ricerca all'estero a Monaco di Baviera (DE) presso l'ente di ricerca Google Germany GmbH, su tematiche relative alla sicurezza del linguaggio WebAssembly, attualmente supportato da tutti i browser più diffusi.
+	\item Nei mesi da Luglio a Ottobre 2018 ho svolto un periodo di ricerca a Londra (UK) presso l'ente di ricerca Google UK, su tematiche relative alla sicurezza delle applicazioni Android, con particolare attenzione
+	\item Nei mesi da Luglio a Novembre 2019 ho svolto un periodo di ricerca a Zurigo (CH) presso l'ente di ricerca Google Switzerland GmbH, su tematiche relative alla privacy dei dati degli utenti del web.
+\end{itemize}
 
-Nei mesi di Luglio, Agosto, e Settembre 2018, ho svolto un periodo di ricerca a Londra (UK) presso l'ente di ricerca Google UK, su tematiche relative alla sicurezza delle applicazioni Android.
-\\
 
-Nei mesi di Luglio, Agosto, e Settembre 2019, ho svolto un periodo di ricerca a Zurigo (CH) presso l'ente di ricerca Google Switzerland GmbH, su tematiche relative alla privacy dei dati degli utenti del web. 
+\subsubsection*{Frequenza di Corsi}
 
+\noindent Corsi di Laurea Magistrale offerti dall'Università degli Studi di Bergamo:
+
+\begin{itemize}
+	\item \textit{Intelligenza Artificiale}, Prof. Francesco Trovò
+\end{itemize}
+
+\smallskip
+\noindent Corsi di dottorato:
+
+\begin{itemize}
+	\item \textit{Introduzione alla Programmazione Scientifica}, Prof. Francesco Fassò, presso Università degli Studi di Bergamo
+	\item \textit{Internet Economics}, Prof. Nicola Gatti, presso Politecnico di Milano
+	\item \textit{Biometric Systems}, Prof. Angelo Genovese, presso Università degli Studi di Bergamo
+	\item \textit{Uso di Strumenti Informatici a Supporto del Ricercatore}, Prof. Angelo Gargantini, presso Università degli Studi di Bergamo
+	\item \textit{Data Security and Privacy in the Cloud}, Prof.ssa Sara Foresti, presso Università degli Studi di Bergamo
+	\item \textit{Practical Approaches to Cloud Assurance and Security}, Prof. Claudio Ardagna, presso Università degli Studi di Milano
+\end{itemize}
+
+\smallskip
+\noindent Scuole per dottorandi:
+
+\begin{itemize}
+	\item Python for Scientific Computing (Florence)
+	\item Google 2nd PhD Summit on Web Application Security (Munich)
+	\item Google PhD Interns Summit Conference 2017 / 2018 / 2019 (San Francisco)
+	\item Google 5th / 6th PhD Summit on Compilers and Programming Languages (Munich)
+\end{itemize}
+
+\subsubsection*{Presentazioni}
+
+Presentazioni a conferenze internazionali:
+
+\begin{itemize}
+	\item ACM Workshop on Information Sharing and Collaborative Security (WISCS), 2016
+	\item IEEE International Conference on Communications and Network Security (CNS), 2017
+	\item Cyber Security Awareness Week (CSAW), 2017
+	\item IEEE International Conference on Pervasive Computing and Communications (PERCOM), 2018
+\end{itemize}
+
+\noindent Seminari interni:
+
+\begin{itemize}
+	\item Binary Analysis and Reverse Engineering
+	\item Programming Paradigms
+	\item Competitive Programming
+\end{itemize}
+
+\noindent Seminari esterni:
+
+\begin{itemize}
+	\item Improving Android Security (Tech Talk @ Google Munich)
+	\item Bitcoin and Blockchains (Ordine degli Ingegneri di Bergamo)
+	\item Non solo Bitcoin (Ordine degli Ingegneri di Como)
+\end{itemize}
+
+
+\subsubsection*{Pubblicazioni}
+
+La lista completa delle pubblicazioni scritte durante il dottorato si trova in allegato a questo documento.
 
 \subsubsection*{Attività di dottorato}
 
-Per quanto riguarda le attività di dottorato e i crediti formativi da raggiungere, allego a questo documento la tabella che riporta la mia situazione finale.
+Per quanto concerne le attività di dottorato ed i crediti formativi, allego a questo documento la tabella che riporta la mia situazione finale.
 
 \vspace{20px}
 
