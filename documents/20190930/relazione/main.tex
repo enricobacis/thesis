@@ -5,6 +5,8 @@
 %\usepackage[T1]{fontenc} 
 \usepackage[utf8]{inputenc}
 \usepackage{url}
+\usepackage[export]{adjustbox}
+\usepackage{graphicx}
 
 \usepackage{balance}
 
@@ -24,18 +26,18 @@
 Nel corso del primo anno di dottorato (XXXII ciclo) in {\em Ingegneria e Scienze Applicate} presso l'{\em Università degli Studi di Bergamo}, abbiamo affrontato il tema della security nell'ambito dei servizi cloud centralizzati. In questo scenario, il Cloud Service Provider (CSP) è considerato ``{\em honest-but-curious}'', ossia esegue sempre le richieste dell'utente ma potrebbe accedere ai dati, se non protetti. Una semplice difesa è quella di applicare uno strato di cifratura, tuttavia le modalità di cifratura classiche richiederebbero di effettuare una ri-cifratura ogni qualvolta si voglia revocare l'accesso ad un utente. Abbiamo quindi proposto una modalità di cifratura con forte inter-dipendenza mutua nella rappresentazione cifrata. In questo modo, per revocare l'accesso è sufficiente ri-cifrare una porzione della risorsa. Lo sviluppo di questa tecnica ha dato luogo ad una pubblicazione alla conferenza {\em ACM Conference on Computer and Communications Security}~\cite{ccs}.
 
 \medskip
-Durante il secondo anno abbiamo studiato come le garanzie di sicurezza nei sistemi centralizzati, analizzate durante il corso del primo anno, potessero essere applicate ad ambienti di cloud storage decentralizzato. In questi ambienti, i dati vengono suddivisi tra vari partecipanti di una rete peer-to-peer in cambio di un pagamento. Tuttavia, questi partecipanti potrebbero agire in maniera disonesta e ignorare le richieste di cancellazione/revocata inviate dal proprietario, al fine di massimizzare il loro guadagno.
+\noindent Durante il secondo anno abbiamo studiato come le garanzie di sicurezza nei sistemi centralizzati, analizzate durante il corso del primo anno, potessero essere applicate ad ambienti di cloud storage decentralizzato. In questi ambienti, i dati vengono suddivisi tra vari partecipanti di una rete peer-to-peer in cambio di un pagamento. Tuttavia, questi partecipanti potrebbero agire in maniera disonesta e ignorare le richieste di cancellazione/revocata inviate dal proprietario, al fine di massimizzare il loro guadagno.
 Abbiamo proposto una soluzione che bilancia disponibilità e sicurezza dei dati e che permette inoltre al proprietario di impostare i valori di soglia richiesti. La tecnica proposta sfrutta la dinamicità delle reti decentralizzate per minimizzare il re-upload.
 Questo lavoro ha dato luogo a una pubblicazione alla conferenza internazionale {\em  IEEE Global Communications Conference (GLOBECOM)}~\cite{globecom} e ad un articolo sulla {\em IEEE Transactions on Information Forensics and Security (TIFS)}~\cite{tifs}.
 Durante il secondo anno, ho anche collaborato alla scrittura del capitolo ``{\em Protecting Resources and Regulating Access in Cloud-based Object Storage}'' del libro ``{\em From Database to Cyber Security}''~\cite{sushil}, pubblicato da {\em Springer}.
 
 \medskip
-Quando si tratta con ambienti di storage decentralizzati, un aspetto importante da considerare è l'individuazione di attori malevoli. Una volta individuati, è possibile smettere di remunerarli e spostare i dati verso nuovi attori. Questo processo deve tuttavia poter avvenire anche quando il proprietario è off-line e senza dover imporre vincoli di fiducia su alcuno dei partecipanti della rete. Per risolvere questo problema, durante il terzo anno abbiamo proposto un nuovo modo per il rilascio automatizzato di informazioni segrete ad istanti di tempo futuri. Questa tecnica può essere utilizzata per creare dei protocolli di {\em delegated challenge-response} che, a loro volta, possono essere utilizzati per garantire le proprietà di confidenzialità e affidabilità ai sistemi di storage completamente distribuiti. Questo lavoro ha dato luogo ad un articolo che si trova attualmente in fase di revisione~\cite{ityt}.
+\noindent Quando si tratta con ambienti di storage decentralizzati, un aspetto importante da considerare è l'individuazione di attori malevoli. Una volta individuati, è possibile smettere di remunerarli e spostare i dati verso nuovi attori. Questo processo deve tuttavia poter avvenire anche quando il proprietario è off-line e senza dover imporre vincoli di fiducia su alcuno dei partecipanti della rete. Per risolvere questo problema, durante il terzo anno abbiamo proposto un nuovo modo per il rilascio automatizzato di informazioni segrete ad istanti di tempo futuri. Questa tecnica può essere utilizzata per creare dei protocolli di {\em delegated challenge-response} che, a loro volta, possono essere utilizzati per garantire le proprietà di confidenzialità e affidabilità ai sistemi di storage completamente distribuiti. Questo lavoro ha dato luogo ad un articolo che si trova attualmente in fase di revisione~\cite{ityt}.
 
 \subsubsection*{Collaborazione in Progetti Europei}
 
 Grazie alla supervisione del mio advisor Prof. Stefano Paraboschi, durante il primo ed il secondo anno di dottorato ho avuto la possibilità di collaborare al progetto europeo EscudoCloud (nell’ambito del programma Horizon 2020). Questo mi ha dato l’opportunità di conoscere e lavorare con gli altri partner del progetto, tra i quali vi sono sia partner accademici (Università degli Studi di Milano e TUD Damstadt) che industriali (Dell EMC, IBM, SAP, British Telecom, Wellness Telecom).
-Il progetto europeo ha coinvolto il nostro gruppo di ricerca nella realizzazione di diversi strumenti open source (disponibili all’indirizzo \url{https://github.com/escudocloud}), nonché alla scrittura di articoli per conferenze~\cite{wiscs,cscloud,cns,spc} e di deliverable di progetto, tra cui quelli che ci hanno visto maggiormente coinvolti sono stati~\cite{d23,d26,d34,d35,d43,d44}.
+Il progetto europeo ha coinvolto il nostro gruppo di ricerca nella realizzazione di diversi strumenti open source (disponibili all’indirizzo \url{https://github.com/escudocloud}), nonché alla scrittura di articoli per conferenze~\cite{securecomm,wiscs,cscloud,cns,spc} e di diversi deliverable di progetto~\cite{d23,d25,d26,d34,d35,d43,d44}.
 
 \medskip
 
@@ -45,7 +47,7 @@ Durante il terzo anno, invece, ho collaborato al progetto europeo MOSAICrOWN (ne
 
 \begin{itemize}
 	\item Nei mesi da Luglio a Settembre 2017 ho svolto un periodo di ricerca all'estero a Monaco di Baviera (DE) presso l'ente di ricerca Google Germany GmbH, su tematiche relative alla sicurezza del linguaggio WebAssembly, attualmente supportato da tutti i browser più diffusi.
-	\item Nei mesi da Luglio a Ottobre 2018 ho svolto un periodo di ricerca a Londra (UK) presso l'ente di ricerca Google UK, su tematiche relative alla sicurezza delle applicazioni Android, con particolare attenzione
+	\item Nei mesi da Luglio a Ottobre 2018 ho svolto un periodo di ricerca a Londra (UK) presso l'ente di ricerca Google UK, su tematiche relative alla sicurezza delle applicazioni Android.
 	\item Nei mesi da Luglio a Novembre 2019 ho svolto un periodo di ricerca a Zurigo (CH) presso l'ente di ricerca Google Switzerland GmbH, su tematiche relative alla privacy dei dati degli utenti del web.
 \end{itemize}
 
@@ -93,7 +95,7 @@ Presentazioni a conferenze internazionali:
 	\item IEEE International Conference on Pervasive Computing and Communications (PERCOM), 2018
 \end{itemize}
 
-\noindent Seminari interni:
+\noindent Seminari erogati presso Università degli Studi di Bergamo:
 
 \begin{itemize}
 	\item Binary Analysis and Reverse Engineering
@@ -101,7 +103,7 @@ Presentazioni a conferenze internazionali:
 	\item Competitive Programming
 \end{itemize}
 
-\noindent Seminari esterni:
+\noindent Seminari erogati esternamente:
 
 \begin{itemize}
 	\item Improving Android Security (Tech Talk @ Google Munich)
@@ -122,6 +124,10 @@ Per quanto concerne le attività di dottorato ed i crediti formativi, allego a q
 
 \bibliographystyle{plain}
 \bibliography{bib/biblio}
+
+\vspace{30pt}
+\includegraphics[right]{signature}
+
 
 
 \end{document}
