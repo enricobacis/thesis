@@ -149,12 +149,14 @@ proofs of theorems are provided in Appendix~\ref{dcs:sec:proofs}.
 \label{dcs:sec:background}
 
 
+\begin{comment}
 \begin{figure}
 	\begin{center}
 		\includegraphics[width=0.8\textwidth]{figures/bdfprs-fig01}
 	\end{center}
 	\caption{\label{dcs:fig:mixing}An example of application of \name}
 \end{figure}
+\end{comment}
 
 
 
@@ -185,26 +187,27 @@ ineffective if not applied to the complete resource.  AONT protection
 schemes can be built with the use of common cryptographic functions,
 like symmetric encryption and hash functions.  An example of AONT
 scheme that guarantees complete mixing, which has also been used in
-the implementation of our prototype, is
-\name~\cite{bdfprs-ccs2016}. Intuitively, \name\ works by applying
-different rounds of encryption, each operating on a carefully designed
-combination of the bits resulting from the previous round.  With
-\name, $i$ rounds of encryption working on blocks including $b$
-mini-blocks each, guarantee complete mixing of a resource composed of
-$b^i$ mini-blocks.  Figure~\ref{dcs:fig:mixing} illustrates an example of
-mixing with two rounds of encryption. The first round mixes contiguous
-mini-blocks, while the second round mixes mini-blocks representatives
-of the different computations in the first round, providing a mixing
-of the whole resource content (as visible from the pattern-coding in
-the figure).  \name\ guarantees that each bit in the encrypted
+the implementation of our prototype, is the
+\name algorithm presented in Chapter~\ref{chap:waont}. As already discusseed, \name\ works by applying
+different rounds of encryption, each operating on a carefully designed combination of the bits resulting from the previous round.
+%With \name, $i$ rounds of encryption working on blocks including $b$ mini-blocks each, guarantee complete mixing of a resource composed of $b^i$ mini-blocks.
+%Figure~\ref{dcs:fig:mixing} illustrates an example of mixing with two rounds of encryption. The first round mixes contiguous mini-blocks, while the second round mixes mini-blocks representatives of the different computations in the first round, providing a mixing of the whole resource content (as visible from the pattern-coding in the figure).
+\name\ guarantees that each bit in the encrypted
 resource depends on the value of each bit in its plaintext
 representation.  In our context, the use of AONT guarantees protection
 to the individual slices (and shards) composing the resource, and
 therefore to the resource itself (in its entirety as well as any of
-its portions). In fact, AONT makes each portion of the resource
+its portions). In fact, \name\ makes each portion of the resource
 needed, in terms of information theory, to reconstruct any of the
 portions of the resource. The protection is then provided by the
 absence of information content.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=\textwidth]{figures/bdfprs-fig02.pdf}
+	\end{center}
+	\caption{\label{dcs:fig:scenario}Reference scenario}
+\end{figure}
 
 Figure~\ref{dcs:fig:scenario} illustrates our reference scenario.  The
 focus of this chapter is the design of proper {\em slicing\/} of
@@ -219,13 +222,6 @@ Our approach focuses on {\em slicing\/} and {\em allocation\/} and is
 agnostic with respect to the specific AONT technique to be used, as
 long as the aimed strong protection guarantees are ensured, and with
 respect to the specific DCS adopted.
-
-\begin{figure}
-	\begin{center}
-		\includegraphics[width=0.9\textwidth]{figures/bdfprs-fig02.pdf}
-	\end{center}
-	\caption{\label{dcs:fig:scenario}Reference scenario}
-\end{figure}
 
 
 
@@ -484,7 +480,7 @@ to Definition~\ref{dcs:def:replicated}, and \nk-protected, according to
 Definition~\ref{dcs:def:protected}, as a {\em $(\nk,\nr)$-allocation\/}.
 
 \smallskip
-\begin{definition}[\label{dcs:def:krallocation}$(\nk,\nr)$-Allocation]
+\begin{definition}[\label{dcs:def:krallocation}$\boldsymbol{(\nk,\nr)}$-Allocation]
 Let \Shards\ be a set of slices composing a resource, \Nodes\ be a set
 of nodes, and \f\ be an allocation function. Function \f\ is a {\em
   $(\nk,\nr)$-allocation} iff it is {\em \nk-protected} and {\em
@@ -506,7 +502,7 @@ properties in a minimal way). We call such allocation functions
 minimal, as formalized by the following definition.
 
 \smallskip
-\begin{definition}[\label{dcs:def:minimal}Minimal $(\nk,\nr)$-allocation]
+\begin{definition}[\label{dcs:def:minimal}Minimal $\boldsymbol{(\nk,\nr)}$-allocation]
 Let \Shards\ be a set of slices composing a resource, \Nodes\ be a set of nodes, 
 and \f\ be a $(\nk,\nr)$-allocation. Function \f\ is  {\em minimal\/} 
 iff:
