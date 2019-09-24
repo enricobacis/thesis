@@ -25,8 +25,10 @@ echo "[*] Fixing latex"
 $SED -i 's/\bnewcommand\b/declarecommand/g' macros.tex
 $SED -i '/theoremstyle/d' macros.tex
 $SED -i '/subsection{temp}/,$d' sections/constraints.tex
+$SED -i '/{Outline}/,$d' sections/intro.tex
+$SED -i '/sect:analysis/d' sections/intro.tex
 $SED -i -E '/newtheorem.*?(theorem|lemma|definition)/d' macros.tex
-find sections/ -type f -exec $SED -i -E '/\\(DF|df|EB|eb|MG|mg|MR|mr|SP|sp|todo|proposal|drop|copied)\{.*?\}/d' '{}' \;
+find sections/ -type f -exec $SED -i -E '/\\(DF|df|EB|eb|MG|mg|MR|mr|SP|sp|STPA|stpa|todo|proposal|drop|copied)\{.*?\}/d' '{}' \;
 find sections/ -type f -exec $SED -i -E 's@(includegraphics.*?\{)fig/@\1@g' '{}' \;
 find sections/ -type f -exec $SED -i -E 's@(includegraphics.*?\{)@\1fig/@g' '{}' \;
 

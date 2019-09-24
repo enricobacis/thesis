@@ -1,32 +1,33 @@
 \section{Economic model}\label{sect:constraints}
 
 
-This section illustrates how to constraint the protocol parameters in order to deploy an effective TL scheme.
+This section illustrates how to constraint the protocol parameters to achieve the desired TL scheme behavior.
 
 \paragraph*{Preamble}
-As previously discussed, \shortname assumes all the participants to be rational agents. 
+As previously mentioned, \shortname assumes all the participants to be rational agents. 
 This means they are driven by economic interests and they will always try to maximize their profit. 
 So, there is no interest in \secret itself, but only in its economic value.
 %
 Also, as \shortname is built upon secret sharing, it is pivotal to analyze the scenario by referencing to the behavior of groups of adversaries, and not of single users.
-We identify a coalition \coalition, as a group of parties that team up to attack the protocol by reconstructing the secret before disclosure time.
+Thus, we reference by \coalition a generic malicious coalition of users that team up to break the TL ahead of disclosure time.
 
 \paragraph*{Method}
 To limit the attack surface, we model \shortname as a negative sum game to all the possible adversarial coalitions. 
-In other words, anyone trying to break the TL schema has to face costs greater than the maximum achievable revenues. 
-To ensure this condition, we define a set of constraints among the economic parameters.
+In other words, we impose that anyone who tries to break the TL schema has to face costs greater than the maximum achievable revenues. 
+To ensure this condition, we develop a set of constraints among the economic parameters.
 % so that any rational agent that takes part to the protocol will comply with its rules.
-However, to formulate the constraints, we need to identify the maximum revenue an attacker can achieve.
-For this purpose, we focus on the best possible attack scenario in which an adversarial coalition ideally completes its entire strategy without interference by other parties.
+However, to define each of them we need to identify the maximum revenue an attacker can achieve.
+For this purpose, we focus on the best possible attack scenario, or rather the one in which an adversarial coalition ideally completes its entire strategy without interference by other parties.
 
-Before going into details, we fix the first trivial constraint which simply captures the relation among the amounts discussed in the previous section, in a single expression:
+Before going into details, we fix the first trivial constraint.
+It simply captures, in a single expresion, the relation among the amounts discussed in the previous section:
 
 \begin{equation}\label{eqbase}
 \Wshare < \BH < \RH < \Wsecret
 \end{equation}
 
-In the following we address how coalitions could try to attack the protocol based on the role of its members and the time at which the attack is executed.
-For the sake of clarity, Subsections~\ref{sect:mal_sha} and ~\ref{sect:mal_own} does not take into account the \texttt{\algowhistleblowshare} function, which will be discussed in as a general case in Subsection~\ref{sect:impact_wh}.
+In the following we address how coalitions could try to attack the protocol based on the role of its members and the time at which the attack could be performed.
+For the sake of clarity, Subsections~\ref{sect:mal_sha} and ~\ref{sect:mal_own} do not take into account the \texttt{\algowhistleblowshare} function, which will be discussed in as special case in Subsection~\ref{sect:impact_wh}.
 Finally, Section~\ref{sect:economic_po} addresses how to constraint \PO.
 
 
@@ -63,8 +64,8 @@ Finally, Section~\ref{sect:economic_po} addresses how to constraint \PO.
 \subsection{Protection against malicious shareholders}\label{sect:mal_sha}
 
 Being the shareholder rational agents, they will consider if is worth to try breaking the TL before \td or not.
-To perform a successful attack, a shareholder has to team up with other $\K - 1$ ones in order to reconstruct \secret, sell it to a buyer, and finally whistleblow it\footnote{\ The coalition \coalition could setup an additional contract between \coalition and the buyer to be sure to gain both \V and \Wsecret.}.
-In that event, \coalition would earn at most by selling and by whistleblowing, leading the protocol to failure. 
+To perform a successful attack, a shareholder has to team up with other $\K - 1$ ones in order to reconstruct \secret, sell it to a buyer, and finally whistleblow it.
+In that event, \coalition would earn at most by selling and by whistleblowing,\footnote{The coalition \coalition could setup an additional external contract between \coalition and the buyer to be sure to gain both \V and \Wsecret.} leading the protocol to failure. 
 The alternative, i.e. do not break the TL and submit the $k$ shares after \td, would lead to a gain equal to the sum of the rewards. 
 To avoid the first scenario we can impose:
 %
@@ -80,7 +81,7 @@ For this reason, in \shortname we use a stricter formulation of the constraint, 
 \K \cdot \BH > \V + \Wsecret
 \end{equation}
 
-The first constraint addresses secrecy (time $t < \td$), however, when the disclosure time passes, the objective of the TL turns into facilitating the disclosure.
+Constraint (\ref{eqcoscom2}) addresses secrecy (time $t < \td$), however, when the disclosure time passes, the objective of the TL turns into facilitating the disclosure.
 In this setting, threshold cryptography may obstacle the release of \secret, offering additional opportunities to malicious shareholders and coalitions of them.
 In fact, $\N - \K + 1$ shareholders could wait for $\K - 1$ others to submit their share and then lead the TL instance to a stall by refusing to submit their ones and wait for a buyer willing to pay \V to gain access to the secret.
 To avoid this issue, we introduce the constraint:  
@@ -133,16 +134,15 @@ Whistleblowing a share is in fact a public event, observable by anyone, so it co
 
 The values \N and \K, the number of total shareholders and the threshold, identify two cases to compute  \jopt. \newline \vspace*{-0.5em} \newline
 {\em General case.}
-A \K-shareholders coalition $\coalition$ is not the only one able to break the TL. 
-Each time a share is whistleblown, all the other $\N-\K$ shareholders and their possible coalitions are triggered as a side effect.
+In general, a \K-shareholders coalition \coalition is not the only one able to break the TL. 
+Each time a share is whistleblown the threshold \K is weakened, and all other $\N-\K$ shareholders and their possible coalitions are triggered as a side effect.
 %Let's assume that a first coalition $\coalition ^\prime $ whistleblows a share;
 %$\coalition ^\prime $ would earn $\Wshare$, while losing the bid \BH paid to obtain the share.
 %
 %, accordingly a second coalition $\coalition ^{\prime \prime} $ might form.
 %, $\coalition ^{\prime \prime} $ would save \BH in case of an hypothetical \secret reconstruction.
 %As $\BH > \Wbonus_{\share}$, then $\coalition ^{\prime \prime} $ would become the most dangerous attacker. \\	%A second coalition $\coalition ^{\prime \prime}$ that only consists of $\K-1$ shareholders would now be able to reconstruct the secret. 
-Thus, every time a share is whistleblown, the threshold \K is weakened. 
-In general, when $i$ shares have been whistleblown, a coalition $\coalition^i$ formed by $\K-i$ shareholders, would gain the ability to reconstruct the secret \secret having paid only $(\K-i) \cdot \BH$ to get its shares. 
+Overall, when $i$ shares have been whistleblown, a quiescent coalition $\coalition^i$ formed by $\K-i$ shareholders, would gain the ability to reconstruct the secret \secret having paid only $(\K-i) \cdot \BH$ to get its shares. 
 For this reason, the initial coalition \coalition formed by \K shareholders needs to determine the optimal number of shares \jopt to be whistleblown so that there is no other coalition that can profit from the weakening of \K. In particular, $\coalition$ can determine \jopt by solving the following:	
 $$\jopt = \operatorname*{max}_i\ \{i | (\K-i) \cdot \BH > \V + \Wsecret,\ i \in 1,\ldots,\K-1 \}$$
 %, while benefit from a cost saving of $i \cdot \BH$ while performing the attack. So, if $i_{inv}$ so that
@@ -156,14 +156,13 @@ If such a \jopt exists, by keeping the assumption of rational agents, the coalit
 {\em Special case $\K > \lfloor \N/2 \rfloor. $}
 In this case, the \K-shareholders coalition \coalition is the only one able to break the TL. 
 Specifically, $2\K-\N-1$ shares can be submitted while still preventing the other $\N-\K$ shareholders to reconstruct \secret. 
-However, such a number of submissions could be smaller if compared to the one identified by the general case, which is only cost dependent. 
+Please note that such number of submissions could be smaller compared to the one identified by the general case, which is only cost dependent. 
 To compute the optimal number of submissions, it is then required to select:
 $$ \jopt = \operatorname*{max}\ \{ \left( 2\K - \N - 1 \right) ; \text{ } \jopt _\text{general\textunderscore case} \}$$
 
-In both cases, the extra-revenue is then
-$ \Wer = \jopt \cdot \Wshare$.
+Whistleblowing shares permits to gain the extra-revenue $ \Wer = \jopt \cdot \Wshare$.
 %
-We can factor the two cases and formulate a stricter version of Equation~(\ref{eqcoscom2}) that takes into account the possible extra revenue by constraining:
+To address it, we formulate a stricter version of Equation~(\ref{eqcoscom2}) by constraining:
 
 \begin{equation}\label{eqcoscom2w}
 \K \cdot \BH > \V + \Wsecret + \Wer
@@ -172,22 +171,26 @@ We can factor the two cases and formulate a stricter version of Equation~(\ref{e
 
 \subsection{Evaluating Costs}\label{sect:economic_po}
 
-Now that we've discussed how to constraint revenues and bonuses so that any possible rational actor (or coalition of them) is incentivized to respect the protocol, we can discuss the constraints on \PO.
-This amount, can also be interpreted as the cost associated with the TL protocol (i.e., the owner needs to pay the shareholder profits, or the whistleblower bonuses). Overall the sum of \PO and the shareholder bids $\N \cdot \BH$ must be able to cover the costs for every possible evolution of the TL instance.
+Now that we've discussed how to constraint the parameters to prevent misbehavior, we discuss the additional requirements to be satisfied by \PO.
+In fact, it is from this amount the owner pays the shareholder profits, or the whistleblower bonuses. 
+Overall, the sum of \PO and the shareholder bids $\N \cdot \BH$ must be able to cover the costs for every possible evolution of the TL instance.
 The easiest evolution is represented by all the shareholders correctly executing the protocol. To accommodate for this case, we need to impose that the amount stored in the smart contract is enough to pay the shareholder rewards:
 
 \begin{equation}\label{eqpo1}
 \PO + \N \cdot \BH \geq \N \cdot \RH
 \end{equation}
 
-The opposite evolution is represented by the case in which the TL fails with $\K-1$ shares whistleblown before the secret itself is whistleblown.
-To make sure that the smart contract has enough value to be able to pay all the whistleblower bonuses, we impose the following constraint:
+On the contrary, the TL could fail with $\K-1$ shares whistleblown before the secret itself is whistleblown.
+To ensure the smart contract has enough value to be able to pay all the whistleblower bonuses, we impose the following constraint:
 
 \begin{equation}\label{eqpo2}
 \PO + \N \cdot \BH \geq (\K-1) \cdot \Wshare + \Wsecret
 \end{equation}
 
-As $\BH > \Wshare$, we do not need to discuss mixed evolutions of the TL. In fact, Equation~(\ref{eqpo2}) shows the maximum bonus for the ones that end with the premature release of the secret. In any other case (i.e., less than $\K-1$ share whistleblown), disclosure rewards are replaced by whistleblower bonuses, but being $\RH > \Wshare$, the Equation~(\ref{eqpo2}) still holds.
+As $\BH > \Wshare$, we do not need to discuss mixed evolutions of the TL. In fact, right side of Inequality~(\ref{eqpo2}) reports the worst case amount.
+In any other circumstance (i.e., less than $\K-1$ shares whistleblown), 
+%disclosure rewards are replaced by whistleblower bonuses, but being $\RH > \Wshare$, 
+the Inequality~(\ref{eqpo2}) still holds.
 
 \begin{figure}[t]
 	\centering
@@ -206,9 +209,11 @@ As $\BH > \Wshare$, we do not need to discuss mixed evolutions of the TL. In fac
 	\label{table:variables}	
 \end{figure} 
 
-The equations (\ref{eqbase}-\ref{eqpo2}) must all hold for any well-formed instance of \shortname. They identify the acceptance area for the variables. The owner would like to minimize \PO, while the shareholders would like to maximize the amount $\RH - \BH$.
+The constraints (\ref{eqbase}-\ref{eqpo2}) must all hold for any well-formed instance of \shortname. 
+They identify the acceptance area for the variables. 
+The owner may desire to minimize \PO, while the shareholders would like to maximize the profit $\RH - \BH$.
 A more thorough analysis of the ratio among this variables and the different strategies to set them is out of scope in this chapter.
-Table~\ref{table:variables} shows three possible configurations for $\K=5$, $\N=8$, and $\V \in {1, 10, 100}$, obtained using constraint programming, which minimize \PO.
-It is interesting to note that in all of the cases we have $\PO < \V$, which is a desirable property for the schema.
+In Table~\ref{table:variables} we show three possible configurations for $\K=5$, $\N=8$, and $\V \in {1, 10, 100}$, which minimize \PO, obtained by constraint programming.
+It is worth to remark that in all of the cases we have $\PO < \V$, which is a desirable property.
 
 

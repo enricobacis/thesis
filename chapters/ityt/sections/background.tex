@@ -3,7 +3,7 @@
 
 \begin{figure}[tp]
 	\centering
-	\includegraphics[width=.55\columnwidth]{fig/proposal}
+	\includegraphics[width=.75\columnwidth]{fig/proposal}
 	\vspace*{11pt}
 	\caption{\name (\shortname) reference diagram}
 	\label{fig:model}
@@ -16,15 +16,14 @@
 \paragraph*{Threshold Cryptography}
 
 Threshold cryptography~\cite{Shamir:1979:SS:359168.359176} enables the owner of a secret to share it among a group of participants. 
-In a \KofN threshold scheme, each of the \N participants gets a share of the secret. 
-To reconstruct the secret, a sufficient number, \K, of different shares have to be combined together, therefore setting the threshold to be \KofN.
-The main advantages of threshold cryptography are (i) distribution of trust (at least \K participants are required to reconstruct the secret), and (ii) fault tolerance (a subset of \N participants is sufficient).
+To reconstruct the secret, at least \K different shares have to be combined together.
+The main advantages of threshold cryptography are (i) distribution of trust (at least \K participants are required to reconstruct the secret), and (ii) fault tolerance (any subset of \N participants is sufficient).
 
 \smallskip
 
 \paragraph*{Secure Multi-Party Computation}
 
-A {\em secure Multi-Party Computation (\em sMPC)}~\cite{DBLP:journals/corr/abs-1804-03548,yao82} is a cryptographic protocol that allows multiple parties to jointly compute a function over their inputs while keeping them private.
+A {\em secure Multi-Party Computation (\em sMPC)} protocol~\cite{DBLP:journals/corr/abs-1804-03548,yao82} is a cryptographic protocol that allows multiple parties to jointly compute a function over their inputs while keeping them private.
 %In sMPC, inputs are never visible to the other participants of the protocol, and the outputs of the functions can be made available to a subset of them. 
 %After~\cite{yao82,yao86}, which firstly introduced the concept of MPC by computing a logic function between two parties, a lot of progress has been made~\cite{DBLP:journals/corr/abs-1804-03548}.
 Current sMPC frameworks are able to execute binary or modular arithmetic algorithms computed among several parties (even with dishonest majority) by leveraging {\em semi-homomorphic encryption}~\cite{spdz,keller2018overdrive} and {\em oblivious transfer}~\cite{mascot,rabin2005exchange}.
@@ -33,8 +32,8 @@ Current sMPC frameworks are able to execute binary or modular arithmetic algorit
 
 \paragraph*{Smart contracts}
 
-A blockchain is a growing list of blocks linked together via cryptographic properties. The blocks in the blockchain are non-mutable and are used to keep a permanent history of transactions.
-Smart contracts~\cite{szabo1997formalizing} are frameworks built on top of blockchains.
+A blockchain is an append-only list of blocks linked together via cryptographic properties. The blocks in the blockchain are non-mutable and are used to keep a permanent history of transactions.
+Smart contracts~\cite{szabo1997formalizing} are programming frameworks built on top of blockchains.
 A smart contract permits to program tamper-proof protocols whose outcome is verifiable by the whole network.
 %
 %Indeed, any piece of data stored in a smart contract can be verified by any peer of the network, and read by anyone.

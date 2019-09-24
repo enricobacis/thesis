@@ -1,13 +1,15 @@
-Time-Locks enable the release of secret data at a specific future point in time.
-Current research approaches mostly bind the recovery of the secret to the solution of cryptographic puzzles.
-These solutions, however, are  impractical, as solving the puzzle requires a significant computation effort and provides no timing guarantees.
+A Time-Lock enables the release of a secret at a specific future point in time.
+Most current research proposals bind the recovery of the secret to the solution of cryptographic puzzles.
+These solutions, however, are  impractical, as solving the puzzle requires a significant computational effort and provides no timing guarantees.
 
-To address these problems, we propose {\em \name (\shortname)}, a novel way of implementing time-locked secrets based on smart contracts to remove the need of any trusted party.
-We leverage blockchains as a distributed source of time, and we combine threshold cryptography with economic incentives and penalties, to effectively replace cryptographic puzzles.
+To overcome these problems, we propose {\em \name (\shortname)}, a novel way of implementing time-locked secrets based on smart contracts.
+\shortname relies on blockchain to measure the elapse of time, and it combines threshold cryptography with economic incentives and penalties, to effectively replace cryptographic puzzles.
 
+% to remove the need of any trusted party.
+%We rely on blockchains as a distributed source of time, and we combine 
 %This way, clients can be involved in multiple TL instances without wasting computational resources.
 
 We implement a prototype of \shortname on top of the Ethereum blockchain. 
 Our prototype leverages secure Multi-Party Computation to avoid any single point of trust.
-We also analyze resiliency to attacks with the help of economic games theory.
-The experiments demonstrate the low costs and resource consumption associated with our approach.  
+We also analyze resiliency to attacks with the help of economic game theory, in the context of rational adversaries.
+The experiments demonstrate the low cost and resource consumption associated with our approach.  

@@ -164,6 +164,28 @@ We have four players: $\owner, \shareholder_1, \shareholder_2, \shareholder_3$.
 \newcommand{\payoffs}{\mathit{payoffs}}
 \newcommand{\honest}{\mathit{honest}}
 \newcommand{\game}[1]{\mathcal{G}(#1)}
+\newcommand{\tup}[1]{\langle #1 \rangle}
+\newcommand{\rounds}{R}
+\newcommand{\emptysequence}{\varepsilon}
+\newcommand{\concat}{\cdot}
+\newcommand{\powerset}[1]{2^{#1}}
+\newcommand{\remaining}[3]{\mathit{rem}(#1,#2,#3)}
+\newcommand{\cleanGlobalAction}[2]{\mathit{clean}(#1,#2)}
+\newcommand{\cleanExecution}[1]{\mathit{clean}(#1)}
+\newcommand{\cleanSingleAction}[4]{\mathit{clean}(#1,#2,#3,#4)}
+\newcommand{\disclosedBefore}[2]{\mathit{disclPrec}(#1,#2)}
+\newcommand{\conflict}[1]{\mathit{res}(#1)}
+\newcommand{\conflictExec}[2]{\mathit{res}(#1,#2)}
+\newcommand{\conflictAction}[2]{\mathit{res}(#1,#2)}
+\newcommand{\updateDM}[2]{\mathit{upd}(#1,#2)}
+\newcommand{\valid}[1]{\mathit{valid}(#1)}
+\newcommand{\disclosedUpdated}[3]{\mathit{disclUpd}(#1,#2,#3)}
+\newcommand{\partialUpdateDM}[3]{\mathit{upd}(#1,#2,#3)}
+\newcommand{\update}[1]{\mathit{upd}(#1)}
+\newcommand{\updPrec}[3]{\mathit{updPrec}(#1,#2,#3)}
+\newcommand{\predecessor}[1]{\mathit{prec}(#1)}
+\newcommand{\outcome}[1]{O(#1)}
+\newcommand{\subgameOutcome}[2]{O_{#2}(#1)}
 
 
 This section, analyzes the interaction among coalitions using game theory to prove that they are incentivized to stick to honest behavior.
@@ -180,6 +202,8 @@ We make the following assumptions:
 %
 That is, each player in our game represents a coalition of one or more shareholders.
 %
+These shareholders cooperate and split their rewards (cooperation is enforced through external contracts).
+%
 We assume that these coalitions are common knowledge among the players.
 
 \item We assume that each player has 3 actions: 
@@ -189,9 +213,17 @@ We assume that these coalitions are common knowledge among the players.
 \item \textit{Wait} denoting that the player waits, i.e., delays his action.
 \end{compactitem}
 
-\item We assume that players are aware of all actions performed in the past (since they are visible in the blockchain). , and (2) actions are not concurrent.
+\item We assume that players execute their moves in rounds and that the possible number of rounds is known beforehand by all players.
 %
-Hence, we model the ITYT as an extensive game with perfect knowledge. 
+At each round, each player can perform one move. 
+%
+Players' moves are committed and registered on the blockchain only at the end of the round.
+%
+Finally, we assume that players are aware of all actions performed in the past rounds (since they are visible in the blockchain).
+%
+Hence, we model the ITYT as an extensive game with perfect knowledge and simultaneous moves. 
+
+\item We assume that whenever there are conflicts between actions in the same round (e.g., two players both whistleblowing the secret), these actions are resolved following a predefined order between the players.
 
 \end{compactenum}
 
@@ -199,136 +231,375 @@ Hence, we model the ITYT as an extensive game with perfect knowledge.
 %
 $\shareholder = \{\shareholder_1, \ldots, \shareholder_n\}$ is a set of shareholders.
 
+\para{Rounds}
+%
+$\rounds$ denotes the number of rounds.
+
 \para{Sharing scheme}
 %
 We consider an \shortname instance with $k-n$ secret sharing.
 
 \para{Coalition Schemas}
 %
-A coalition schema $\coalitionSchema$ over $\shareholder$ is a partition of $\shareholder$, i.e., a set $\coalitionSchema = \{ C_1, \ldots, C_m\}$ such that $\bigcup_{i}C_i = C$, $C_i \cap C_j = \emptyset$ whenever $i \neq j$, and $C_i \neq \emptyset$ for all $i$.
+A coalition schema $\coalitionSchema$ over $\shareholder$ consists of a partition of $\shareholder$, i.e., a set $\coalitionSchema = \{ C_1, \ldots, C_m\}$ such that $\bigcup_{i}C_i = \shareholder$, $C_i \cap C_j = \emptyset$ whenever $i \neq j$, and $C_i \neq \emptyset$ for all $i$, and a total order $\preceq$ over $\coalitionSchema$.
 %
-In the following, we fix a coalition $C$.
+In the following, we fix a coalition schema $\tup{\coalitionSchema,\preceq}$.
 
 
 \para{Coalition's actions}
 %
-A coalition $C$ can perform actions from the set $\coalitionActions{C} := \{\wait\} \cup \{ \wShare{S} \mid S \subseteq C \wedge S \neq \emptyset\} \cup \{ \wSecret{S} \mid S \subseteq C\}$.
+A coalition $C \in \coalitionSchema$ can perform actions from the set $\coalitionActions{C} := \{\wait, \finishgame \} \cup \{ \wShare{S} \mid S \subseteq C \wedge S \neq \emptyset\} \cup \{ \wSecret{S} \mid S \subseteq C\}$.
 
-\para{Scheduler's action}
+\para{Global actions}
 %
-We explicitly consider the actions of a scheduler $s$ that determines which player is moving next.
-%
-The scheduler for a coalition schema $\coalitionSchema$ can perform actions from the set $\schedulerActions = \{\nxt{C} \mid C \in \coalitionSchema \} \cup \{ \finishgame \}$.
-
+A global action is a function $a: \coalitionSchema \to \bigcup_{C \in \coalitionSchema} \coalitionActions{C}$ mapping each coalition $C \in \coalitionSchema$ to an action in $\coalitionActions{C}$.
 
 \para{Executions}
 %
-An execution is a (possibly infinite) alternating sequence of actions from $\schedulerActions$ and $\coalitionActions{C}$ for some coalition $C$.
+An execution is a finite sequence of global actions.
 %
-Given a coalition schema $\coalitionSchema$, an execution is a finite sequence $s_1a_1s_2a_2 \ldots s_na_n$ such that for all $1 \leq i \leq n$, $s_i \in \schedulerActions$ and there exists a $C \in \coalitionSchema$ such that $a_i \in \coalitionActions{C}$.
+%Given a coalition schema $\coalitionSchema$, an execution is a finite sequence $s_1a_1s_2a_2 \ldots s_na_n$ such that for all $1 \leq i \leq n$, $s_i \in \schedulerActions$ and there exists a $C \in \coalitionSchema$ such that $a_i \in \coalitionActions{C}$.
+%
+%Given an execution $e$, $\disclosedByCoalition{e}{C}$ denotes the set of all shares disclosed in $e$ by coalition $C$, i.e., 
+%$\disclosedByCoalition{e}{C} = \emptyset$ and $\disclosedByCoalition{a \concat e}{C} = \begin{cases} S \cup \disclosedByCoalition{e}{C} & \text{if}\ a(C) = \wShare{S}\\ \disclosedByCoalition{e}{C} & \text{otherwise} \end{cases}$.
+%%
+%Moreover, $\disclosed{e}$ the set of all shares disclosed in $e$, i.e., $\disclosed{e} = \bigcup_{C \in \coalitionSchema} \disclosedByCoalition{e}{C}$.
+%
+We say that an execution $e$ is valid for the coalition schema $\tup{\coalitionSchema,\preceq}$ and rounds $\rounds$ if $|e| \leq \rounds$ and all global actions $a$ in $e$ maps each coalition $C \in \coalitionSchema$ to an action in $\coalitionActions{C}$.
+%
+We denote by $VE(\tup{\coalitionSchema,\preceq},\rounds)$ the set of all valid executions for the coalition schema $\tup{\coalitionSchema,\preceq}$ and rounds $\rounds$.
+%
+Moreover, we denote by $VTE(\tup{\coalitionSchema,\preceq},\rounds)$ the set of all \textit{terminal} valid executions for the coalition schema $\tup{\coalitionSchema,\preceq}$ and rounds $\rounds$, i.e., the valid executions of length $\rounds$.
 
-Given an execution $e$, we denote by $\disclosed{e}$ the set of all shares disclosed in $e$, i.e., $\disclosed{e} = \bigcup_{\wShare{S} \in e} S$.
-%
-Moreover, $\disclosedByCoalition{e}{C}$ is the set of all shares disclosed in $e$ by coalition $C$, i.e., $\disclosed{e} = \bigcup_{ \exists i.\ e[i]=\nxt{C} \wedge e[i+1]=\wShare{S}} S$
 
-\para{Valid Executions}
+\para{Conflict-resolution}
 %
-We now characterize all valid executions, i.e., those modeling ITYT executions.
+Executions may contain conflicts, such as two players trying to claim the whistleblow reward for the secret.
 %
-We say that an execution $e$ is a \textit{valid complete execution} iff the following conditions hold:
-\begin{compactitem}
-\item For all $1 \leq i \leq n$, if $\elt{e}{i} = \nxt{C}$, then $\elt{e}{i+1} \in \coalitionActions{C}$.
-\item $\elt{e}{|e|} = \finishgame$.
-\item For all $1 \leq i < |e|$, $\elt{e}{i} \neq \finishgame$.
-\item Whenever $\elt{e}{i} = \finishgame$, then $i = |e|$.
-\item Whenever $\elt{e}{i} = \nxt{C}$ and $\elt{e}{i+1}  = \wSecret{S}$:
-\begin{compactitem}
-\item $|C \cup \disclosed{\prefix{e}{i}}| \geq k$.
-\item $|S \cup \disclosed{\prefix{e}{i}}| < k$.
-\item if $|e|>i+1$, then $\elt{e}{i+1} = \finishgame$.
-\end{compactitem}
-\item Whenever $\elt{e}{i} = \nxt{C}$ and $\elt{e}{i+1}  = \wShare{S}$:
-\begin{compactitem}
-\item $|S \cup \disclosed{\prefix{e}{i}}| \leq k$.
-\item if $|S \cup \disclosed{\prefix{e}{i}}| = k$ and $|e|>i+1$, then $\elt{e}{i+1} = \finishgame$.
-\end{compactitem}
-\end{compactitem}
+Such events are handled by the conditional checks in ITYT, e.g., in Algorithm~\ref{??}, in such a way that only one of the requests is processed while the other is ignored.
 %
-We denote by $\mathit{FV}(\coalitionSchema)$ the set of all full valid executions for the coalition schema $\coalitionSchema$.
+In Figure~\ref{figure:conflict-resolution}, we introduce a conflict resolution function $\conflict{e}$ which models ITYT conflict resolution behavior. 
 %
-We denote by $\mathit{V}(\coalitionSchema)$ the set of all prefixes of executions in $\mathit{FV}(\coalitionSchema)$, i.e., $V(\coalitionSchema) = \{\prefix{e}{i} \mid i \in \Nat \wedge e \in FV(\coalitionSchema)\}$.
+This allows us to simplify the definition of the payoff function.
+
+
+
+\begin{figure*}
+\begin{align*}
+	dm_0 &= \lambda C \in \coalitionSchema.\ \emptyset\\
+	\conflict{e} &= \conflictExec{e}{dm_0}\\
+	\conflictExec{a \concat e}{dm} &= \conflictAction{a}{dm} \concat \conflictExec{e}{\updateDM{a}{dm}}\\
+	\conflictExec{\emptysequence}{dm} &= \emptysequence\\
+	\conflictAction{a}{dm} & =  \lambda C \in \coalitionSchema.
+	\begin{cases}
+		\wait & \text{if}\ \neg \valid{\updPrec{a}{dm}{C}}\\
+		\wait & \text{if}\ \valid{\updPrec{a}{dm}{C}} \wedge a(C) = \wait \\
+		\wShare{S'} & \text{if}\ \valid{\updPrec{a}{dm}{C}} \wedge a(C) = \wShare{S} \wedge \\
+		& \quad S'\ \text{is largest subset of}\ S\ \text{s.t.}\ |S \cup \disclosed{\updPrec{a}{dm}{C}}| \leq k \\
+		\wSecret{S'} & \text{if}\ \valid{\updPrec{a}{dm}{C}} \wedge a(C) = \wSecret{S} \wedge \\
+		& \quad S'\ \text{is largest subset of}\ S\ \text{s.t.}\ |S \cup \disclosed{\updPrec{a}{dm}{C}}| < k 
+	\end{cases}
+	\\
+	\updateDM{a}{dm} & = \lambda C \in \coalitionSchema.\ \partialUpdateDM{a}{dm}{C}(C) \\
+	\partialUpdateDM{a}{dm}{C}& = \lambda C' \in \coalitionSchema.
+	\begin{cases}
+ 		dm(C') & \text{if}\ C' \succ C \\
+ 		\partialUpdateDM{a}{dm}{C'} & \text{if}\ C' \prec C\\
+ 		dm(C') &  \text{if}\ C' = C \wedge \neg \valid{\updPrec{a}{dm}{C}}  \\	
+ 		dm(C') &  \text{if}\ C' = C \wedge \valid{\updPrec{a}{dm}{C}} \wedge a(C') = \wait \\
+ 		dm(C') \cup S' &  \text{if}\ C' = C \wedge \valid{\updPrec{a}{dm}{C}} \wedge a(C') = \wShare{S} \wedge \\
+ 			& \quad S'\ \text{is largest subset of}\ S\ \text{s.t.}\ |S \cup \disclosed{\updPrec{a}{dm}{C}}| \leq k \\
+ 		dm(C') \cup S' \cup \{\secret\} &  \text{if}\ C' = C \wedge \valid{\updPrec{a}{dm}{C}} \wedge a(C') = \wSecret{S} \wedge \\
+ 			& \quad S'\ \text{is largest subset of}\ S\ \text{s.t.}\ |S \cup \disclosed{\updPrec{a}{dm}{C}}| < k \\
+	\end{cases}\\
+	\updPrec{a}{dm}{C} &= 
+	\begin{cases}
+		dm & \text{if}\ \neg \exists C'.\ C' \prec C\\
+		\partialUpdateDM{a}{dm}{\predecessor{C}}	 & \text{otherwise}
+	\end{cases}
+	\\
+	\predecessor{C} &= \text{largest}\ (\text{w.r.t.}\ \prec)\ C'\ \text{such that}\ C' \prec C \\
+	\valid{dm} &= \secret \not\in \disclosed{dm} \wedge |\disclosed{dm}| < k \\
+	\disclosed{dm} &= \bigcup_{C \in \coalitionSchema} dm(C)\\
+	\updateDM{\emptysequence}{dm} &= dm\\
+	\updateDM{e \concat a}{dm} &= \updateDM{a}{\updateDM{e}{dm}}\\
+	\update{e} &= \updateDM{e}{dm_0}
+\end{align*}
+\caption{Conflict resolution}\label{figure:conflict-resolution}
+\end{figure*}
+
+
+%
+%
+%\begin{figure*}
+%\begin{align*}
+%\disclosedBefore{a}{C} &= \bigcup_{S' \in \{S' \mid \exists C'. C' \prec C \wedge a(C') = \wShare{S'} \}} S' \\
+%\cleanSingleAction{\wait}{C}{k}{a} & = \wait \\
+%\cleanSingleAction{\wShare{S}}{C}{k}{a} & = \begin{cases}
+% \wait 	& \text{if}\  \exists C',S'.\ C' \prec C \wedge a(C') = \wSecret{S'}\\	
+% \wait 	& \text{if}\  | \disclosedBefore{a}{C} | \geq k \\
+% \wShare{\mathit{first}(S, k - | \disclosedBefore{a}{C} | )} & \text{if}\ 0 < k - | \disclosedBefore{a}{C} | < |S|   \\ 
+% \wShare{S} & \text{otherwise}
+%\end{cases}\\
+%\cleanSingleAction{\wSecret{S}}{C}{k}{a} & = \begin{cases}
+% \wait 	& \text{if}\  \exists C',S'.\ C' \prec C \wedge a(C') = \wSecret{S'}\\	
+% \wait 	& \text{if}\  | \disclosedBefore{a}{C} | \geq k \\
+% \wSecret{\mathit{first}(S, k - | \disclosedBefore{a}{C} | )} & \text{if}\ 0 < k - | \disclosedBefore{a}{C} | < |S|   \\ 
+% \wSecret{S} & \text{otherwise}
+%\end{cases}\\
+%\cleanGlobalAction{a}{k} & = \lambda C \in \coalitionSchema.
+%\begin{cases}
+% \wait 	& \text{if}\ a(C) = \wait\\
+% %
+% % \wShare{S}
+% \wait 	& \text{if}\ a(C) = \wShare{S} \wedge \exists C',S'.\ C' \prec C \wedge a(C') = \wSecret{S'}\\	
+% \wait 	& \text{if}\ a(C) = \wShare{S} \wedge | \bigcup_{ \substack{S' \in \{S' \mid \exists C'. C' \prec C \wedge \\ a(C') = \wShare{S'} \} }} S'| \geq k \\
+%% \wShare{S'} & \text{if} a(C) = \wShare{S} \wedge S' \subseteq S \wedge 
+%% 
+%% \wSecret{S}
+% \wait 	& \text{if}\ a(C) = \wSecret{S} \wedge \exists C',S'.\ C' \prec C \wedge a(C') = \wSecret{S'}\\	
+% \wait 	& \text{if}\ a(C) = \wSecret{S} \wedge | \bigcup_{ \substack{S' \in \{S' \mid \exists C'. C' \prec C \wedge \\ a(C') = \wShare{S'} \} }} S'| \geq k \\
+% \end{cases}
+%\\
+%\cleanExecution{e} & = \prefix{e}{|e|-1} \concat \cleanGlobalAction{\elt{e}{|e|}}{ |\disclosed{\prefix{e}{|e|-1}}|  }
+%\end{align*}
+%\caption{Conflict resolution}\label{figure:conflict-resolution}
+%\end{figure*}
+
+
+
+
+%\para{Valid Executions}
+%%
+%We now characterize all valid executions for a coalition schema $\tup{\coalitionSchema,\preceq}$ and rounds $\rounds$, i.e., those modeling ITYT executions.
+%%
+%We say that an execution $e$ is a \textit{valid execution} iff the following conditions hold:
+%\begin{compactitem}
+%\item $|e| \leq \rounds$.
+%\item For all $1 \leq i \leq |e|$ and $C \in \coalitionSchema$:
+%\begin{compactitem}
+%\item Whenever $\elt{e}{i}(C)  = \wSecret{S}$:
+%\begin{compactitem}
+%\item $|C \cup \disclosed{\prefix{e}{i-1}}| \geq k$.
+%\item $|S \cup \disclosed{\prefix{e}{i-1}}| < k$.
+%\item $i = |e|$.
+%\end{compactitem}
+%\item Whenever $\elt{e}{i}(C)  = \wShare{S}$:
+%\begin{compactitem}
+%\item $S \cap \disclosedByCoalition{\prefix{e}{i-1}}{C} = \emptyset$.
+%\item $|S \cup \disclosed{\prefix{e}{i-1}}| \leq k$.
+%\item if $|S \cup \disclosed{\prefix{e}{i-1}}| = k$, then $i = |e|$
+%\end{compactitem}
+%\end{compactitem}
+%\end{compactitem}
+%%
+%We denote by $VE(\tup{\coalitionSchema,\preceq},\rounds)$ the set of all valid executions for the coalition schema $\tup{\coalitionSchema,\preceq}$ and rounds $\rounds$.
+%%
+%Moreover, we denote by $VTE(\tup{\coalitionSchema,\preceq},\rounds)$ the set of all \textit{terminal} valid executions for the coalition schema $\tup{\coalitionSchema,\preceq}$ and rounds $\rounds$, i.e., those executions for which all extensions are not valid executions.
+
+
 
 
 \para{Payoffs}
 %
-The payoff function $\payoffs: \mathit{valid}(\coalitionSchema) \to (\coalitionSchema \to \Nat^{|\coalitionSchema|})$ is as follows:
+The payoff function $\payoffs: VTE(\tup{\coalitionSchema,\preceq},\rounds) \to (\coalitionSchema \to \Nat)$ is defined as $\payoffs(e) = \payoffs'(\conflict{e}, \update{e})$, where $\payoffs'(e,dm)$ is given in Figure~\ref{figure:payoff}.
+\begin{figure*}
+\begin{align*}
+	\payoffs'(e,dm)& = \lambda C \in \coalitionSchema. \begin{cases}
+ 		V + \Wbonus_s + (|dm(C)| -1) \cdot \Wbonus_h - |C| \cdot \BH & \text{if}\  \neg \valid{dm} \wedge \secret \in dm(C)\\
+ 		|dm(C)|\cdot \Wbonus_h - |C| \cdot \BH & \text{if}\  \neg \valid{dm} \wedge \secret \not\in dm(C)\\
+ 		(|C| - |dm(C)|) \cdot \RH + |dm(C)| \cdot \Wbonus_h - |C| \cdot \BH & \text{if}\  \valid{dm}
+ 	\end{cases}	
+\end{align*}
+\caption{Payoff function}\label{figure:payoff}
+\end{figure*}
+
 %
-\begin{compactitem}
-\item If there is an $i$ such that 	$\elt{e}{|e|-2} = \nxt{C}$ and $\elt{e}{|e|-1}  = \wSecret{S}$, then:
-\begin{compactitem}
-\item $\payoffs(e)(C) = |S| \cdot \Wbonus_h + V + \Wbonus_s - |C| \cdot \BH$.
-\item $\payoffs(e)(C') = |\disclosedByCoalition{e}{C'}| \cdot  \Wbonus_h - |C'| \cdot \BH$ for all $C' \in \coalitionSchema\setminus\{C\}$.
-\end{compactitem}
-\item If $|\disclosed{e}| = k$, then: % This is implicit:  $\forall S \subseteq \mathcal{H}.\ \wSecret{S} \not\in e$
-\begin{compactitem}
-\item $\payoffs(e)(C) = |\disclosedByCoalition{e}{C}| \cdot  \Wbonus_h - |C| \cdot \BH$ for all $C \in \coalitionSchema$.
-\end{compactitem}
-\item Otherwise:
-\begin{compactitem}
-\item $\payoffs(e)(C) = |\disclosedByCoalition{e}{C}| \cdot  \Wbonus_h + |C \setminus \disclosedByCoalition{e}{C}| \cdot \RH  - |C| \cdot \BH$ for all $C \in \coalitionSchema$.
-\end{compactitem}
-\end{compactitem}
+%
+%
+%
+%\begin{compactitem}
+%\item If $\elt{e}{|e|}(C)  = \wSecret{S}$, then:
+%\begin{compactitem}
+%
+%\item $\payoffs(e)(C)$ is $V + \Wbonus_s + (|\disclosedByCoalition{\prefix{e}{|e|-1}}{C}|+\remaining{k}{e}{C}) \cdot \Wbonus_h - |C| \cdot \BH$ if there is no $C' \prec C$ for which $\elt{e}{|e|}(C')  = \wSecret{S'}$ and $(|\disclosedByCoalition{\prefix{e}{|e|-1}}{C}|++\remaining{k}{e}{C}) \cdot \Wbonus_h - |C| \cdot \BH$ otherwise.
+%
+%\item $\payoffs(e)(C')$, for $C' \neq C$, is $V + \Wbonus_s + (|\disclosedByCoalition{\prefix{e}{|e|-1}}{C}|+\remaining{k}{e}{C}) \cdot \Wbonus_h - |C| \cdot \BH$ if there is no $C' \prec C$ for which $\elt{e}{|e|}(C')  = \wSecret{S'}$ and $(|\disclosedByCoalition{\prefix{e}{|e|-1}}{C}|++\remaining{k}{e}{C}) \cdot \Wbonus_h - |C| \cdot \BH$ otherwise.
+%\textcolor{red}{MARCO: Fix remaining to account for order between wShare and wSecret}
+%\end{compactitem}
+%	
+%\end{compactitem}
+%
+%
+%
+%\begin{compactitem}
+%\item If there is an $i$ such that 	$\elt{e}{|e|-2} = \nxt{C}$ and $\elt{e}{|e|-1}  = \wSecret{S}$, then:
+%\begin{compactitem}
+%\item $\payoffs(e)(C) = |S| \cdot \Wbonus_h + V + \Wbonus_s - |C| \cdot \BH$.
+%\item $\payoffs(e)(C') = |\disclosedByCoalition{e}{C'}| \cdot  \Wbonus_h - |C'| \cdot \BH$ for all $C' \in \coalitionSchema\setminus\{C\}$.
+%\end{compactitem}
+%\item If $|\disclosed{e}| = k$, then: % This is implicit:  $\forall S \subseteq \mathcal{H}.\ \wSecret{S} \not\in e$
+%\begin{compactitem}
+%\item $\payoffs(e)(C) = |\disclosedByCoalition{e}{C}| \cdot  \Wbonus_h - |C| \cdot \BH$ for all $C \in \coalitionSchema$.
+%\end{compactitem}
+%\item Otherwise:
+%\begin{compactitem}
+%\item $\payoffs(e)(C) = |\disclosedByCoalition{e}{C}| \cdot  \Wbonus_h + |C \setminus \disclosedByCoalition{e}{C}| \cdot \RH  - |C| \cdot \BH$ for all $C \in \coalitionSchema$.
+%\end{compactitem}
+%\end{compactitem}
 
 \para{Player function}
 %
-The player function for a coalition schema $C$ is the function $P: V(\coalitionSchema) \to \coalitionSchema \cup \{\mathtt{sched}\}$ defined as follows:
+The player function for a coalition schema $\tup{\coalitionSchema,\preceq}$ is the function $P: VE(\tup{\coalitionSchema,o},\rounds) \to \powerset{\coalitionSchema}$ defined as follows:
 %
-$P(e) = C$ if $\elt{e}{|e|} = \nxt{C}$, and $P(e) = \mathtt{sched}$ if $\elt{e}{|e|} \in \bigcup_{C \in \coalitionSchema} \coalitionActions{C}$.
+$P(e) = \coalitionSchema$ for all $e$.
 
 
 \para{Game}
 %
-Given a coalition schema $\coalitionSchema$,  $\game{\coalitionSchema}$ is the extensive game with perfect information where the set of players is $\coalitionSchema$, the set of histories is $\mathit{V}(\coalitionSchema)$, the set of terminal histories is $\mathit{FV}(\coalitionSchema)$, the player function is $P$, and the preference relation $\preceq_C$, for each player $C \in \coalitionSchema$, is as follows: $e \preceq e'$ iff $\payoffs(e)(C) \leq \payoffs(e')(C)$.
-%
-\textcolor{red}{Marco: Not sure if the way in which we're currently handling the player function $P$ (and the scheduling) is correct! Double check this!}
+Given a coalition schema $\tup{\coalitionSchema,\preceq}$ and rounds $\rounds$,  $\game{\tup{\coalitionSchema,\preceq},\rounds}$ is the extensive game with perfect information and simultaneous moves where the set of players is $\coalitionSchema$, the set of histories is $VE(\tup{\coalitionSchema,\preceq},\rounds)$, the set of terminal histories is $VTE(\tup{\coalitionSchema,\preceq},\rounds)$, the player function is $P$, and the preference relation $\preceq_C$, for each player $C \in \coalitionSchema$, is as follows: $e \preceq e'$ iff $\payoffs(e)(C) \leq_C \payoffs(e')(C)$.
+
 
 
 \para{Strategy}
 %
-A \textit{strategy} for the game $\game{\coalitionSchema}$ and player $C \in \coalitionSchema$ is a function $s_C$ that assigns to each execution $e \in V(\coalitionSchema) \setminus FV(\coalitionSchema)$ such that $P(e) = C$ an action $a \in \coalitionActions{C}$ such that $e \cdot a \in V(\coalitionSchema)$.
+A \textit{strategy} for the game $\game{\tup{\coalitionSchema,\preceq},\rounds}$ and player $C \in \coalitionSchema$ is a function $s_C$ that assigns to each execution $e \in VE(\tup{\coalitionSchema,\preceq},\rounds) \setminus FVE(\tup{\coalitionSchema,\preceq},\rounds)$ such that $C \in P(e)$ an action $a \in \coalitionActions{C}$.
 %
 A \textit{strategy profile} is a function $s$ mapping each player $C \in \coalitionSchema$ to a strategy $s_C$. 
+
+Given a strategy profile $s$ and an execution $e$, we denote by $s(e)$ the global action $a$ defined as $\lambda C \in \coalitionSchema.\ s(C)(e)$.
+%
+The outcome of a strategy profile $s$, written $\outcome{s}$, is the terminal history $a_1 \cdot a_2 \cdot \ldots \cdot a_\rounds$ defined as follows:
+%
+$a_1 = s(\emptysequence)$, $a_2 = s(a_1)$, $a_3 = s( a_1 \cdot a_2)$, \ldots, $a_\rounds = s(a_1 \cdot a_2 \cdot \ldots \cdot a_{\rounds-1})$.
+
+
+Given a strategy profile $s$ and two executions $e,e'$, $s_e(e')$ is the global action $\lambda C \in \coalitionSchema.\ s(C)(e\concat e')$.
+%
+The outcome of a strategy $s$ given an execution $e$, written $\subgameOutcome{s}{e}$, is $e \concat a_1 \concat a_2 \concat \ldots \concat a_{\rounds - |e|}$ such that $a_1 = s_e(\emptysequence)$, $a_2 = s_e(a_1)$, $a_3 = s_e( a_1 \cdot a_2)$, \ldots, $a_{\rounds - |e|} = s_e(a_1 \cdot a_2 \cdot \ldots \cdot a_{\rounds - |e|-1})$.
 
 The \textit{honest strategy $\honest_C$ for the player $C \in \coalitionSchema$} is the function mapping each execution $e \in V(\coalitionSchema) \setminus FV(\coalitionSchema)$ such that $P(e) = C$ to the action $\wait$.
 
 
+
+
 \para{Correctness}
 %
-We now show that the honest behavior is the \textit{only} rational choice.
+Theorem~\ref{theorem:honest-is-equilibrium} states that the strategy $\lambda C \in \coalitionSchema.\ \honest_C$ is an  equilibrium for the game $\game{\tup{\coalitionSchema, \preceq}, \rounds}$, i.e., rational agents will not deviate from it.
 
-\begin{theorem}
-Let $\coalitionSchema$ be a coalition schema.
+
+\begin{theorem}\label{theorem:honest-is-equilibrium}
+Let $\tup{\coalitionSchema, \preceq}$ be a coalition schema and $\rounds$ be a number of rounds.
 %
-The strategy $\lambda C \in \coalitionSchema.\ \honest_C$ is the unique sub-game perfect equilibrium for the game $\game{\coalitionSchema}$.
+The strategy $\lambda C \in \coalitionSchema.\ \honest_C$ is a sub-game perfect equilibrium for the game $\game{\tup{\coalitionSchema, \preceq}, \rounds}$.
 \end{theorem}
 
 \begin{proof}
-Let $\coalitionSchema$ be a coalition schema.
+Let $\tup{\coalitionSchema, \preceq}$ be a coalition schema and $\rounds$ be a number of rounds.
 %
 In the following, $\honest$ denotes the strategy $\lambda C \in \coalitionSchema.\ \honest_C$.
 %
-To show that $\honest$ is a unique sub-game perfect equilibrium for the game $\game{\coalitionSchema}$, we need to show that (1) $\honest$ is a sub-game perfect equilibrium for $\game{\coalitionSchema}$, and (2) no other sub-game perfect equilibrium exists.
-
-\para{$\honest$ is a sub-game perfect equilibrium for $\game{\coalitionSchema}$}
+To show that $\honest$ is a unique sub-game perfect equilibrium for the game $\game{\tup{\coalitionSchema, \preceq}, \rounds}$, we need to show that for all non-terminal execution $e \in VE(\tup{\coalitionSchema,\preceq},\rounds) \setminus FVE(\tup{\coalitionSchema,\preceq},\rounds)$, players $C \in \coalitionSchema$, and strategy $s$, $\payoffs(\subgameOutcome{\honest}{e})(C) \geq \payoffs(\subgameOutcome{\honest[C \mapsto s]}{e})(C)$.
 %
-To show that $\honest$ is a sub-game perfect equilibrium for $\game{\coalitionSchema}$, we need to show that for every player $C \in \coalitionSchema$ and every non-terminal execution $e \in V(\coalitionSchema) \setminus FV(\coalitionSchema)$ such that $P(e) = C$, ..\textcolor{red}{Marco: FILL ME!}	
+Thanks to the so-called ``one deviation property''~\cite[Lemma 98.2]{osborne1994course} and given that $\game{\tup{\coalitionSchema, \preceq}, \rounds}$ is a finite-horizon game, to show that $\honest$ is a unique sub-game perfect equilibrium is enough showing that for all non-terminal execution $e \in VE(\tup{\coalitionSchema,\preceq},\rounds) \setminus FVE(\tup{\coalitionSchema,\preceq},\rounds)$, players $C \in \coalitionSchema$, and actions $a \in \coalitionActions{C}$, $\payoffs(\subgameOutcome{\honest}{e})(C) \geq \payoffs(\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e})(C)$.
 
-\textcolor{red}{Marco: TODO!}	
+Let $e$ be an arbitrary non-terminal execution $e \in VE(\tup{\coalitionSchema,\preceq},\rounds) \setminus FVE(\tup{\coalitionSchema,\preceq},\rounds)$, $C \in \coalitionSchema$ be a player, and $a \in \coalitionActions{C}$ be an action.
+%
+We now show that $\payoffs(\subgameOutcome{\honest}{e})(C) \geq \payoffs(\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e})(C)$.
+%
+There are two cases:
+\begin{compactitem}
+\item[$\neg \valid{\update{e}}$: ]
+%
+We claim that (1) $\conflict{\subgameOutcome{\honest}{e})(C)} = \conflict{\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e})(C)}$ (since the $\conflict{\cdot}$ function will map all actions after $e$ to $\lambda C \in \coalitionSchema.\ \wait$), and (2) $\update{\subgameOutcome{\honest}{e})(C)} = \update{\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e})(C)}$ (since all applications of $\update{\cdot}$ after $e$ will not modify the disclosure mapping $dm$).
+%
+From this and $\payoffs(e) = \payoffs'(\conflict{e}, \update{e})$, we immediately get that $\payoffs(\subgameOutcome{\honest}{e})(C) = \payoffs(\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e})(C)$.
 
-\para{$\honest$ is the unique sub-game perfect equilibrium for $\game{\coalitionSchema}$}
+\textcolor{red}{TODO: Prove claims (1) and (2)!}
 
+\item[$\valid{\update{e}}$: ]
+%
+There are three cases:
+\begin{compactitem}
+\item[$a = \wait$:]
+%
+Then, $\honest = \honest[C \mapsto \honest(C)[e \mapsto a]]$ and, therefore, $\payoffs(\subgameOutcome{\honest}{e})(C) = \payoffs(\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e})(C)$.
+
+\item[$a = \wShare{S}$:]
+%
+Let $a_h$ be the global action produced according to the strategy profile $\honest$ and $a'$ be the action produced according to the profile $\honest[C \mapsto \honest(C)[e \mapsto a]$.
+%
+That is, $a_h = \lambda C \in \coalitionSchema.\ \wait$ while $a'= a_h[C \mapsto a]$.
+%
+We claim that  $ \updPrec{a'}{\update{e}}{C} =  \updPrec{a_h}{\update{e}}{C}$.
+%
+Let $dm$ be the disclosure mapping $\updPrec{a_h}{\update{e}}{C}$.
+%
+Observe that $\valid{dm}$ holds since $\valid{\update{e}}$ holds and all players $C' \prec C$ select the move $\wait$ according to both $a_h$ and $a'$.
+%
+There are two cases:
+\begin{compactitem}
+\item[$|S \cup \disclosed{dm}| \geq k$:]
+
+Let $S'$ be the largest subset of $S$ such that $|S \cup \disclosed{dm}| \leq k$.
+%
+Then, $\payoffs(\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e})(C)$ is equivalent to  
+
+\item[$|S \cup \disclosed{dm}| < k$:] 
+%
+Then, $\payoffs(\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e})(C) = (|C| - |dm(C)|) \cdot \RH + |dm(C)| \cdot \Wbonus_h - |C| \cdot \BH$ (because $\valid{\update{\subgameOutcome{\honest}{e})(C) = \payoffs(\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e}}}$ holds).
+%
+Hence, we have that:
+	\begin{align*}
+			&\payoffs(\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e})(C) \\
+			&\ = (|C| - |dm(C)|) \cdot \RH + |dm(C)| \cdot \Wbonus_h - |C| \cdot \BH \\  
+			&\ < (|C| - |dm(C)|) \cdot \RH + |dm(C)| \cdot \RH - |C| \cdot \BH \\	% \BH < \RH
+			&\ = |C|  \cdot \RH - |C| \cdot \BH \\ 
+			&\ = \payoffs(\subgameOutcome{\honest}{e})(C) % because |dm'(C)| = 0 since all users are honest
+	\end{align*}
+
+
+\end{compactitem}
+
+
+
+
+
+
+
+\item[$a = \wSecret{S}$:]
+%
+\textcolor{red}{TODO!}
+
+\end{compactitem}
+\end{compactitem}
+
+
+
+%\textcolor{red}{Marco: TODO!}	
+%
+%\para{$\honest$ is the unique sub-game perfect equilibrium for $\game{\tup{\coalitionSchema, \preceq}, \rounds}$}
+%%
+%\textcolor{red}{Uniqueness might follow from (1) $\game{\tup{\coalitionSchema, \preceq}, \rounds}$ is a finite game, and (2) no player is indifferent w.r.t. any two outcomes (check this!). These two assumptions are enough for uniqueness of equilibrium for extensive games with perfect information~\cite{osborne1994course}. The same should hold if we consider simultaneous moves as well.}
+%\textcolor{red}{Marco: TODO!}	
+\end{proof}
+
+Theorem~\ref{} states that all strategy profiles $s$ that are equilibria are such that $O(s) = \honest_{trace}$, where $\honest_{trace}$ is the execution where all players keep playing $\wait$.
+
+\begin{theorem}
+Let $\tup{\coalitionSchema, \preceq}$ be a coalition schema and $\rounds$ be a number of rounds.
+%
+For all strategy profiles $s$, 
+%
+if $s$ is a sub-game perfect equilibrium for $\game{\tup{\coalitionSchema, \preceq}, \rounds}$, then
+%
+$\outcome{s} = a_1 \cdot a_2 \cdot \ldots \cdot a_{\rounds}$ where for all $1 \leq i \leq \rounds$ and all $C \in \coalitionSchema$, $a_i(C) = \wait$.
+\end{theorem}
+
+\begin{proof}
 \textcolor{red}{Marco: TODO!}	
 \end{proof}
+
 
 
 

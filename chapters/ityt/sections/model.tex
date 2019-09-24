@@ -84,7 +84,7 @@ Each principal $p \in \principals$ is associated with a wallet $\wallet{p}$, acc
 \medskip
 
 \subsubsection*{Protocol parameters}
-This table references to all the parameters that characterize an instance of the \shortname protocol. \\
+This table defines all the parameters that characterize an instance of the \shortname protocol. \\
 
 \begin{tabular}{ll}
 	\secret & secret \\
@@ -106,14 +106,14 @@ This table references to all the parameters that characterize an instance of the
 \subsubsection*{Smart Contract Data}
 The \shortname smart contract is a data structure with functions. 
 Its initialization and functions will be described in Section~\ref{sect:sc_init} and \ref{sect:sc_functions} respectively. The data structure is composed by the following entries.
-Moreover, we will use the notation $sc.x$ to reference to the smart contract variable $x$.
+Moreover, we will use the notation $sc.x$ to refer to the smart contract variable $x$.
 
 
 \begin{tabular}{ll}
 	& \\
 	
 	\PO, \BH & economic pawn and bids \\
-	\td, \te, \N, \K & technical parameters \\
+	\td, \te, \N, \K & technical parameters\\
 	\RH, \Wsecret, \Wshare & economic rewards \\
 	$\left[ \shares \right]$ & array of deposited shares \\
 	\Csecret & commitment of the secret \\
@@ -207,7 +207,7 @@ Whenever \whistleblower possesses a share \share or the secret \secret before \t
 
 
 \begin{algorithm}[t]
-	\caption{Shareholder commitment to take part to \shortname}\label{algo:shareholder_commitment}
+	\caption{Shareholder commitment to participate in \shortname}\label{algo:shareholder_commitment}
 	\begin{algorithmic}[1]
 		\MyAlgBlock{input}
 		\Desc{$sc$}{\hspace*{1.5em}smart contract identifier}
@@ -247,10 +247,10 @@ If so, she agrees to deposit her bid, \BH ($<\RH$).
 This process is shown in Algorithm~\ref{algo:shareholder_commitment}.
 %
 As soon as all the shareholders have executed this algorithm, the state of the instance is set to \statelocked, and the TL is active. 
-If not all the parties commit before a defined deadline, the deposited funds are returned to their proprietaries and the instance setup aborts. This will be discussed more in details in Section~\ref{sect:realization}.
+If any party does not commit before a defined deadline, the deposited funds are returned to their proprietaries and the instance setup aborts. This will be discussed with more details in Section~\ref{sect:realization}.
 
 The algorithms do not check for the economic parameters to be well-formed (see Section~\ref{sect:constraints}). 
-In fact, as all the parameters are public and immutable, a malformed game will not be played by any participant in the same way a lottery whose top prize worth less than the ticket price will not sell tickets.
+In fact, as all the parameters are public and immutable, a malformed game will not be played by any participant, in the same way as a lottery whose top prize is worth less than the ticket price will not sell tickets.
 
 %Do we really want this paragraph here: {\em The reader may notice that, in this setting, the secret could be recovered before the activation of the TL, because at that time all the share have already been distributed. We emphasize that the current section proposes a high level representation of the protocol. In Section~\ref{sect:ityt_exec} we show how to securely distribute the shares, without exposing \secret until TL activation, while still ensuring the shareholders they will be able to fulfill the commitments.}
 
@@ -262,9 +262,9 @@ Before presenting the functions (actions), it is important to note that the intr
 
 \smallskip
 \texttt{\algowhistleblowshare}:
-This function enables the whistleblower to report the misbehave of a single shareholder.
+This function enables the whistleblower to report the misbehavior of a single shareholder.
 \whistleblower sends the share $\share_{i}$ to the contract.
-If the commitment matches, the share whistleblow bonus $\Wshare$ ($<$$\BH$), is payed to the whistleblower.
+If the commitment matches, the share whistleblow bonus $\Wshare$ ($<$$\BH$), is paid to the whistleblower.
 In that event, the shareholder $\shareholder_{i}$, would lose the chance of earning her reward, \RH.
 Another consequence, is that if the number of whistleblown shares would equal $k$, then the TL would be marked as failed (i.e., no further actions allowed).
 The function is presented is Algorithm~\ref{algo:whistleblow_share}.
@@ -301,10 +301,10 @@ The function is presented is Algorithm~\ref{algo:whistleblow_share}.
 \texttt{\algowhistleblowsecret}:
 It enables the whistleblower \whistleblower, to prove the possession of the secret ahead of the disclosure time \td.
 In detail, \whistleblower sends a secret, $\secret'$ to the contract.
-If the commitment matches, then the TL is marked as failed and the secret whistleblow bonus \Wsecret ($>\RH$) is payed to the whistleblower.
+If the commitment matches, then the TL is marked as failed and the secret whistleblow bonus \Wsecret ($>\RH$) is paid to the whistleblower.
 In that event, all the shareholders would be subject to an economic penalty that results in the loss of the bid already paid, and the remaining smart contract funds are destroyed.
 The function is illustrated is Algorithm~\ref{algo:whistleblow_secret}.
-The need for both \texttt{\algowhistleblowshare} and \texttt{\algowhistleblowsecret} will be discussed in the following.
+The need for both \texttt{\algowhistleblowshare} and \texttt{\algowhistleblowsecret} will be discussed in the following sections.
 
 \begin{algorithm}[t]
 	\caption{SC function to whistleblow the secret before \td}\label{algo:whistleblow_secret}
