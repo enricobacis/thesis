@@ -28,7 +28,7 @@ $SED -i '/subsection{temp}/,$d' sections/constraints.tex
 $SED -i '/{Outline}/,$d' sections/intro.tex
 $SED -i '/sect:analysis/d' sections/intro.tex
 $SED -i -E '/newtheorem.*?(theorem|lemma|definition)/d' macros.tex
-$SED -i '/\label{sect:introduction}.*/a \\\input{sections/preintro}' sections/intro.tex
+$SED -i '/\label{sect:introduction}.*/a \\\input{delta/preintro}' sections/intro.tex
 $SED -i 's/details in Section~\\ref{sect:analysis}/the following sections/g' sections/model.tex
 find sections/ -type f -exec $SED -i -E '/\\(DF|df|EB|eb|MG|mg|MR|mr|SP|sp|STPA|stpa|todo|proposal|drop|copied)\{.*?\}/d' '{}' \;
 find sections/ -type f -exec $SED -i -E 's@(includegraphics.*?\{)fig/@\1@g' '{}' \;
