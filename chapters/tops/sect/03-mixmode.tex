@@ -52,7 +52,7 @@ Absence of a mini-block from the result will prevent reconstruction of the whole
 To ensure the possibility of mixing, at each round, blocks composed of mini-blocks resulting from different encryption operations of the previous round, we assume a macro-block composed of a number of mini-blocks, which is the power of the number (\mnumb) of mini-blocks in a block. For instance, with reference to our running example where blocks are composed of 4 mini-blocks (i.e., \mnumb=4), macro-blocks can be composed of $4^x$ mini-blocks, with an arbitrary $x$ ($x$=2 in the example of Figure~\ref{ms:fig:mixing}). The assumption can be equivalently stated in terms of blocks, where the number of blocks \bnum\ will be $4^{x-1}$. Any classical padding solution can be employed to guarantee such a requirement, if not already satisfied by the original bit sequence in input.
 
 \begin{figure}[!t]
-\begin{footnotesize}
+\begin{small}
 \hrule          %
 \begin{tabbing}
 \hfill\\
@@ -70,7 +70,7 @@ To ensure the possibility of mixing, at each round, blocks composed of mini-bloc
 \end{tabbing}
 \hrule
 \vspace{.5em}
-\end{footnotesize}
+\end{small}
 \caption{\label{ms:fig:encrypt}Mixing within a macro-block \macroblock{}}
 \end{figure}
 
