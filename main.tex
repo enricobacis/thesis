@@ -113,6 +113,9 @@ fontsize=\footnotesize,
 
 \newcommand{\declarecommand}[1]{\providecommand{#1}{}\renewcommand{#1}}
 
+% draft commands
+\newcommand{\new}[1]{{\color{blue} #1}}
+
 
 \begin{document}
 
@@ -128,6 +131,7 @@ fontsize=\footnotesize,
 %\vspace*{\stretch{1}}
 \newgeometry{left=35mm,right=35mm,top=45mm,bottom=45mm}
 \begin{abstract}
+\addcontentsline{toc}{chapter}{Abstract}
 \subimport*{chapters/abstract/}{main}
 \end{abstract}
 %\vspace{\stretch{5}}
@@ -197,12 +201,12 @@ fontsize=\footnotesize,
 % -------------- ACKNOWLEDGMENTS ------------ %
 
 \chapter*{Acknowledgments}
+\addcontentsline{toc}{chapter}{Acknowledgments}
 \label{chap:acknowledgments}
 \subimport*{chapters/acknowledgments/}{main}
 
 
 % ------------------ BIBLIOGRAPHY ----------------- %
-
 
 \bstctlcite{IEEEexample:BSTcontrol}
 \bibliographystyle{bib/IEEEtranS}
