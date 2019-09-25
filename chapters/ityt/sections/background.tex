@@ -3,7 +3,7 @@
 
 \begin{figure}[tp]
 	\centering
-	\includegraphics[width=.75\columnwidth]{fig/proposal}
+	\includegraphics[height=170pt]{fig/proposal}
 	\vspace*{11pt}
 	\caption{\name (\shortname) reference diagram}
 	\label{fig:model}
@@ -16,8 +16,11 @@
 \paragraph*{Threshold Cryptography}
 
 Threshold cryptography~\cite{Shamir:1979:SS:359168.359176} enables the owner of a secret to share it among a group of participants. 
-To reconstruct the secret, at least \K different shares have to be combined together.
-The main advantages of threshold cryptography are (i) distribution of trust (at least \K participants are required to reconstruct the secret), and (ii) fault tolerance (any subset of \N participants is sufficient).
+To reconstruct the secret, at least \K different shares have to be combined.
+Hence, the advantages of threshold cryptography are (i) distribution of trust,
+%(at least \K participants are required to reconstruct the secret), 
+and (ii) fault tolerance.
+%(any subset of \N participants is sufficient).
 
 \smallskip
 
@@ -51,8 +54,8 @@ We remark that the {\em time} primitive differs from TL in that it does not keep
 
 A malicious adversary~\cite{Hazay10anote} is someone who is willing to perform any action to attack a protocol. A rational adversary~\cite{Groce2012}, instead, subverts the protocol only if it is economically convenient.
 %has a stake in the protocol success, and therefore tries to violate the protocol, such as colluding with other parties, only when the expected outcome is greater than the one obtained by complying with the rules. 
-This enables the use of game theoretic concepts to analyze cryptographic protocols executed by rational actors~\cite{Asharov2016,raap,Provi07summaryreport}.
+Modeling the participants as rational enables the use of game theory concepts to analyze cryptographic protocols~\cite{Asharov2016,raap,Provi07summaryreport}.
 %
 %Rational cryptography~\cite{raap}, \cite{Provi07summaryreport} analyzes cryptographic protocols, run by rational adversaries, by the application of game theory methodology.
 %It has been shown that game theoretic concepts can be used to capture the cryptographic notion of security.
-\shortname models all the participants as rational, thus it does not rely on any trust or honesty assumption on them.
+\shortname models all the participants as rational, and it does not rely on any trust or honesty assumption on them.

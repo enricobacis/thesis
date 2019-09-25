@@ -150,7 +150,8 @@ We have four players: $\owner, \shareholder_1, \shareholder_2, \shareholder_3$.
 
 \newcommand{\wait}{\mathtt{wait}}
 \newcommand{\wShare}[1]{\mathtt{wbShare}(#1)}
-\newcommand{\wSecret}[1]{\mathtt{wbSecret}(#1)}
+%\newcommand{\wSecret}[1]{\mathtt{wbSecret}(#1)}
+\newcommand{\wSecret}{\mathtt{wbSecret}}
 \newcommand{\nxt}[1]{\mathtt{nxt}(#1)}
 \newcommand{\coalitionActions}[1]{\overline{A(#1)}}
 \newcommand{\schedulerActions}{\coalitionActions{s}}
@@ -248,7 +249,7 @@ In the following, we fix a coalition schema $\tup{\coalitionSchema,\preceq}$.
 
 \para{Coalition's actions}
 %
-A coalition $C \in \coalitionSchema$ can perform actions from the set $\coalitionActions{C} := \{\wait, \finishgame \} \cup \{ \wShare{S} \mid S \subseteq C \wedge S \neq \emptyset\} \cup \{ \wSecret{S} \mid S \subseteq C\}$.
+A coalition $C \in \coalitionSchema$ can perform actions from the set $\coalitionActions{C} := \{\wait, \wSecret \} \cup \{ \wShare{S} \mid S \subseteq C \wedge S \neq \emptyset\}$. % \cup \{ \wSecret{S} \mid S \subseteq C\}$.
 
 \para{Global actions}
 %
@@ -296,8 +297,8 @@ This allows us to simplify the definition of the payoff function.
 		\wait & \text{if}\ \valid{\updPrec{a}{dm}{C}} \wedge a(C) = \wait \\
 		\wShare{S'} & \text{if}\ \valid{\updPrec{a}{dm}{C}} \wedge a(C) = \wShare{S} \wedge \\
 		& \quad S'\ \text{is largest subset of}\ S\ \text{s.t.}\ |S \cup \disclosed{\updPrec{a}{dm}{C}}| \leq k \\
-		\wSecret{S'} & \text{if}\ \valid{\updPrec{a}{dm}{C}} \wedge a(C) = \wSecret{S} \wedge \\
-		& \quad S'\ \text{is largest subset of}\ S\ \text{s.t.}\ |S \cup \disclosed{\updPrec{a}{dm}{C}}| < k 
+		\wSecret & \text{if}\ \valid{\updPrec{a}{dm}{C}} \wedge a(C) = \wSecret \wedge |C \cup \disclosed{dm}| \geq k \\
+		\wait & \text{if}\ \valid{\updPrec{a}{dm}{C}} \wedge a(C) = \wSecret \wedge |C \cup \disclosed{dm}| < k \\
 	\end{cases}
 	\\
 	\updateDM{a}{dm} & = \lambda C \in \coalitionSchema.\ \partialUpdateDM{a}{dm}{C}(C) \\
@@ -309,9 +310,11 @@ This allows us to simplify the definition of the payoff function.
  		dm(C') &  \text{if}\ C' = C \wedge \valid{\updPrec{a}{dm}{C}} \wedge a(C') = \wait \\
  		dm(C') \cup S' &  \text{if}\ C' = C \wedge \valid{\updPrec{a}{dm}{C}} \wedge a(C') = \wShare{S} \wedge \\
  			& \quad S'\ \text{is largest subset of}\ S\ \text{s.t.}\ |S \cup \disclosed{\updPrec{a}{dm}{C}}| \leq k \\
- 		dm(C') \cup S' \cup \{\secret\} &  \text{if}\ C' = C \wedge \valid{\updPrec{a}{dm}{C}} \wedge a(C') = \wSecret{S} \wedge \\
- 			& \quad S'\ \text{is largest subset of}\ S\ \text{s.t.}\ |S \cup \disclosed{\updPrec{a}{dm}{C}}| < k \\
-	\end{cases}\\
+ 		dm(C') \cup \{\secret\} &  \text{if}\ C' = C \wedge \valid{\updPrec{a}{dm}{C}} \wedge a(C') = \wSecret \wedge \\
+ 			& \quad |C \cup \disclosed{dm}| \geq k \\	 		 
+ 		dm(C')  &  \text{if}\ C' = C \wedge \valid{\updPrec{a}{dm}{C}} \wedge a(C') = \wSecret \wedge \\
+ 			& \quad |C \cup \disclosed{dm}| < k \\	
+ 	\end{cases}\\
 	\updPrec{a}{dm}{C} &= 
 	\begin{cases}
 		dm & \text{if}\ \neg \exists C'.\ C' \prec C\\
@@ -319,8 +322,8 @@ This allows us to simplify the definition of the payoff function.
 	\end{cases}
 	\\
 	\predecessor{C} &= \text{largest}\ (\text{w.r.t.}\ \prec)\ C'\ \text{such that}\ C' \prec C \\
-	\valid{dm} &= \secret \not\in \disclosed{dm} \wedge |\disclosed{dm}| < k \\
-	\disclosed{dm} &= \bigcup_{C \in \coalitionSchema} dm(C)\\
+	\valid{dm} &= \secret \not\in \bigcup_{C \in \coalitionSchema} dm(C) \wedge |\disclosed{dm}| < k \\
+	\disclosed{dm} &= (\bigcup_{C \in \coalitionSchema} dm(C)) \setminus \{\secret\}\\
 	\updateDM{\emptysequence}{dm} &= dm\\
 	\updateDM{e \concat a}{dm} &= \updateDM{a}{\updateDM{e}{dm}}\\
 	\update{e} &= \updateDM{e}{dm_0}
@@ -491,11 +494,15 @@ Theorem~\ref{theorem:honest-is-equilibrium} states that the strategy $\lambda C 
 \begin{theorem}\label{theorem:honest-is-equilibrium}
 Let $\tup{\coalitionSchema, \preceq}$ be a coalition schema and $\rounds$ be a number of rounds.
 %
-The strategy $\lambda C \in \coalitionSchema.\ \honest_C$ is a sub-game perfect equilibrium for the game $\game{\tup{\coalitionSchema, \preceq}, \rounds}$.
+If the following condition hold:
+$$\RH > V + \Wbonus_s + (k -1) \cdot \Wbonus_h \wedge \RH > \BH$$
+then the strategy $\lambda C \in \coalitionSchema.\ \honest_C$ is a sub-game perfect equilibrium for the game $\game{\tup{\coalitionSchema, \preceq}, \rounds}$.
 \end{theorem}
 
 \begin{proof}
 Let $\tup{\coalitionSchema, \preceq}$ be a coalition schema and $\rounds$ be a number of rounds.
+%
+Moreover, we assume that $\RH > V + \Wbonus_s + (k -1) \cdot \Wbonus_h \wedge \RH > \BH$ hold.
 %
 In the following, $\honest$ denotes the strategy $\lambda C \in \coalitionSchema.\ \honest_C$.
 %
@@ -537,14 +544,26 @@ Let $dm$ be the disclosure mapping $\updPrec{a_h}{\update{e}}{C}$.
 %
 Observe that $\valid{dm}$ holds since $\valid{\update{e}}$ holds and all players $C' \prec C$ select the move $\wait$ according to both $a_h$ and $a'$.
 %
+Moreover, observe that $\secret \not\in dm(C)$ since $\valid{\update{e}}$ holds and all players $C' \prec C$ select the move $\wait$ according to both $a_h$ and $a'$.
+%
 There are two cases:
 \begin{compactitem}
 \item[$|S \cup \disclosed{dm}| \geq k$:]
-
+%
 Let $S'$ be the largest subset of $S$ such that $|S \cup \disclosed{dm}| \leq k$.
 %
-Then, $\payoffs(\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e})(C)$ is equivalent to  
-
+Then, $\payoffs(\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e})(C)$ is equivalent to  $|dm(C)| \cdot \Wbonus_h - |C| \cdot \BH$.
+%
+Hence, we have that:
+%
+	\begin{align*}
+			&\payoffs(\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e})(C) \\
+			&\ = |dm(C)| \cdot \Wbonus_h - |C| \cdot \BH \\  
+			&\ < |dm(C)| \cdot \RH - |C| \cdot \BH \\	% \BH < \RH
+			&\ \leq |C| \cdot \RH - |C| \cdot \BH \\	% |dm(C)| \leq |C| by construction (since $\secret \not\in dm(C)$)
+			&\ = \payoffs(\subgameOutcome{\honest}{e})(C) % because |dm'(C)| = 0 since all users are honest
+	\end{align*}
+%
 \item[$|S \cup \disclosed{dm}| < k$:] 
 %
 Then, $\payoffs(\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e})(C) = (|C| - |dm(C)|) \cdot \RH + |dm(C)| \cdot \Wbonus_h - |C| \cdot \BH$ (because $\valid{\update{\subgameOutcome{\honest}{e})(C) = \payoffs(\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e}}}$ holds).
@@ -561,27 +580,42 @@ Hence, we have that:
 
 \end{compactitem}
 
+\textcolor{red}{TODO: Prove claim $ \updPrec{a'}{\update{e}}{C} =  \updPrec{a_h}{\update{e}}{C}$}
 
-
-
-
-
-
-\item[$a = \wSecret{S}$:]
+\item[$a = \wSecret$:]
 %
-\textcolor{red}{TODO!}
+Let $a_h$ be the global action produced according to the strategy profile $\honest$ and $a'$ be the action produced according to the profile $\honest[C \mapsto \honest(C)[e \mapsto a]$.
+%
+That is, $a_h = \lambda C \in \coalitionSchema.\ \wait$ while $a'= a_h[C \mapsto \wSecret]$.
+%
+There are two cases:
+\begin{compactitem}
+\item[$|C \cup \disclosed{dm}| < k$:]
+%
+Then, $\conflictAction{a_h}{\update{e}} = \conflictAction{a'}{\update{e}}$ since the conflict resolution replaces $\wSecret$ with $\wait$.
+%
+Therefore, $\payoffs(\subgameOutcome{\honest}{e})(C) = \payoffs(\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e})(C)$.
 
+
+\item[$|C \cup \disclosed{dm}| \geq k$:]	
+%
+Then, $\conflictAction{a'}{\update{e}} = \conflictAction{a_h}{\update{e}}[C \mapsto \wSecret]$.
+%
+Therefore,  $\payoffs(\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e})(C)$ is $V + \Wbonus_s + (|dm(C)| -1) \cdot \Wbonus_h - |C| \cdot \BH$.
+%
+Hence, we have that:
+	\begin{align*}
+			&\payoffs(\subgameOutcome{\honest[C \mapsto \honest(C)[e \mapsto a]]}{e})(C) \\
+			&\ = V + \Wbonus_s + (|dm(C)| -1) \cdot \Wbonus_h - |C| \cdot \BH \\  
+			&\ <  V + \Wbonus_s + (|dm(C)| -1) \cdot \Wbonus_h - |C| \cdot \BH \\	% \BH < \RH
+			&\ \leq  V + \Wbonus_s + (k -1) \cdot \Wbonus_h - |C| \cdot \BH \\ % |dm(C)| - 1 \leq k-1
+			&\ \leq  \RH - |C| \cdot \BH \\ % RH > V + \Wbonus_s + (k -1) \cdot \Wbonus_h			
+			&\ \leq |C|  \cdot \RH - |C| \cdot \BH \\ % since |C| \geq 1
+			&\ = \payoffs(\subgameOutcome{\honest}{e})(C) % because |dm'(C)| = 0 since all users are honest
+	\end{align*}
 \end{compactitem}
 \end{compactitem}
-
-
-
-%\textcolor{red}{Marco: TODO!}	
-%
-%\para{$\honest$ is the unique sub-game perfect equilibrium for $\game{\tup{\coalitionSchema, \preceq}, \rounds}$}
-%%
-%\textcolor{red}{Uniqueness might follow from (1) $\game{\tup{\coalitionSchema, \preceq}, \rounds}$ is a finite game, and (2) no player is indifferent w.r.t. any two outcomes (check this!). These two assumptions are enough for uniqueness of equilibrium for extensive games with perfect information~\cite{osborne1994course}. The same should hold if we consider simultaneous moves as well.}
-%\textcolor{red}{Marco: TODO!}	
+\end{compactitem}
 \end{proof}
 
 Theorem~\ref{} states that all strategy profiles $s$ that are equilibria are such that $O(s) = \honest_{trace}$, where $\honest_{trace}$ is the execution where all players keep playing $\wait$.
@@ -597,7 +631,19 @@ $\outcome{s} = a_1 \cdot a_2 \cdot \ldots \cdot a_{\rounds}$ where for all $1 \l
 \end{theorem}
 
 \begin{proof}
-\textcolor{red}{Marco: TODO!}	
+Let $\tup{\coalitionSchema, \preceq}$ be a coalition schema and $\rounds$ be a number of rounds.
+%
+Moreover, let $s$ be a sub-game perfect equilibrium for $\game{\tup{\coalitionSchema, \preceq}, \rounds}$.
+%
+Assume, for contradiction's sake, that $\outcome{s} \neq a_1 \cdot a_2 \cdot \ldots \cdot a_{\rounds}$ where for all $1 \leq i \leq \rounds$ and all $C \in \coalitionSchema$, $a_i(C) = \wait$.
+%
+Hence, there is a prefix of $a_1 \cdot a_2 \cdot \ldots \cdot a_{\rounds}$ such that the strategy profile results in an action that is different from $\lambda C \in \coalitionSchema.\ \wait$.
+%
+Let $e$ be such a prefix.
+%
+We know that $s \neq \honest$ (otherwise the outcome would have ben exactly $a_1 \cdot a_2 \cdot \ldots \cdot a_{\rounds}$ where for all $1 \leq i \leq \rounds$ and all $C \in \coalitionSchema$, $a_i(C) = \wait$).
+%
+
 \end{proof}
 
 

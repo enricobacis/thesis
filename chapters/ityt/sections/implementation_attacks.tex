@@ -6,7 +6,8 @@ In this section we highlight the vulnerabilities to which the implementation of 
 
 The discussion so far has focused on the single user perspective regarding the sMPC cryptographic technique.
 In fact, its usage guarantees to each shareholder \shareholder, that no one but her (i.e., neither the owner) will have visibility on her share, \share.
-This capability limits the knowledge of each single user about an istance \shortname, hence it makes possible to model \shortname as an economic game. 
+Thus, it ensures to each shareholder that no one, except herself, will be able to submit her share at disclosure time. 
+This capability limits the knowledge of each single user about an instance \shortname, hence it makes possible to model \shortname as an economic game. 
 
 \begin{figure}[t]
 	\centering
@@ -20,10 +21,10 @@ Actually, the malicious coalition of shareholders, \coalition, could devise a st
 Such a strategy would have been successful if it did not allow anyone to satisfy the smart contract commitments.
 In our setting, it means to recover \secret without exposing \key, and therefore preventing anyone to invoke the \texttt{WhistleblowSecret} function.
 As a matter of fact, the malicious coalition can instantiate an offensive sMPC that receives as input at least $k$-of-$n$ shares plus the ciphertext, \ciphertext.
-Then, the sMPC internally perform both the reconstruction of \key and the extraction of the secret by \unwrap.
+Then, it performs internally both the reconstruction of \key and the extraction of the secret by \unwrap.
 Finally, it outputs to all the attackers only \secret. 
 
-To prevent the execution of the attack it is sufficient to select a cryptosystem \cipvocabulary such that there is no sMPC protocol that permits to execute \dec by producing \secret as the only output.
+To prevent the execution of this attack it is sufficient to select a cryptosystem \cipvocabulary such that there is no sMPC protocol that permits to execute \dec by producing \secret as the only output.
 We identified two possible alternatives to satisfy the previous requirement.
 
 \begin{enumerate}
