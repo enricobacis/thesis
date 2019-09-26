@@ -1,4 +1,46 @@
-\lipsum[1]
+\new {
+
+% GENERAL
+In this thesis, we presented novel techniques for providing effective data confidentiality and access control to resources stored in centralized, decentralized, and distributed cloud storage systems.
+%
+
+% MIX&SLICE
+As regards centralized cloud storage providers, in Chapter~\ref{chap:waont} we presented an approach for efficiently enforcing access revocation on encrypted resources stored at external providers. Our solution enables data owners to effectively revoke access by re-encrypting a small portion of the resource.
+%
+As opposed to techniques based on other {\em All-or-Nothing Transforms} in which an actor that has access to the file could try to maintain a local copy of the keys to counter access revocation, {\em Mix\&Slice} enforces that the amount of data that the malicious actor would have to store to counter the action can not be determined a priori, as the data owner could re-encrypt a varying portion of the resource.
+%
+Our implementation and experimental evaluation confirm the efficiency and effectiveness of our proposal.
+
+% DCS
+In Chapter~\ref{chap:dcs}, we analyzed how to extend the guarantees that we obtained with {\em Mix\&Slice} to provide effective secure protection to resources in decentralized cloud storage services.
+%
+Our approach enables resource owners to protect their resources and to control their decentralized allocation to different nodes in the network. We investigated different strategies for splitting and distributing resources and analyzed them in terms of availability and security guarantees. Our proposal allows the data owner to control the granularity of slicing and diversification of allocation to ensure aimed availability and security guarantees even in presence of malicious coalition of nodes that are willing to disobey the owner's requests in order to maximize their revenue.
+
+% ITYT
+	\item In this chapter we presented \name (\shortname), a practical schema to deploy Time-Locked secrets on the blockchain by leveraging an economic model in which every rational actor (or coalition of them) is economically incentivized to comply with the protocol.
+	\item As a future work, we are already considering the use of homomorphic encryption for the share generation process. This will not require any changes to the protocol itself but only to the \texttt{generate\_shares} primitive, effectively yielding the $\shortname_{HE}$ implementation. This realization would further reduce the time and resources required to setup the \shortname protocol.
+	\item Another future work is to analyze the inequalities in Section~\ref{sect:constraints} from an economic standpoint and to better characterize the relation among the parameters.
+
+	
 
 \section{Future Work}
-\lipsum[2]
+
+We can discuss the future work for the three main areas of studies of the thesis: 
+Finally, to conclude the thesis, we discuss the future work that can be done in the three areas that were considered in this work: \textit{centralized}, \textit{decentralized}, and \textit{distributed} storage systems.
+
+\begin{description}
+	
+	\item[Centralized storage systems] -- Chapter~\ref{chap:waont} illustrated how to use {\em Mix\&Slice} to enable the use. The two implementations discussed in the evaluation section were based on \textit{AES} and \textit{OAEP}. We showed how the use of \textit{OAEP} enables the use of micro-blocks with size up to 256 bits. Yet, for the sake of simplicity, we used the 	 \textit{SHA2} class of functions to compute the hash, however this is not optimized in common CPUs.
+	
+	As future work it would be possible to compare the results with other functions that also comply with the requirements in Section~\ref{ms:sect:oaep}. A preliminary evaluation with the linear transformations proposed by Karame et al. for \textit{Bastion}~\cite{bastion} and by Naor et al.~\cite{Naor1999} showed promising results.
+	
+	\item[Decentralized storage systems] --
+	
+	\item[Distributed storage systems] --
+		\item In this chapter we presented \name (\shortname), a practical schema to deploy Time-Locked secrets on the blockchain by leveraging an economic model in which every rational actor (or coalition of them) is economically incentivized to comply with the protocol.
+		\item As a future work, we are already considering the use of homomorphic encryption for the share generation process. This will not require any changes to the protocol itself but only to the \texttt{generate\_shares} primitive, effectively yielding the $\shortname_{HE}$ implementation. This realization would further reduce the time and resources required to setup the \shortname protocol.
+		\item Another future work is to analyze the inequalities in Section~\ref{sect:constraints} from an economic standpoint and to better characterize the relation among the parameters.
+	
+\end{description}
+
+}
