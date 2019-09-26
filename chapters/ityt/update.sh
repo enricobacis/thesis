@@ -32,6 +32,7 @@ $SED -i '/\label{sect:introduction}.*/a \\\input{delta/preintro}' sections/intro
 $SED -i 's/details in Section~\\ref{sect:analysis}/the following sections/g' sections/model.tex
 find sections/ -type f -exec $SED -i -E 's@(includegraphics.*?\{)fig/@\1@g' '{}' \;
 find sections/ -type f -exec $SED -i -E 's@(includegraphics.*?\{)@\1fig/@g' '{}' \;
+find sections/ -type f -exec $SED -i -E 's/compactitem/itemize/g' '{}' \;
 
 echo "[*] list of manual fixes needed to exclude analysis:"
 ag --ignore 'sections/analysis.tex' 'sect:analysis' sections/
