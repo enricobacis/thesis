@@ -10,6 +10,7 @@ This section describes our protocol from a game theory standpoint and analyzes a
 	\item The underlying mechanism of regulation is a non sum zero game. This means that expected value received by users when they behave honestly is supposed to be positive (negative on the contrary), with negative disincentive being more penalizing that the positive benefit that they could receive.
 \end{itemize}
 
+\mg{Sketch of security analysis}
 
 We have four players: $\owner, \shareholder_1, \shareholder_2, \shareholder_3$.
 
@@ -39,6 +40,7 @@ We have four players: $\owner, \shareholder_1, \shareholder_2, \shareholder_3$.
 	%
 	The  payoff is $-\BH +  \Wbonus_{\share}$.
 	%
+	Observe that $-\BH +  \Wbonus_{\share} < 0$ (since ...).\df{\mg{Missing constraint?} Dario, can you check this?}
 	\end{compactitem}
 	%
 	Hence, a rational shareholder will follow the protocol and disclose his share only at $\td$.
@@ -62,6 +64,7 @@ We have four players: $\owner, \shareholder_1, \shareholder_2, \shareholder_3$.
 		%
 		The coalition payoff is $-2\BH + \RH + \Wbonus_{\share}$.
 		%
+		Observe that $-2\BH + 2\RH > 0$ since $\RH - \BH > 0$ and \mg{Missing constraint $-\BH +  \Wbonus_{\share} < 0$?}.
 		
 		
 		\item [\textbf{$\shareholder_2$ behaves honestly and $\shareholder_1$ whistleblows $\share_1$}:]
@@ -80,19 +83,26 @@ We have four players: $\owner, \shareholder_1, \shareholder_2, \shareholder_3$.
 		%
 		Payoff is negative (see (3)).
 		
+		\item[\mg{Unclear scenarios:}]
+		I'm not sure if the following scenarios make sense. \mg{Input/comments needed}
 		
 		\begin{compactitem}
 			\item[\textbf{Both wbl. shares and S and sell secret:}]
 			%
 			The coalition payoff is $-2\BH + 2\Wbonus_{\share} + \Wbonus_{\secret} + V$.
 			
+			\mg{This seems the worst case!}
 
 			%
+			\mg{Can shareholders whistleblow both shares and secret to get more whistleblowing rewards? I guess they might do that using MPC + other contracts?}
+			\EB{when you whistleblow the secret it becomes public, so nobody would pay you \V to know it. Dario, Have we addedd to the constraints something to prevent this? As in whistleblowing shares + secret? maybe something like the maximum reward is k-1 shares + secret and then add a check to the function above?}
 			
 			\item[\textbf{Whistleblow secret and sell secret:}]
 			%
 			The coalition payoff is $-2\BH + \Wbonus_{\secret} + V$.
 			%
+			\mg{Can shareholders whistleblow the secret and sell it at the same time? (Wouldn't secret be public then?)} 
+			\EB{yep, public, we don't have to deal with that.}
 		\end{compactitem}
 		
 		
@@ -118,11 +128,13 @@ We have four players: $\owner, \shareholder_1, \shareholder_2, \shareholder_3$.
 		%
 		The coalition payoff is $-3\BH + \RH + 2\Wbonus_{\share}$.
 		%
+		Observe that $-3\BH + \RH + 2\Wbonus_{\share} > 0$ since $\RH - \BH > 0$ and \mg{Missing constraint $-\BH +  \Wbonus_{\share} < 0$?}.\EB{Dario, could you check?}
 		
 		\item [\textbf{$\shareholder_1$ behaves honestly and $\shareholder_2$ whistleblows $\share_2$}:]
 		%
 		The coalition payoff is $-2\BH + \RH + \Wbonus_{\share}$.
 		%
+		Observe that $-2\BH + 2\RH > 0$ since $\RH - \BH > 0$ and \mg{Missing constraint $-\BH +  \Wbonus_{\share} < 0$?}.\EB{Dario, here also}
 		
 		
 		\item [\textbf{Other cases}:]
@@ -137,10 +149,14 @@ We have four players: $\owner, \shareholder_1, \shareholder_2, \shareholder_3$.
 	
 	 
 	\item [\textbf{Owner $\owner$ is dishonest:}]	
+	\mg{What is the goal of a dishonest owner $\owner$?}
+	\EB{To set up a fake game to gain shareholder's money}
 	\end{compactitem}
 
 \item[\textbf{Players $\owner, \shareholder_1, \shareholder_2, \shareholder_3$ are not controlled by distinct users:}]
 %
+\mg{How to address this? Interesting?}
+\EB{as in all of them the same? yep sure, we just have to show that it's not a zero-sum game (i.e., burn some money)}
 	
 \end{compactitem}
 
