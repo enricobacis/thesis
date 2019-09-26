@@ -28,7 +28,7 @@ In addition, we use the {\em \mimc}~\cite{albrecht2016mimc} algorithm to impleme
 
 \begin{figure*}[t]
 	\centering
-	\includegraphics[width=0.9\textwidth]{fig/protocol_fsm_simple_version.pdf}
+	\includegraphics[width=1.0\textwidth]{fig/protocol_fsm_simple_version.pdf}
 	\caption{State machine representing the valid transitions of the $\shortnamempc$ protocol. Each transition name maps to an action (an Ethereum smart contract function) that can be invoked by each participant in order to modify the state. Square brackets contain additional conditions to be met to make valid transitions}
 	\label{fig:fsm}
 \end{figure*}
@@ -115,9 +115,9 @@ There is no need to materialize \key or \secret in the smart contract, as all th
 
 \begin{figure}[t]
 	\centering
-	\subfloat[A colluding coalition could reveal \secret before contract activation] {{\includegraphics[width=0.9\columnwidth]{fig/time1} }}\\
+	\subfloat[A colluding coalition could reveal \secret before contract activation] {{\includegraphics[width=1.0\columnwidth]{fig/time1} }}\\
 	\vspace*{2pt}
-	\subfloat[A colluding coalition could only reveal \key before contract activation] {{\includegraphics[width=0.9\columnwidth]{fig/time2} }}
+	\subfloat[A colluding coalition could only reveal \key before contract activation] {{\includegraphics[width=1.0\columnwidth]{fig/time2} }}
 	\caption{Preventing secret exposure before smart contract activation}%
 	\label{fig:key_delayed_wrap}%
 \end{figure}
