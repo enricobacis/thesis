@@ -28,6 +28,8 @@ $SED -i '/subsection{temp/I,$d' sections/constraints.tex
 $SED -i '/{Outline/I,$d' sections/intro.tex
 $SED -i '/sect:analysis/d' sections/intro.tex
 $SED -i 's/width=0.9/width=1.0/g' sections/realization.tex
+$SED -i 's@height=170pt@width=1.0\\textwidth@' sections/intro.tex
+$SED -i 's@height=170pt@width=0.75\\textwidth@' sections/background.tex
 $SED -i -E '/newtheorem.*?(theorem|lemma|definition)/d' macros.tex
 $SED -i '/\label{sect:introduction}.*/a \\\input{delta/preintro}' sections/intro.tex
 $SED -i 's/details in Section~\\ref{sect:analysis}/the following sections/g' sections/model.tex
