@@ -24,7 +24,7 @@ find sections/ -type f -exec $SED -i -E 's/(article|paper)/chapter/g' '{}' \;
 echo "[*] Fixing latex"
 $SED -i 's/\bnewcommand\b/declarecommand/g' macros.tex
 $SED -i '/theoremstyle/d' macros.tex
-$SED -i '/subsection{temp}/,$d' sections/constraints.tex
+$SED -i '/subsection{temp/I,$d' sections/constraints.tex
 $SED -i '/{Outline}/,$d' sections/intro.tex
 $SED -i '/sect:analysis/d' sections/intro.tex
 $SED -i -E '/newtheorem.*?(theorem|lemma|definition)/d' macros.tex
