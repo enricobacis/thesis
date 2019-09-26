@@ -23,15 +23,38 @@ An aspect that has to be considered in the implementation of the client is the p
 \caption{\label{ms:table:oaep}Performance comparison of mixing implementations}
 \end{figure}
 
+\begin{figure}[t]
+	\centering
+	\scriptsize
+	\begin{tabular}[b]{| c | c | c | c | }	
+		\hline
+		\# threads &	M\&S ($mb=32$) & M\&S + OAEP ($mb=128$) & M\&S + OAEP ($mb=256$)
+		\\	\hline \hline
+		 1 & 1.232219 s & 7.975573 s & 10.612364 s
+		\\ \hline
+		 2 & 0.675429 s & 4.221637 s & 5.573989 s
+		\\ \hline
+		 4 & 0.377186 s & 2.203773 s & 2.873994 s
+		\\ \hline
+		 8 & 0.221935 s & 1.126843 s & 1.474798 s
+		\\ \hline
+		16 & 0.166853 s & 0.916469 s & 1.155425 s
+		\\ \hline
+		32 & 0.169903 s & 0.937394 s & 1.125076 s
+		\\	\hline
+	\end{tabular}
+	\label{ms:fig:implementation}	
+\end{figure}
+
 All code has been written in Python, because for all the functions the computational performance is not a constraint. The only component written in C was the invocation of the mixing for encryption and decryption functions. Since most current Intel x86 CPUs offer the support for a hardware implementation of AES, named AES-NI, we considered its adoption in our experiments. 
 
-\new{
+\draft{
 
 We implemented both the mixing structure based on AES (described in Section~\ref{ms:sect:mixing}) and the OAEP-based one (described in Section~\ref{ms:sect:oaep}) to compare their performance profile. The results are presented in Figure~\ref{ms:table:oaep}.
 From the table File size, macro-block size, and mini-block size being the same, the OAEP-based implementation is faster compared to the AES one that does not leverage the hardware implementation. In fact, even tough the base application of {\em AES-128} and {\em sha-512} share a similar performance profile, the OAEP approach has a benefit due to the reduction on the number of rounds. However, on architectures that provide a native hardware implementation for {\em AES}, its use shows the best performance profile for \name and should be preferred.
 As also discussed in Section~\ref{ms:sect:oaep}, the AES implementation has a maximum mini-block size of $64$ bits, whereas the OAEP implementation has a maximum mini-block size of $256$ bits. This is the reason why the third test in Figure~\ref{ms:table:oaep} shows the results of the sole OAEP implementation.
 
-} % end \new
+} % end \draft
 
 Figure~\ref{ms:fig:clientPerf} shows that the cost of decryption is compatible with all reasonable scenarios for the application of our technique. In particular, the figure illustrates the throughput obtained, varying the number of threads, by the application of our approach in different configurations characterized by macro-blocks of size (\Msize) 4 KiB, mini-blocks of size (\msize) 32 and 64 bits (which imply 5 and 9 encryption rounds, resp.), when using AES-NI and when not using it (AES). Mixing was applied on data that were already available in memory. We notice that even the single-threaded 9-round non-hardware-supported implementation (line `AES, \msize=64, \Msize=4096') offers a throughput that is greater than 100 Mbps. For the AES-NI multi-threaded 5-round implementation we reach a 2.5 GB/s throughput (line `AES-NI, \msize=32, \Msize=4096'). The figure also shows that, increasing the number of threads, we reach a performance level that is 4 times the one obtained by the single-threaded implementation. This is consistent with the presence of 4 physical cores in the CPU we used, each with a dedicated AES-NI circuitry.
 

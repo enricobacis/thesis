@@ -65,7 +65,7 @@ Instead of locally storing some selected fragments, a user can opt for using sto
 \noindent{\bf A note on collusion.}
 Collusion can happen when two users join effort to gain access to a resource that neither of them can access (we do not consider collusions with the server, which is assumed trustworthy to enforce the re-writing requested by the owner). In fact, if one of the users is authorized for the resource, she has no incentive and therefore there is no collusion. Also, the case of users working together to grant each other access to resources on which they individually have authorization cannot be considered collusion, since merging their knowledge they collectively do not go beyond their privileges. Collusion is then represented by users who join effort in maintaining portions of the resource (e.g., fragments or parts of mini-blocks as discussed above). For instance, each of the users could keep half of the fragments and they can merge their knowledge to patch for missing fragments. Such a situation does not add any complication with respect to the previous discussion, as it simply reduces to consider the group of colluding users as an individual attacker. We then note again that the collective effort, in terms of storage and/or computation, required to gain access would easily approximate the effort of locally storing the original plaintext resource itself. In other words, the attack strategy does not offer an advantages to users attempting to access the resources for which they are not authorized.
 
-\new{
+\draft{
 
 \medskip
 \noindent{\bf A note on erasure coding.}
@@ -78,4 +78,4 @@ However the resource owner has control over the number $r$ of fragments that she
 
 When the policy changes, the owner can promptly re-encrypt a single fragment to revoke access for common adversaries without local erasure codes. After this, the owner can still re-encrypt other random fragments, later in time. An adversary that has used erasure coding would need to know that the re-encryption process is happening and to quickly download the resource that is being re-encrypted in order to make use of its erasure code. This is a very error-prone and lucky-based process for the adversary to complete. Moreover, we need to note that the adversary previously had access to the whole resource, so if it was so important, she would have stored the resource in plaintext.
 
-} % end \new
+} % end \draft
