@@ -1,6 +1,6 @@
 \new{
 Decentralized networks can rely on a honest party - the coordinator node - to verify that the allocation properties are respected. If the coordinator nodes notice that a node is offline or failing to prove that it still holds the resource slice, it can reassign the slice to another node, so that the security and availability guarantees are still respected.
-%
+
 When dealing with fully distributed networks, instead, it is pivotal to be able to detect misbehaving nodes in an autonomous way. When a misbehaving nodes is detected, the network itself can reconstruct the slices that were previously assigned to it (for example by leveraging erasure codes techniques) and redistribute the slices to other nodes.
 This process has to work even when the data owner is offline and without imposing trust or honesty assumption on any of the involved parties.
 To address this problem, in this Chapter we detail a novel way of deploying self-releasing time-locked secrets. This technique can be used to implement delegated challenge-response protocols that, in turn, can guarantee data confidentiality and retrievability properties in fully distributed systems.
