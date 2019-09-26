@@ -68,6 +68,14 @@ Collusion can happen when two users join effort to gain access to a resource tha
 \draft{
 
 \medskip
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.75\columnwidth]{figures/experiments/out}
+\caption{Comparison of percentage of recovered file between Rivest's AONT and \name when the revoked user has kept an erasure code whose size is 3\% of the resource size.}
+\label{ms:aont-comparison}
+\end{figure}
+
 \noindent{\bf A note on erasure coding.}
 Cloud providers have to offer reliability to users that benefit of their storage service. To reach this goal, the most common approach is to replicate data \cite{Calder:2011:WAS:2043556.2043571}. Yet, this requires a not negligible usage of storage space because $n$ copies of data are made across the servers of the provider cluster.
 Another less expensive approach is to leverage erasure coding \cite{huang2012erasure}. With this solution, data are divided into fragments and stored replicated together with a certain number of parity fragments. The advantages of the use of erasure coding is to be able to provide the same fault tolerance with a lower replication of data.

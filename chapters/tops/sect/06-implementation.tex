@@ -17,11 +17,13 @@ An aspect that has to be considered in the implementation of the client is the p
 \subsubsection{Experiments on the client}
 \label{ms:sect:experiments}
 
+\begin{comment}
 \begin{figure}
 \centering
 \includegraphics[width=\columnwidth,valign=t]{figures/oaep}
-\caption{\label{ms:table:oaep}Performance comparison of mixing implementations}
+\caption{\label{ms:table}Performance comparison of mixing implementations}
 \end{figure}
+\end{comment}
 
 \begin{figure}[t]
 	\centering
@@ -43,7 +45,7 @@ An aspect that has to be considered in the implementation of the client is the p
 		32 & 0.169903 s & 0.937394 s & 1.125076 s
 		\\	\hline
 	\end{tabular}
-	\label{ms:fig:implementation}	
+	\caption{\label{ms:table:oaep}Performance comparison of mixing implementations}
 \end{figure}
 
 All code has been written in Python, because for all the functions the computational performance is not a constraint. The only component written in C was the invocation of the mixing for encryption and decryption functions. Since most current Intel x86 CPUs offer the support for a hardware implementation of AES, named AES-NI, we considered its adoption in our experiments. 

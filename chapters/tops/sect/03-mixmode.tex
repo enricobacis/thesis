@@ -98,19 +98,14 @@ We note that an interpretation of the proposed mixing is that it extends the abi
 
 \draft{
 
-\subsection{OAEP Mixing}
+\subsection{OAEP mixing}
 \label{ms:sect:oaep}
 
 \begin{figure*}[!t]
 	\centering
 	{\includegraphics[width=.6\columnwidth]{figures/oaep-issue}}
-	\caption{\label{ms:fig:oaep-issue}Classical OAEP does not evenly mix the plaintext}
-\end{figure*}
-
-\begin{figure*}[!t]
-	\centering
-	{\includegraphics[width=.85\columnwidth]{figures/oaep-schema}}
-	\caption{\label{ms:fig:oaep}\name algorithm based on OAEP}
+	\caption{Classical OAEP does not evenly mix the plaintext}
+	\label{ms:fig:oaep-issue}
 \end{figure*}
 
 Another approach that provides strong inter-dependency in the representation of a resource is {\em Optimal Asymmetric Encryption Padding} (OAEP) \cite{bellare1995optimal, bellare1998relations} proposed by Bellare and Rogaway. OAEP is a form of Feistel network \cite{feistel1973cryptography} that uses a pair of cryptographically one-way trapdoor functions, $G$ and $H$, to process the plaintext prior to asymmetric encryption. The OAEP process is represented in Figure~\ref{ms:fig:oaep-issue}.
@@ -142,7 +137,7 @@ In section~\ref{ms:sect:experiments} we compare the two proposed implementations
 
 } % end \draft
 
-\subsection{Shortcomings of Large Macro-blocks}
+\subsection{Shortcomings of large macro-blocks}
 
 When resources are extremely large (or when access to a resource involves only a portion of it) considering a whole resource as a single macro-block may be not desirable. Even if only with a logarithmic dependence, the larger the macro-block the more the encryption (and therefore decryption to retrieve the plaintext) rounds required. Also, encrypting the whole resource as a single macro-block implies its complete download at every access, when this might actually not be needed for service.
 
