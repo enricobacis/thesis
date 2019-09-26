@@ -1,4 +1,4 @@
-\new{
+\draft{
 
 With the considerable advancements in IT solutions, users and companies are finding increasingly appealing to rely on external services for storing resources and making them available to others. In such contexts, a promising approach to enforce access control to externally stored resources is via encryption: resources are encrypted for storage and only authorized users have the keys that enable their decryption. There are several advantages that justify the use of encryption for enforcing access control. First, robust encryption has become computationally inexpensive, enabling its introduction in domains that are traditionally extremely sensitive to performance (like cloud-based applications and management of large resources). Second, encryption provides protection against the service provider itself, which - while trustworthy for providing access - cannot typically be considered authorized to know the content of the resources it stores ({\em honest-but-curious\/} scenario) and hence also to enforce access control. Third, encryption solves the need of having a trusted party for policy enforcement: resources enforce self-protection, since only authorized users, holding the keys, will be able to decrypt them.
 
@@ -90,14 +90,7 @@ During the encryption process, the sender can tune $N$ to her needs.
 Hence, as long as the time to run the decryption algorithm does not change significantly, it is possible to time-lock data for arbitrarily long periods of time.
 Thus, TLE can be used to create Time-Locks, yet it is worth noting that the disclosure time is not fixed, but relative to the start of the decryption process.
 
-
-
-
 \bigskip
-
-\section{Problem Statement}
-
-{\em Cloud Storage has became the prevalent solution for data storage adopted by the majority of the IT industry. Due to this, it is important to study the properties of access revocation and secure deletion in centralized and distributed cloud storage systems. This thesis presents how a carefully chosen encryption policy can efficiently map an access policy in centralized and distributed cloud storage.}
 
 \bigskip
 
@@ -188,8 +181,12 @@ The chapter is organized as follows.
 
 \medskip
 
-\paragraph*{Chapter~\ref{chap:conclusions}} draws the conclusions of the thesis and presents possible future work in the area.
+\paragraph*{Chapter~\ref{chap:conclusions}} draws the conclusions of the thesis and presents possible future work.
 %In this chapter we also illustrate how the results obtained in Chapter~\ref{chap:ityt} can be used to improve the schema described in Chapter~\ref{chap:dcs}. 
+
+}
+
+\new{
 
 \bigskip
 
