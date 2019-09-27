@@ -7,14 +7,20 @@ of such an opportunity, otherwise clearly appealing and promising for
 the expected economic benefits.  In this chapter, we present an approach
 enabling resource owners to effectively protect and securely delete
 their resources while relying on decentralized cloud services for
-their storage. Our solution combines All-Or-Nothing-Transform for
-strong resource protection, and carefully designed strategies for
-slicing resources and for their decentralized allocation in the
-storage network.  We address both availability and security
+their storage.
+%
+\new{
+	In this chapter we present a solution that combines All-or-Nothing
+	Transform (such as Mix\&Slice) with carefully designed allocation
+	strategies to extend the guarantees obtained in the previous
+	chapter to the decentralized cloud storage scenario.
+}
+We address both availability and security
 guarantees, jointly considering them in our model and enabling
 resource owners to control their setting.
 
 \section{Introduction}
+\label{dcs:sec:intro}
 
 A clear recent trend in information technology is the rent by many
 users and enterprises of the storage/computation services from other
@@ -1451,10 +1457,42 @@ significant delay in the access.
   
 \draft{  
 \subsection{A note on dynamicity}
-Discuss in a few paragraphs the GLOBECOMM.
+DCS networks rely on the voluntary
+effort of a considerable number of (possibly untrusted) nodes, which
+may dynamically join and leave the network at any time. 
+
+We have studied how to combine All-or-Nothing Transform with
+fountain codes to 
+
+Fountain codes are a class of  erasure codes preventing that 
+the loss of one of the transmitted or stored blocks of a resource causes a data loss. Fountain codes, unlike other erasure codes (e.g., Reed-Solomon~\cite{rs:10.1137/0108018}), offer probabilistic reconstruction guarantees, meaning that with a probability $p < 1$, $k$ of the $n$ slices are sufficient for reconstructing the resource. The reconstruction probability $p$ exponentially increases by retrieving additional shards. 
+Although probabilistic, fountain codes have two main characteristics that, as we will discuss in the next section, allow us to profitably use them in the DCS context. First, they are  {\em rateless}, that is, using these codes it is possible to create a new (i.e., different from each other) shard on the fly and therefore the number $n$ of encoded shards is not fixed a priori. 
+Independently from the number $n$ of shards, any subset of (at least) $k$ shards can be used to reconstruct the resource.
+Second,  each shard depends on a subset of (and not on all) the $k$ original fragments of the resource and then only a subset of the original fragments are needed for generating a new shard.
+Specifically, we used RaptorQ code (specified in IETF RFC 6330~\cite{luby2011raptorq}), which is the latest evolution of Rapid Tornado (Raptor) codes~\cite{shokrollahi2006raptor}.  RaptorQ is among the most effective fountain codes available to date, since the probability of not being able to reconstruct a resource when accessing $k+ \varepsilon$ shards is negligible, $0.01^{\varepsilon+1}$ (i.e., $1\%$ accessing $k$ shards, $0.01\%$ accessing $k+1$ shards). 
+
+
+
+
+
+In this
+paper, we present an approach enabling data owners to keep data
+confidentiality and availability under control, limiting the owners
+intervention with corrective actions when availability or
+confidentiality is at risk. Our approach is based on the combined
+adoption of AONT (All-Or-Nothing-Transform) and fountain codes. It 
+provides confidentiality of outsourced data also against malicious
+coalitions of nodes, and guarantees data availability even in case of
+node failures.
+
+As discussed, the rateless characteristic of fountain codes allows the adaptive adjustment of the number of shards available for reconstructing a resource, thus impacting the availability and security guarantees. We use this characteristic  in such a way that, when the availability guarantees go below a given threshold, we generate a new slice.  Analogously, when the risk of confidentiality exposure is above a given threshold due to the presence of a high number of slices, we re-encrypt the resource and generate a new set of $n$ slices. 
+
+As we are dealing with decentralized cloud storage systems, we can
+rely on the coordinator node to verify when these thresholds are passed.
+To be able to perform its role, the data owner offloads a series of
+challenges and responses needed to issue Proof-of-Retrievability\cite{por}.
+
 }
-
-
 
 
 \section{Related work}\label{dcs:sec:relwork}

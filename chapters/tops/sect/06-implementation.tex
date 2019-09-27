@@ -27,22 +27,20 @@ An aspect that has to be considered in the implementation of the client is the p
 
 \begin{figure}[t]
 	\centering
-	\scriptsize
-	\begin{tabular}[b]{| c | c | c | c | }	
+	\small
+	\begin{tabular}[b]{| c | c | c | c | c |}	
 		\hline
-		\# threads &	M\&S ($mb=32$) & M\&S + OAEP ($mb=128$) & M\&S + OAEP ($mb=256$)
+		\thead{number\\of threads} &	\thead{\name\\with AES-NI\\($msize=32$)} & \thead{\name\\with OAEP\\($msize=128$)} & \thead{\name\\with OAEP\\($msize=256$)} & \thead{\name\\with AES\\($msize=32$)} 
 		\\	\hline \hline
-		 1 & 1.232219 s & 7.975573 s & 10.612364 s
+		 1 & 1.233 $s$ & 7.976 $s$ & 10.612 $s$ & 28.328 $s$
 		\\ \hline
-		 2 & 0.675429 s & 4.221637 s & 5.573989 s
+		 2 & 0.675 $s$ & 4.221 $s$ & 5.574 $s$ & 15.687 $s$
 		\\ \hline
-		 4 & 0.377186 s & 2.203773 s & 2.873994 s
+		 4 & 0.377 $s$ & 2.204 $s$ & 2.874 $s$ & 8.516 $s$
 		\\ \hline
-		 8 & 0.221935 s & 1.126843 s & 1.474798 s
+		 8 & 0.222 $s$ & 1.127 $s$ & 1.475 $s$ & 4.326 $s$
 		\\ \hline
-		16 & 0.166853 s & 0.916469 s & 1.155425 s
-		\\ \hline
-		32 & 0.169903 s & 0.937394 s & 1.125076 s
+		16 & 0.167 $s$ & 0.916 $s$ & 1.155 $s$ & 2.895 $s$
 		\\	\hline
 	\end{tabular}
 	\caption{\label{ms:table:oaep}Performance comparison of mixing implementations}

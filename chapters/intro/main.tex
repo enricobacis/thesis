@@ -94,57 +94,69 @@ Thus, TLE can be used to create Time-Locks, yet it is worth noting that the disc
 
 \bigskip
 
-\section{Document Structure}
+}
+
+\new{
+
+\section{Document structure}
 
 
 This thesis is organized in five chapters.
 
-\smallskip
-
-\paragraph*{Chapter~\ref{chap:intro}} illustrates the scenario, depicts the problem statement and provides a general overview of the thesis overview and contributions.
+\paragraph*{Chapter~\ref{chap:intro}} describes the overall scenario, the different types of network settings that we consider, and illustrates the document structure.
 
 \paragraph*{Chapter~\ref{chap:waont}}
-describes an encryption mode, named \name, that enables efficient access revocation on resources stored at external cloud providers. By leveraging a technique known as {\em All-Or-Nothing Transform}, \name allows the data owner to perform access revocation by re-encrypting a small portion of the file, while providing guarantees about the \ldots
+describes an encryption mode, named \name, that enables efficient access revocation on resources stored at external cloud providers. By leveraging a technique known as {\em All-Or-Nothing Transform}, \name allows the data owner to perform access revocation by re-encrypting a small portion of the file.
 
 \smallskip
 
 The chapter is organized as follows.
 
-\begin{itemize}
-	\item Section~\ref{ms:sec:intro} presents the overall scenario, discusses the trust assumptions, together with existing solutions and their limitations.
+\begin{compactitem}
+	\item Section~\ref{ms:sec:intro} presents the setting, discusses the trust assumptions, together with existing solutions and their limitations.
 	
-	\item Section~\ref{ms:sec:mixslice} details the \name encryption mode., an approach to produce an encrypted representation with the desired protection guarantees.
+	\item Section~\ref{ms:sec:mixslice} details the \name encryption mode, an approach to get an encrypted representation with the desired protection guarantees.
+	
 	\item Section~\ref{ms:sec:revoke} presents the enforcement of access revocation. 
 	
-	\item Section~\ref{ms:sec:security} discusses the effectiveness of our solution in providing revocation.
+	\item Section~\ref{ms:sec:security} discusses the effectiveness of our solution.
 	
 	\item Section~\ref{ms:sec:expe} illustrates our implementation and the extensive experimental evaluation confirming its advantages and applicability. 
 	
-	\item Section~\ref{ms:sec:relwork} discusses related work. 
+	\item Section~\ref{ms:sec:relwork} discusses the related work. 
 	
-	\item Section~\ref{ms:sec:conclu} presents our conclusions.
-\end{itemize}
+	\item Section~\ref{ms:sec:conclu} concludes the chapter.
+\end{compactitem}
 
 \medskip
 
 \paragraph*{Chapter~\ref{chap:dcs}}
 presents an approach enabling resource owners to effectively protect and securely delete their resources while relying on decentralized cloud services for their storage.
-Our solution combines All-Or-Nothing-Transform for strong resource protection, and carefully designed strategies for slicing resources and for their decentralized allocation in the storage network.  We address both availability and security guarantees, jointly considering them in our model and enabling resource owners to control their setting.
+Our solution combines All-Or-Nothing Transform (such as the Mix\&Slice algorithm detailed in Chapter~\ref{chap:waont}) and carefully designed allocation strategies for slicing resources and distributing them in the decentralized storage. We address both availability and security guarantees, jointly considering them in our model and enabling resource owners to tune these settings independently.
 
 \smallskip
 
 The chapter is organized as follows.
 
-\begin{itemize}
-\item Section~\ref{dcs:sec:background} introduces the basic concepts.
-\item Section~\ref{dcs:sec:allocation} defines the properties of a decentralized allocation function with respect to replication and protection.
-\item Section~\ref{dcs:sec:functions} discusses slicing and allocation strategies.
-\item Section~\ref{dcs:sec:analysis} illustrates availability and security guarantees and discusses the setting of parameters guiding slicing and allocation.
-\item Section~\ref{dcs:sect:implementation} illustrates the implementation of our approach on a real DCS service and presents experimental results.
-\item Section~\ref{dcs:sec:relwork} discusses related work.
-\item Section~\ref{dcs:sec:conclusion} concludes the chapter. 
-\item The proofs of theorems are provided in Appendix~\ref{dcs:sec:proofs}.
-\end{itemize}
+\begin{compactitem}
+	\item Section~\ref{dcs:sec:intro} describes the decentralized cloud storage scenario, its challenges and opportunities.
+	
+	\item Section~\ref{dcs:sec:background} introduces the basic concepts.
+	
+	\item Section~\ref{dcs:sec:allocation} defines the properties of a decentralized allocation function with respect to replication and protection properties.
+	
+	\item Section~\ref{dcs:sec:functions} discusses slicing and allocation strategies.
+	
+	\item Section~\ref{dcs:sec:analysis} illustrates availability and security guarantees and discusses the setting of parameters guiding slicing and allocation.
+	
+	\item Section~\ref{dcs:sect:implementation} illustrates the implementation of our approach on a real decentralized cloud storage service and presents the experimental results.
+	
+	\item Section~\ref{dcs:sec:relwork} discusses related work.
+	
+	\item Section~\ref{dcs:sec:conclusion} concludes the chapter.\vspace{.5em}
+	
+	\item The proofs of theorems are provided in Appendix~\ref{dcs:sec:proofs}.
+\end{compactitem}
 
 \medskip
 
@@ -152,15 +164,15 @@ The chapter is organized as follows.
 %
 Current research efforts mostly bind the recovery of the secret with the solution of cryptographic puzzles. These solutions, however, are  impractical: not only they require the interested parties to undergo a significant computational effort in order to solve the puzzle, but also they provide no precise timing guarantees.
 %
-To address these problems, we propose {\em I {\em Told} You Tomorrow (ITYT)}, a novel way of implementing time-locked secrets based on smart contracts to remove the need of any trusted party. We leverage blockchains as a distributed source of time, and we combine threshold cryptography with economic incentives (or penalties) to effectively replace cryptographic puzzles.
+To address these problems, we propose {\em I {\em Told} You Tomorrow (ITYT)}, a novel way of implementing time-locked secrets based on smart contracts to remove the need of any trusted party.
 
 \smallskip
 
 The chapter is organized as follows.
 
-\begin{itemize}
+\begin{compactitem}
 	
-\item Section~\ref{sect:introduction}
+\item Section~\ref{sect:introduction} presents the settings and discusses the alternatives.
 	
 \item Section~\ref{sect:background} introduces the basic concepts we build our proposal on. 
 
@@ -172,21 +184,17 @@ The chapter is organized as follows.
 
 \item Section~\ref{sect:impl_attacks} discusses the possible attacks the implementation can be subject to, and the respective countermeasures.
 
-\item Section~\ref{sect:evaluation} illustrates the experimental evaluation confirming its applicability.
+\item Section~\ref{sect:evaluation} illustrates the experimental evaluation.
 
 \item Section~\ref{sect:relwork} discusses related work.
 
-\item Section~\ref{sect:conclusions} draws the conclusions.
-\end{itemize}
+\item Section~\ref{sect:conclusions} concludes the chapter.
+\end{compactitem}
 
 \medskip
 
 \paragraph*{Chapter~\ref{chap:conclusions}} draws the conclusions of the thesis and presents possible future work.
-%In this chapter we also illustrate how the results obtained in Chapter~\ref{chap:ityt} can be used to improve the schema described in Chapter~\ref{chap:dcs}. 
-
-}
-
-\new{
+In this chapter we also illustrate how the results obtained in Chapter~\ref{chap:ityt} can be used to improve the schema described in Chapter~\ref{chap:dcs}. 
 
 \bigskip
 
@@ -203,12 +211,12 @@ The chapter is organized as follows.
 This sections presents the list of publications authored during the PhD course and that set the basis for this thesis.
 			
 			
-\subsubsection*{Articles in Journals}
+\subsubsection*{Articles in journals}
 \begin{itemize}
 	\item Enrico Bacis, Sabrina De Capitani di Vimercati, Sara Foresti, Stefano Paraboschi,	Marco Rosa,	Pierangela Samarati. ``\textbf{Securing Resources in Decentralized Cloud Storage}''. {\em IEEE Transactions on Information Forensics and Security, vol. 15, n. 1}. 2019.
 \end{itemize}
 
-\subsubsection*{Papers in Proceedings of International Conferences}
+\subsubsection*{Papers in proceedings of international conferences}
 \begin{itemize}	
 	
 	\item Enrico Bacis, Sabrina de Capitani di Vimercati, Sara Foresti, Stefano Paraboschi, Marco Rosa, Pierangela Samarati. ``\textbf{Access Control Management for Secure Cloud Storage}''. {\em 12th EAI International Conference on Security and Privacy in Communication Networks (SECURECOMM)}. EAI, 2016.
@@ -227,10 +235,10 @@ This sections presents the list of publications authored during the PhD course a
 	
 	\item Enrico Bacis, Sabrina De Capitani di Vimercati, Sara Foresti, Stefano Paraboschi, Marco Rosa, Pierangela Samarati, ``\textbf{Dynamic Allocation for Resource Protection in Decentralized Cloud Storage}''. {\em Proceedings of the 2019 IEEE Global Communications Conference (GLOBECOM)}. IEEE, 2019.
 	
-	\item Enrico Bacis, Dario Facchinetti, Marco Rosa, Marco Guarnieri, Stefano Paraboschi, ``\textbf{I {\em Told} You Tomorrow: Practical Time-Locked Secrets using Smart Contracts}''. {\em Under review at the time of submission}.
+	\item Enrico Bacis, Dario Facchinetti, Marco Rosa, Marco Guarnieri, Stefano Paraboschi, ``\textbf{I {\em Told} You Tomorrow: Practical Time-Locked Secrets using Smart Contracts}''. {\em (under submission)}.
 \end{itemize}
 
-\subsubsection*{Chapters in Books}
+\subsubsection*{Chapters in books}
 \begin{itemize}
 	\item  Enrico Bacis,	Sabrina De Capitani di Vimercati, Sara Foresti,	Stefano Paraboschi,	Marco Rosa,	Pierangela Samarati. ``\textbf{Protecting Resources and Regulating Access in Cloud-Based Object Storage}''. {\em From Database to Cyber Security}. 2018.
 \end{itemize}
