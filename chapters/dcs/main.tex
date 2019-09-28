@@ -1457,12 +1457,13 @@ significant delay in the access.
   
 \draft{  
 \subsection{A note on dynamicity}
-DCS networks rely on the voluntary
+Decentralized cloud storage networks rely on the voluntary
 effort of a considerable number of (possibly untrusted) nodes, which
-may dynamically join and leave the network at any time. 
+may dynamically join and leave the network at any time.
 
+In \cite{globecom}
 We have studied how to combine All-or-Nothing Transform with
-fountain codes to 
+Fountain Codes~\cite{fountain-codes}
 
 Fountain codes are a class of  erasure codes preventing that 
 the loss of one of the transmitted or stored blocks of a resource causes a data loss. Fountain codes, unlike other erasure codes (e.g., Reed-Solomon~\cite{rs:10.1137/0108018}), offer probabilistic reconstruction guarantees, meaning that with a probability $p < 1$, $k$ of the $n$ slices are sufficient for reconstructing the resource. The reconstruction probability $p$ exponentially increases by retrieving additional shards. 
@@ -1485,12 +1486,14 @@ provides confidentiality of outsourced data also against malicious
 coalitions of nodes, and guarantees data availability even in case of
 node failures.
 
-As discussed, the rateless characteristic of fountain codes allows the adaptive adjustment of the number of shards available for reconstructing a resource, thus impacting the availability and security guarantees. We use this characteristic  in such a way that, when the availability guarantees go below a given threshold, we generate a new slice.  Analogously, when the risk of confidentiality exposure is above a given threshold due to the presence of a high number of slices, we re-encrypt the resource and generate a new set of $n$ slices. 
+
+
+The rateless characteristic of fountain codes allows the adaptive adjustment of the number of shards available for reconstructing a resource, thus impacting the availability and security guarantees. We use this characteristic  in such a way that, when the availability guarantees go below a given threshold, we generate a new slice.  Analogously, when the risk of confidentiality exposure is above a given threshold due to the presence of a high number of slices, we re-encrypt the resource and generate a new set of $n$ slices. 
 
 As we are dealing with decentralized cloud storage systems, we can
 rely on the coordinator node to verify when these thresholds are passed.
 To be able to perform its role, the data owner offloads a series of
-challenges and responses needed to issue Proof-of-Retrievability\cite{por}.
+challenges and responses needed to issue Proof-of-Retrievability\cite{bowers2009proofs}.
 
 }
 
@@ -1532,7 +1535,7 @@ these networks.
 Another line of works is security of outsourced data
 (e.g.,~\cite{ajjp16,atl2005,nal14,tppg13}), which can be improved
 using AONT. Existing solutions however consider domains different from
-DCS. We have discussed before the proposal in~\cite{bdfprs-ccs2016},
+DCS. We have discussed before the proposal in~\cite{ccs},
 where the goal was to support policy evolution for outsourced
 resources where the access control policy is mapped to an encryption
 policy.  Another approach using AONT and Reed-Solomon codes is

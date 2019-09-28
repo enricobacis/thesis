@@ -102,7 +102,7 @@ This thesis is organized in five chapters.
 \paragraph*{Chapter~\ref{chap:intro}} describes the overall scenario, the different types of network settings that we consider, and illustrates the document structure.
 
 \paragraph*{Chapter~\ref{chap:waont}}
-describes an encryption mode, named \name, that enables efficient access revocation on resources stored at external cloud providers. By leveraging a technique known as {\em All-Or-Nothing Transform}, \name allows the data owner to perform access revocation by re-encrypting a small portion of the file.
+describes an encryption mode, named \name, that enables efficient access revocation on resources stored at external cloud providers~\cite{ccs}. By leveraging a technique known as {\em All-Or-Nothing Transform}, \name allows the data owner to perform access revocation by re-encrypting a small portion of the file.
 
 \smallskip
 
@@ -127,8 +127,8 @@ The chapter is organized as follows.
 \medskip
 
 \paragraph*{Chapter~\ref{chap:dcs}}
-presents an approach enabling resource owners to effectively protect and securely delete their resources while relying on decentralized cloud services for their storage.
-Our solution combines All-Or-Nothing Transform (such as the Mix\&Slice algorithm detailed in Chapter~\ref{chap:waont}) and carefully designed allocation strategies for slicing resources and distributing them in the decentralized storage. We address both availability and security guarantees, jointly considering them in our model and enabling resource owners to tune these settings independently.
+presents an approach enabling resource owners to effectively protect and securely delete their resources while relying on decentralized cloud services for their storage~\cite{tifs,globecom}.
+Our solution combines All-Or-Nothing Transform (such as the Mix\&Slice~\cite{ccs} algorithm detailed in Chapter~\ref{chap:waont}) and carefully designed allocation strategies for slicing resources and distributing them in the decentralized storage. We address both availability and security guarantees, jointly considering them in our model and enabling resource owners to tune these settings independently.
 
 \smallskip
 
@@ -205,37 +205,48 @@ The chapter is organized as follows.
 \section{Publications}
 
 This sections presents the list of publications authored during the PhD course and that set the basis for this thesis.
-			
+%\nocite{d23,d25,d26,d34,d35,d43,d44}
 			
 \subsubsection*{Articles in journals}
 \begin{itemize}
+	\nocite{tifs}
 	\item Enrico Bacis, Sabrina De Capitani di Vimercati, Sara Foresti, Stefano Paraboschi,	Marco Rosa,	Pierangela Samarati. ``\textbf{Securing Resources in Decentralized Cloud Storage}''. {\em IEEE Transactions on Information Forensics and Security, vol. 15, n. 1}. 2019.
 \end{itemize}
 
 \subsubsection*{Papers in proceedings of international conferences}
 \begin{itemize}	
 	
+	\nocite{securecomm}
 	\item Enrico Bacis, Sabrina de Capitani di Vimercati, Sara Foresti, Stefano Paraboschi, Marco Rosa, Pierangela Samarati. ``\textbf{Access Control Management for Secure Cloud Storage}''. {\em 12th EAI International Conference on Security and Privacy in Communication Networks (SECURECOMM)}. EAI, 2016.
 	
+	\nocite{wiscs}
 	\item Enrico Bacis, Sabrina De Capitani di Vimercati, Sara Foresti, Daniele Guttadoro, Stefano Paraboschi, Marco Rosa, Pierangela Samarati, Alessandro Saullo. ``\textbf{Managing Data Sharing in OpenStack Swift with Over-Encryption}''. {\em 3rd Workshop on Information Sharing and Collaborative Security (WISCS)}. ACM, 2016.
 	
+	\nocite{ccs}
 	\item Enrico Bacis, Sabrina de Capitani di Vimercati, Sara Foresti, Stefano Paraboschi, Marco Rosa, Pierangela Samarati. ``\textbf{Mix\&Slice: Efficient Access Revocation in the Cloud}''. {\em 23rd ACM Conference on Computer and Communications Security (CCS)}. ACM, 2016.
 	
+	\nocite{cscloud}
 	%\item Enrico Bacis, Sabrina De Capitani di Vimercati, Sara Foresti, Stefano Paraboschi, Marco Rosa, Pierangela Samarati, ``\textbf{Distributed Shuffle Index in the Cloud: Implementation and Evaluation}''. {\em Proceedings of the 4th IEEE International Conference on Cyber Security and Cloud Computing (CSCloud)}. IEEE, 2017.
 	
+	\nocite{cns}
 	%\item Enrico Bacis, Alan Barnett, Andrew Byrne, Sabrina De Capitani di Vimercati, Sara Foresti, Stefano Paraboschi, Marco Rosa, Pierangela Samarati. ``\textbf{Distributed Shuffle Index: Analysis and Implementation in an Industrial Testbed}''. {\em Proceedings of the 5th IEEE Conference on Communications and Network Security (CNS)}. IEEE, 2017.
 	
+	\nocite{spc}
 	%\item Enrico Bacis, Marco Rosa, Ali Sajjad. ``\textbf{EncSwift and Key Management: An Integrated Approach in an Industrial Setting}''. {\em 3rd Workshop on Security and Privacy in the Cloud (SPC)}. IEEE, 2017.
 	
+	\nocite{percom}
 	%\item  Enrico Bacis, Sabrina de Capitani di Vimercati, Dario Facchinetti, Sara Foresti, Giovanni Livraga, Stefano Paraboschi, Marco Rosa, Pierangela Samarati. ``\textbf{Multi-Provider Secure Processing of Sensors Data}''. {\em Proceedings of the 17th International Conference on Pervasive Computing and Communications (Percom)}. IEEE, 2019.
 	
+	\nocite{globecom}
 	\item Enrico Bacis, Sabrina De Capitani di Vimercati, Sara Foresti, Stefano Paraboschi, Marco Rosa, Pierangela Samarati, ``\textbf{Dynamic Allocation for Resource Protection in Decentralized Cloud Storage}''. {\em Proceedings of the 2019 IEEE Global Communications Conference (GLOBECOM)}. IEEE, 2019.
 	
+	\nocite{ityt}
 	\item Enrico Bacis, Dario Facchinetti, Marco Rosa, Marco Guarnieri, Stefano Paraboschi, ``\textbf{I {\em Told} You Tomorrow: Practical Time-Locked Secrets using Smart Contracts}''. {\em (under submission)}.
 \end{itemize}
 
 \subsubsection*{Chapters in books}
 \begin{itemize}
+	\nocite{sushil}
 	\item  Enrico Bacis,	Sabrina De Capitani di Vimercati, Sara Foresti,	Stefano Paraboschi,	Marco Rosa,	Pierangela Samarati. ``\textbf{Protecting Resources and Regulating Access in Cloud-Based Object Storage}''. {\em From Database to Cyber Security}. 2018.
 \end{itemize}
 
