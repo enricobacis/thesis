@@ -655,11 +655,13 @@ Assume, for contradiction's sake, that $\outcome{s} \neq a_1 \cdot a_2 \cdot \ld
 %
 Hence, there is a prefix of $a_1 \cdot a_2 \cdot \ldots \cdot a_{\rounds}$ such that the strategy profile results in an action that is different from $\lambda C \in \coalitionSchema.\ \wait$.
 %
-Let $e$ be such a prefix.
+Let $e$ be such a prefix, i.e., there is an $1 \leq i < \rounds$ such that $e =  a_1 \cdot a_2 \cdot \ldots \cdot a_{i}$ and all $a_i$'s are .
 %
-We know that $s \neq \honest$ (otherwise the outcome would have ben exactly $a_1 \cdot a_2 \cdot \ldots \cdot a_{\rounds}$ where for all $1 \leq i \leq \rounds$ and all $C \in \coalitionSchema$, $a_i(C) = \wait$).
+%We know that $s \neq \honest$ (otherwise the outcome $\subgameOutcome{s}{e}$ would have ben exactly $a_1 \cdot a_2 \cdot \ldots \cdot a_{\rounds}$ where for all $1 \leq i \leq \rounds$ and all $C \in \coalitionSchema$, $a_i(C) = \wait$).
+%%
+Since $s$ is a sub-game perfect equilibrium, we have (from the so-called ``one deviation property''~\cite[Lemma 98.2]{osborne1994course}) that for all $C \in \coalitionSchema$ and all actions $a \in \coalitionActions{C}$, $\payoffs(\subgameOutcome{s}{e})(C) \geq \payoffs(\subgameOutcome{s[C \mapsto s(C)[e \mapsto a]]}{e})(C)$.
 %
-
+\textcolor{red}{TODO: Does the theorem hold?}
 \end{proof}
 
 
