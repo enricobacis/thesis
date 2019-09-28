@@ -1,8 +1,23 @@
 \new{
 Decentralized networks can rely on a honest party - the coordinator node - to verify that the allocation properties are respected. If the coordinator nodes notice that a node is offline or failing to prove that it still holds the resource slice, it can reassign the slice to another node, so that the security and availability guarantees are still respected.
 
-When dealing with fully distributed networks, instead, it is pivotal to be able to detect misbehaving nodes in an autonomous way. When a misbehaving nodes is detected, the network itself can reconstruct the slices that were previously assigned to it (for example by leveraging erasure codes techniques) and redistribute the slices to other nodes.
+When dealing with fully distributed networks, instead, it is pivotal to be able to detect misbehaving nodes in an autonomous way. When a misbehaving node is detected, the network itself can reconstruct the slices that were previously assigned to it (for example by leveraging erasure codes techniques) and redistribute them to other nodes.
 This process has to work even when the data owner is offline and without imposing trust or honesty assumption on any of the involved parties.
-To address this problem, in this Chapter we detail a novel way of deploying self-releasing time-locked secrets. This technique can be used to implement delegated challenge-response protocols that, in turn, can guarantee data confidentiality and retrievability properties in fully distributed systems.
+This could be achieved 
+
+To address this problem, in this Chapter we present {\em \name (\shortname)}, a novel way of deploying Time-Locks based on smart contracts.
+A Time-Lock enables the release of a secret at a specific future point in time. Most current research proposals bind the recovery of the secret to the solution of cryptographic puzzles. These solutions, however, are  impractical, as solving the puzzle requires a significant computational effort and provides no timing guarantees.
+Our technique can be used to implement delegated challenge-response protocols that, in turn, can guarantee data confidentiality and retrievability properties in fully distributed systems. 
+%
+\shortname relies on blockchain to measure the elapse of time, and it combines threshold cryptography with economic incentives and penalties, to effectively replace cryptographic puzzles.
+
+% to remove the need of any trusted party.
+%We rely on blockchains as a distributed source of time, and we combine 
+%This way, clients can be involved in multiple TL instances without wasting computational resources.
+
+We implemented a prototype of \shortname on top of the Ethereum blockchain. 
+Our prototype leverages secure Multi-Party Computation to avoid any single point of trust.
+We also analyzed resiliency to attacks in the context of rational adversaries.
+The experiments demonstrate the low cost and resource consumption associated with our approach.
 }
 \newline
