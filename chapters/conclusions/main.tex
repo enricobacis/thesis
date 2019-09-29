@@ -19,12 +19,12 @@ Our approach enables resource owners to protect their resources and to control t
 % ITYT
 Finally, we presented \name (\shortname), a practical schema to deploy Time-Locked secrets on the blockchain. Our proposal leverages an economic model in which every rational actor (or coalition of them) is economically incentivized to comply with the protocol.
 %
-This is a fundamental piece to create delegated challenge-response protocols in which the challenges and responses are already offloaded by the data owner in an encrypted form and decrypted at different time.
+This is a fundamental piece to create delegated challenge-response protocols in which the challenges and responses are offloaded in an encrypted form by the data owner and then decrypted at different time.
 %
 The use of delegate challenge-response protocols permits to remove the coordinator nodes and bring the security and availability guarantees to the fully distributed settings without the need of the data owner or a trusted third party to be online.
 }
 
-\draft{
+\new{
 
 \section{Future Work}
 
@@ -32,16 +32,15 @@ We conclude the thesis with a discussion of the future work that can be done in 
 
 \begin{description}
 	
-	\item[Centralized storage systems] -- Chapter~\ref{chap:waont} illustrated how to use {\em Mix\&Slice} to enable the use. The two implementations discussed in the evaluation section were based on \textit{AES} and \textit{OAEP}. We showed how the use of \textit{OAEP} enables the use of micro-blocks with size up to 256 bits. Yet, for the sake of simplicity, we used the 	 \textit{SHA2} class of functions to compute the hash, however this is not optimized in common CPUs.
+	\item[Centralized storage systems] -- Chapter~\ref{chap:waont} illustrated how to use {\em Mix\&Slice} to enable the use. The two implementations discussed in the evaluation section were based on \textit{AES} and \textit{OAEP}. We showed how the use of \textit{OAEP} enables to obtain micro-blocks with size up to 256 bits. We used the \textit{SHA2} class of functions to compute the hashes, however these functions are not optimized in common CPUs.
 	
-	As future work it would be possible to compare the results with other functions that also comply with the requirements in Section~\ref{ms:sect:oaep}. A preliminary evaluation with the linear transformations proposed by Karame et al. for \textit{Bastion}~\cite{bastion} and by Naor et al.~\cite{Naor1999} showed promising results.
+	As future work it is possible to compare the results with other functions that also comply with the requirements in Section~\ref{ms:sect:oaep}. A preliminary evaluation with the linear transformations proposed by Karame et al. for \textit{Bastion}~\cite{bastion} and by Naor et al.~\cite{Naor1999} showed promising results.
 	
-	\item[Decentralized storage systems] -- 
+	\item[Decentralized storage systems] -- Chapter~\ref{chap:dcs} described how to bring security and availability guarantees to the decentralized cloud storage scenario. We also briefly mentioned how these properties could be integrated with fountain codes to leverage the dynamicity of DCS networks. In \ref{globecom} we showed how the integration seems to be a good fit to address the dynamicity problem. Yet, the idea has yet to be explored in details; Future work in this area consists in implementing and evaluating different codes and protocols to fully exploit the dynamicity of the system.
 	
-	\item[Distributed storage systems] --
-
-		As a future work, we are already considering the use of homomorphic encryption for the share generation process. This will not require any changes to the protocol itself but only to the \texttt{generate\_shares} primitive, effectively yielding the $\shortname_{HE}$ implementation. This realization would further reduce the time and resources required to setup the \shortname protocol.
-		Another future work is to analyze the inequalities in Section~\ref{sect:constraints} from an economic standpoint and to better characterize the relation among the parameters.
+	\item[Distributed storage systems] -- Chapter~\ref{chap:ityt} showed how to deploy time-locked secrets on the blockchain, and briefly discussed how this primitive can be used for delegated challenge-response protocols. Future work in this area can formalize {\em delegated challenge-response} protocols and show how they can be used in several scenarios such as inheritance management, voting processes, autonomous organizations, and Proof-of-Retrievability for cloud storage.
+	
+	Moreover, as already discussed in the chapter, the use of secure Multi-Party Computation is not the only way to realize a secure share generation and distribution protocol. In fact, we are already considering the use of homomorphic encryption, which would further reduce the time and resources required to setup the ITYT protocol.
 	
 \end{description}
 
