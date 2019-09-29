@@ -15,12 +15,12 @@ rcParams.update({'font.size': 14,
 fig = plt.figure()
 plt.xticks(np.arange(0, 1.01, 0.1))
 
-rivest = lambda removed: 1 if removed <= saved else 1 - removed
+rivest = lambda removed: 1 if removed <= saved else 1 - (removed - saved)
 mixslice = lambda removed: 1 if removed <= saved else 0
 
 xs = [0, saved, saved + 0.00001, 0.3]
 
-plt.plot(xs[:3:2], map(rivest, xs[:3:2]), color='red', ls='--', lw=2)
+# plt.plot(xs[:3:2], map(rivest, xs[:3:2]), color='red', ls='--', lw=2)
 plt.plot(xs, map(rivest, xs), color='red', lw=2)
 plt.plot(xs, map(mixslice, xs), color='blue', lw=2)
 plt.fill_between(xs, map(rivest, xs), color='None', lw=0, edgecolor='red', hatch='\\\\')
