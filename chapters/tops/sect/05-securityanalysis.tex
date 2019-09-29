@@ -69,25 +69,18 @@ Another less expensive approach is to leverage erasure coding \cite{huang2012era
 
 Even if the cloud provider does not use erasure coding, an adversary could build a client-side erasure coding that permits to mitigate the loss of a fragment (i.e., the loss of the ability to decrypt a fragment that has been re-encrypted due to a policy update that revoke the user). This means that, given a resource divided into $k$ fragments, the adversary can locally store $t$ (with $t < k)$ parity fragments to be able to recover the plaintext of the resource as long as no more than $t$ different fragments have been re-encrypted.
 %For instance, if we consider a resource divided into $k = 16$ fragments, an adversary could download the entire resource, build an erasure coding with $t = 2$ parity fragments, in order to be able to recover the resource even if she is revoked, as long as less than 2 different fragments are re-encrypted with a new key.
-Yet, the resource owner has control over the number $r$ of fragments that she is willing to re-encrypt, and this can easily undermine the efforts made by the adversaries that stored a number of parity fragments smaller than $r$.
+Yet, the resource owner has control over the number $r$ of fragments that she is willing to re-encrypt, and this nullify the efforts made by the adversaries that stored a number of parity fragments smaller than $r$.
 
-When the policy changes, the owner can promptly re-encrypt a single fragment to revoke access for common adversaries without local erasure codes. After this, the owner can still re-encrypt other random fragments, later in time. An adversary that has used erasure coding would need to know that the re-encryption process is happening and to quickly download the resource that is being re-encrypted in order to make use of its erasure code. This is a very error-prone and lucky-based process for the adversary to complete. Moreover, it is important to note that the adversary previously had access to the whole resource, so if it was important, she would have stored the resource in plaintext.
+When the policy changes, the owner can promptly re-encrypt a single fragment to revoke access for common adversaries without local erasure codes. After this, the owner can still re-encrypt other random fragments, later in time. An adversary that has used erasure coding would need to know that the re-encryption process is happening and to quickly download the resource that is being re-encrypted in order to make use of its erasure code. This is a very error-prone and lucky-based process for the adversary to complete. Moreover, it is important to note that the adversary had access to the whole resource previously, so if it was important and compact, she would have stored the resource in plaintext.
 
 \subsection{Comparison with other AONTs}
 
-\begin{figure}[t]
-	\centering
-	\includegraphics[width=0.75\columnwidth]{figures/experiments/out}
-	\caption{Comparison of percentage of recovered file between Rivest's AONT and \name when the revoked user has kept an erasure code whose size is 3\% of the resource size}
-	\label{ms:aont-comparison}
-\end{figure}
-
 We can now better illustrate the differences between \name and other All-or-Nothing Transforms.
 
-In general, other AONTs make use of two keys, the first is the encryption key, and the second is the AONT key. For example, the AONT proposed by Rivest in \cite{r97} applies a transformation on the plaintext before encryption. This transformation is similar to encrypting in counter mode, except that the key is randomly chosen rather than fixed, and the last ciphertext block is the exclusive-or of the key and a hash of all the other ciphertext blocks. This effectively ensure that if a ciphertext block is missing, the transformation is not invertible, thus realizing an AONT.
+In general, other AONTs make use of two keys, the first is the encryption key, and the second is the AONT key. For example, the AONT proposed by Rivest in \cite{r97} applies a transformation on the plaintext before encryption. This transformation is similar to encrypting in counter mode, except that the key is randomly chosen rather than fixed, and the last ciphertext block is the exclusive-or of the key and a hash of all the other ciphertext blocks. This effectively ensure that if a ciphertext block is missing, the AONT key is lost and the transformation is not invertible, thus realizing an AONT.
 
-This schema works in the network transmission setting, but can be easily circumvented in the access revocation scenario. In fact, an adversary could store the AONT key and thus be able to invert the transformation even if a fragment has been updated. Obviously, the missing fragment maps to missing parts in the plaintext, however the majority of it would still be accessible.
-This scenario gets even worse in case the adversary has kept a local erasure code (as in Section~\ref{ms:sect:erasure}). Let's assume that the adversary has kept an erasure code as big as $a\%$ of the resource size, and that the owner is re-encrypting $r\%$ because of a policy update.
+This schema works in the network transmission setting, but can be easily circumvented in the access revocation scenario. In fact, an adversary could store the AONT key and thus be able to invert the transformation even if a fragment has been updated. The missing fragment maps to missing parts in the plaintext, however the majority of it would still be accessible.
+This scenario gets even worse in case the adversary has kept a local erasure code (as in Section~\ref{ms:sect:erasure}). Let's assume that the adversary has kept an erasure code as big as $a\%$ of the resource size, and that the owner is re-encrypting $r\%$ due to a policy update.
 
 In case $r < a$ (i.e., the policy update re-encrypts a portion of the resource whose size is smaller that the adversarial erasure code), then the revoked user can still access the file in its integrity in both Rivest's AONT and \name.
 
@@ -98,6 +91,13 @@ In case $r < a$ (i.e., the policy update re-encrypts a portion of the resource w
 	\item [\name] Even applying the erasure code, there is no key that can be used to invert the function, and the entire contents of the file is lost.
 \end{description}
 
-\noindent This relation is depicted in Figure~\ref{ms:aont-comparison}.
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=0.75\columnwidth]{figures/experiments/out}
+	\caption{Comparison of percentage of recovered file between Rivest's AONT and \name when the revoked user has kept an erasure code whose size is 3\% of the resource size}
+	\label{ms:aont-comparison}
+\end{figure}
+
+\noindent This property is depicted in Figure~\ref{ms:aont-comparison}.
 
 } % end \new

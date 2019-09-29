@@ -51,7 +51,7 @@ All code has been written in Python, because for all the functions the computati
 \new{
 
 We implemented both the mixing structure based on AES (described in Section~\ref{ms:sect:mixing}) and the OAEP-based one (described in Section~\ref{ms:sect:oaep}) to compare their performance profile. The results are presented in Figure~\ref{ms:table:oaep}.
-The OAEP-based implementation is faster than the AES one that does not leverage the hardware implementation. In fact, even tough the base application of $AES$ and  $SHA2_{512}$ share a similar performance profile, the OAEP approach has a benefit due to the reduction on the number of rounds due to larger mini-blocks. On architectures that provide a native hardware implementation for AES, its use shows the best performance profile for \name and should be preferred.
+The OAEP-based implementation is faster than the AES one that does not leverage the hardware implementation. In fact, even tough the base application of $AES$ and  $SHA2_{512}$ share a similar performance profile, the OAEP approach benefits from the reduction of the number of rounds due to larger mini-blocks. On architectures that provide a native hardware implementation for AES, its use shows the best performance profile for \name and should be preferred when compatible with the scenario.
 %As also discussed in Section~\ref{ms:sect:oaep}, the AES implementation has a maximum mini-block size of $64$ bits, whereas the OAEP implementation has a maximum mini-block size of $256$ bits. This is the reason why the third test in Figure~\ref{ms:table:oaep} shows the results of the sole OAEP implementation.
 
 } % end \new
