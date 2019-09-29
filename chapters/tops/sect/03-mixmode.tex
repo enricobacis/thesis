@@ -96,7 +96,7 @@ Another crucial aspect is that the representation after each round has to be of 
 
 We note that an interpretation of the proposed mixing is that it extends the ability of protecting the correspondence between input and output of a block cipher to blocks of arbitrary size. An alternative approach that we considered to obtain this result was based on the use of a Feistel architecture~\cite{lr88}, which is known to be an effective technique for the construction of block ciphers. The approach uses, as the {\em round} function of the Feistel architecture, a block cipher. The approach can be applied iteratively, doubling the block size at every iteration. The analysis we performed showed that this approach would lead to less efficiency compared to the solution proposed in this chapter, with a number of invocations of the basic block cipher equal to $2\cdot \log_{\mnumb} (\mnumb \cdot \bnum)$. The Feistel-based approach can be adopted when the mini-block size desired for security goes beyond the block size of the available block cipher. Similarly, symmetric cryptosystems operating on large blocks can support larger mini-blocks and also reduce the number of rounds of our approach. For instance, AESQ~\cite{paeq,paeq2} shuffles 4 AES blocks and could be used as a 512-block cipher in our structure.
 
-\draft{
+\new{
 
 \subsection{OAEP mixing}
 \label{ms:sect:oaep}
@@ -109,33 +109,40 @@ We note that an interpretation of the proposed mixing is that it extends the abi
 \end{figure*}
 
 Another approach that provides strong inter-dependency in the representation of a resource is {\em Optimal Asymmetric Encryption Padding} (OAEP) \cite{bellare1995optimal, bellare1998relations} proposed by Bellare and Rogaway. OAEP is a Feistel network \cite{feistel1973cryptography} that uses a pair of cryptographically one-way trapdoor functions, $G$ and $H$, to process the plaintext prior to asymmetric encryption. The OAEP process is represented in Figure~\ref{ms:fig:oaep-issue}.
-Boyko proved that OAEP can be used to build an All-or-Nothing Transform that is resistant to chosen-plaintext attacks \cite{Boy99}.
-The limitation of the use of OAEP as an AONT is that by construction \Msize\ $= |G_{out}| + |H_{out}|$. In fact plaintext must be {\em xor}-ed with the output of these functions.
+Boyko proved that OAEP can be used to build an All-or-Nothing Transform that is resistant to chosen-plaintext attacks \cite{Boy99}. However, the classical OAEP schema does not imply an {\em Avalanche Effect} \cite{webster1985design}: the change of one bit in the left half of the plaintext, impacts the whole right half, but only affects the corresponding bit in the left half, as shown in Figure~\ref{ms:fig:oaep-issue}. Luby and Rackoff showed in \cite{lr88} that an adaptation of OAEP composed of three rounds instead of two, guarantees that the change of any bit in the plaintext has the chance of affecting any bit in the ciphertext.
 
-A trivial technique that can be adopted to extend the output of the function to fit plaintexts of any size is to use $G_{out}$ and $H_{out}$ as seed of a stream cipher (e.g., RC4), that produces the required number of bits needed for the xor operation.
-Even if efficient, this schema would not be as strong as the original \name. In fact the two seeds $G_{out}$ and $H_{out}$, which are compact in size, can be stored by the adversary to trivially invert the schema, and break the All-or-Nothing transform.
+Another limitation of the use of OAEP as an AONT is that by construction the output size is $|G_{out}| + |H_{out}|$.
+A trivial technique that can be adopted to extend the output of the functions to fit plaintext of any size is to use $G_{out}$ and $H_{out}$ to seed stream ciphers (e.g., RC4), that produce the required number of bits needed for the exclusive-or operation.
+Even if efficient, this schema would not be as strong as the original \name. In fact the two seeds $G_{out}$ and $H_{out}$, which are compact in size, can be stored by the adversary to trivially invert the schema even when part of the ciphertext is missing, thus breaking the All-or-Nothing transform.
 
-In order to solve this problem, we need to impose constraints over $G$ and $H$.
+To solve this problem, we can leverage the Mixing algorithm detailed in Section~\ref{ms:sect:mixing} and replace the encryption function with OAEP.
+We can use $G = H = SHA2$ and impose $|G_{in}| = |G_{out}|$ and $|H_{in}| = |H_{out}|$, so that by using $SHA2_{256}$ we can achieve $\msize = 256\ bits$ and $\bsize = 512\ bits$ (each round mixes two mini-blocks). If we need even more protection we can use $SHA2_{512}$ and obtain $\msize = 512\ bits$ and $\bsize = 1024\ bits$. OAEP does not provide message secrecy, so it is required to encrypt the output of the process. In our implementation, we used {\em AES} in {\em CTR mode} to encrypt the output of the OAEP process.
+
+As it will be described in details in Section~\ref{ms:sect:experiments}, the use of AES is computationally efficient due to its hardware implementation available in most of the modern CPUs, however the maximum mini-block size is capped to 64 bits. On the other hand, OAEP with SHA2 does not benefit from hardware implementation, thus it has a lower throughput, yet it enables mini-blocks to be as big as 512 bits, thus enabling the use of \name in scenario that require higher protection from brute-force attacks.
+
+} % end \new
+
+
+\begin{comment}
+To solve this problem, we need to impose constraints over $G$ and $H$.
 \vspace{1ex}
 
 \begin{description}
-	\item [{\em Req.1}] \hspace{1ex} $G$ ($H$) must not have an internal state that can be efficiently stored to reproduce $G_{out}$ ($H_{out}$, respectively).
-	\item [{\em Req.2}] \hspace{1ex} Any bit changed in $G_{in}$ ($H_{in}$) must have the chance of cryptographically affect (with a uniform distribution of probability) any bit of $G_{out}$ ($H_{out}$, respectively), i.e. $G$ and $H$ must be pseudorandom functions.
-	\item [{\em Req.3}] \hspace{1ex} $|G_{in}| = |G_{out}|$ and $|H_{in}| = |H_{out}|$ must hold, so that an adversary does not have an advantage in storing the input or the output.
+\item [{\em Req.1}] \hspace{1ex} $G$ ($H$) must not have an internal state that can be efficiently stored to reproduce $G_{out}$ ($H_{out}$, respectively).
+\item [{\em Req.2}] \hspace{1ex} Any bit changed in $G_{in}$ ($H_{in}$) must have the chance of cryptographically affect (with a uniform distribution of probability) any bit of $G_{out}$ ($H_{out}$, respectively).
+\item [{\em Req.3}] \hspace{1ex} $|G_{in}| = |G_{out}|$ and $|H_{in}| = |H_{out}|$, so that an adversary does not have an advantage in storing the input or the output.
 \end{description}
 \vspace{1ex}
 
-{\em Req.1} and {\em Req.2} imply that $G$ and $H$ has to be whitebox-AONTs. The mixing technique presented in Section~\ref{ms:sect:mixing} is a whitebox-AONT and also satisfies {\em Req.3}, therefore it can be used as $G$ and $H$.
+\name complies with all of these requirements and can thus be {\em Req.1} and {\em Req.2} imply that $G$ and $H$ has to be whitebox-AONTs. The mixing technique presented in Section~\ref{ms:sect:mixing} is a whitebox-AONT and also satisfies {\em Req.3}, therefore it can be used as $G$ and $H$.
+
 Moreover, since in the OAEP schema, $G$ and $H$ do not need to be invertible, we can replace the use of AES with the use of {\em sha-512} in the mixing process. This way, with the size of the mini-block being equal, the use of {\em sha-512}, which has a \bsize\ of 512 bits, permits to exponentially reduce the number of rounds in the mixing process, since it is now possible to mix $16$ mini-blocks in one step (with \msize\ $= 32$).
 Another advantage of the use of {\em sha-512} is that the mini-block size can increase up to $256$ bits, for applications that require a stronger protection from brute-force attacks.
 
-Also, it is to note that OAEP does not satisfy our mixing requirements, in fact OAEP does not imply an {\em Avalanche Effect} \cite{webster1985design}: the change of one bit in the left half of the plaintext, impacts the whole right half, but only affects the corresponding bit in the left half, as shown in Figure~\ref{ms:fig:oaep-issue}. It is required to use an adaptation of OAEP that is composed of three rounds in order to guarantee that the change of any bit in the plaintext has the chance of affecting the whole ciphertext. This result is consistent with the one obtained by Luby and Rackoff in \cite{lr88}, in which the authors proved that three rounds are sufficient to create a pseudorandom permutation. The addition of a fourth round would produce a {\em super} pseudorandom permutation \cite{lr88}, which would remain resistant to an adversary who has oracle access to its inverse permutation (non needed to create a whitebox-AONT).
 
-OAEP does not provide message secrecy, so after the application of this technique it is required to encrypt the output of the OAEP process. We implemented the proposed schema using $sha-512$ and {\em AES} in {CTR mode} to encrypt the resource.
 %The overall schema is presented in Figure~\ref{ms:fig:oaep}.
 In section~\ref{ms:sect:experiments} we compare the two proposed implementations.
-
-} % end \draft
+\end{comment}
 
 \subsection{Shortcomings of large macro-blocks}
 
