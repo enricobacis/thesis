@@ -1,3 +1,5 @@
+\begin{comment}
+
 \draft{
 
 With the considerable advancements in IT solutions, users and companies are finding increasingly appealing to rely on external services for storing resources and making them available to others. In such contexts, a promising approach to enforce access control to externally stored resources is via encryption: resources are encrypted for storage and only authorized users have the keys that enable their decryption. There are several advantages that justify the use of encryption for enforcing access control. First, robust encryption has become computationally inexpensive, enabling its introduction in domains that are traditionally extremely sensitive to performance (like cloud-based applications and management of large resources). Second, encryption provides protection against the service provider itself, which - while trustworthy for providing access - cannot typically be considered authorized to know the content of the resources it stores ({\em honest-but-curious\/} scenario) and hence also to enforce access control. Third, encryption solves the need of having a trusted party for policy enforcement: resources enforce self-protection, since only authorized users, holding the keys, will be able to decrypt them.
@@ -92,21 +94,21 @@ Thus, TLE can be used to create Time-Locks, yet it is worth noting that the disc
 
 }
 
+\end{comment}
+
 \new{
 
 \section{Document structure}
 
-
 This thesis is organized in five chapters.
 
-\paragraph*{Chapter~\ref{chap:intro}} describes the overall scenario, the different types of network settings that we consider, and illustrates the document structure.
+\paragraph*{Chapter~\ref{chap:intro}} illustrates the document structure and the publications that set the basis for this thesis.
 
 \paragraph*{Chapter~\ref{chap:waont}}
 describes an encryption mode, named \name, that enables efficient access revocation on resources stored at external cloud providers~\cite{ccs}. By leveraging a technique known as {\em All-Or-Nothing Transform}, \name allows the data owner to perform access revocation by re-encrypting a small portion of the file.
 
 \smallskip
-
-The chapter is organized as follows.
+\noindent The chapter is organized as follows.
 
 \begin{compactitem}
 	\item Section~\ref{ms:sec:intro} presents the setting, discusses the trust assumptions, together with existing solutions and their limitations.
@@ -131,8 +133,7 @@ presents an approach enabling resource owners to effectively protect and securel
 Our solution combines All-Or-Nothing Transform (such as the Mix\&Slice~\cite{ccs} algorithm detailed in Chapter~\ref{chap:waont}) and carefully designed allocation strategies for slicing resources and distributing them in the decentralized storage. We address both availability and security guarantees, jointly considering them in our model and enabling resource owners to tune these settings independently.
 
 \smallskip
-
-The chapter is organized as follows.
+\noindent The chapter is organized as follows.
 
 \begin{compactitem}
 	\item Section~\ref{dcs:sec:intro} describes the decentralized cloud storage scenario, its challenges and opportunities.
@@ -163,8 +164,7 @@ Current research efforts mostly bind the recovery of the secret with the solutio
 To address these problems, we propose {\em I {\em Told} You Tomorrow (ITYT)}, a novel way of implementing time-locked secrets based on smart contracts to remove the need of any trusted party.
 
 \smallskip
-
-The chapter is organized as follows.
+\noindent The chapter is organized as follows.
 
 \begin{compactitem}
 	
@@ -202,6 +202,7 @@ The chapter is organized as follows.
 %
 %\bigskip
 
+\clearpage
 \section{Publications}
 
 This sections presents the list of publications authored during the PhD course and that set the basis for this thesis.
