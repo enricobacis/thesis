@@ -55,7 +55,7 @@
 
 %\end{description}
 
-ITYT is an instance of the TL abstraction: a mechanism that keeps a secret \secret private until its {\em disclosure time} \td and publishes it afterwards.
+ITYT is an instance of the TL abstraction: a mechanism that keeps a secret \secret private until its {\em disclosure time} \td and publishes it afterward.
 %
 \shortname implements TL by distributing the secret, provided by the {\em owner}, among several users (named {\em shareholders}, each obtaining a share \share), so that a single user can not see  \secret before the disclosure time \td.
 
@@ -73,7 +73,7 @@ ITYT is an instance of the TL abstraction: a mechanism that keeps a secret \secr
 
 \subsubsection*{Principals}
 We denote by \users the set of users that take part in an instance of \shortname.
-Additionally we denote by \smartcontracts the set of the smart contract identifiers.
+Additionally, we denote by \smartcontracts the set of the smart contract identifiers.
 We then denote by \principals the set of principals consisting of $\users \cup \smartcontracts$.
 
 \medskip
@@ -200,7 +200,7 @@ In particular, \owner sets (i) \N the total number of shares \share of \secret, 
 % EB: I added a sentence below in C.
 
 \item {\bf Shareholder:}
-A shareholder \shareholder is entrusted by the owner \owner to keep a share \share of the secret \secret confidential until \td, and to publicly disclose it afterwards.
+A shareholder \shareholder is entrusted by the owner \owner to keep a share \share of the secret \secret confidential until \td, and to publicly disclose it afterward.
 In exchange for her service, $\shareholder$ will receive a reward paid by the smart contract whenever the following two conditions hold: (i) her share $\share$ is disclosed only after \td, and (ii) the secret \secret is not revealed before \td.
 
 \item {\bf Whistleblower:}
@@ -244,7 +244,7 @@ Then, by collaborating with the shareholders, she executes the $\texttt{generate
 She also transfers the amount \PO to $sc$, used to pay the rewards.
 The steps are illustrated in Algorithm~\ref{algo:init}.
 
-A shareholder \shareholder is incentivized in taking part to the TL by the possibility of earning a reward \RH.
+A shareholder \shareholder is incentivized in taking part in the TL by the possibility of earning a reward \RH.
 Once each shareholder gets the share, she verifies that the corresponding commitment written into $sc$ matches. 
 If so, she agrees to deposit her bid, \BH ($<\RH$). 
 This process is shown in Algorithm~\ref{algo:shareholder_commitment}.
@@ -253,7 +253,7 @@ As soon as all the shareholders have executed this algorithm, the state of the i
 If any party does not commit before a defined deadline, the deposited funds are returned to their proprietaries and the instance setup aborts. This will be discussed with more details in Section~\ref{sect:realization}.
 
 The algorithms do not check for the economic parameters to be well-formed (see Section~\ref{sect:constraints}). 
-In fact, as all the parameters are public and immutable, a malformed game will not be played by any participant, in the same way as a lottery whose top prize is worth less than the ticket price will not sell tickets.
+As all the parameters are public and immutable, a malformed game will not be played by any participant, in the same way as a lottery whose top prize is worth less than the ticket price will not sell tickets.
 
 %Do we really want this paragraph here: {\em The reader may notice that, in this setting, the secret could be recovered before the activation of the TL, because at that time all the share have already been distributed. We emphasize that the current section proposes a high level representation of the protocol. In Section~\ref{sect:ityt_exec} we show how to securely distribute the shares, without exposing \secret until TL activation, while still ensuring the shareholders they will be able to fulfill the commitments.}
 

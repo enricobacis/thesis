@@ -1,6 +1,6 @@
 \chapter[Mix\&Slice Implementation]{Mix\&Slice Implementation}
 
-This appendix describes the open source implementation of the \emph{Mix\&Slice} encryption mode described in chapter~\ref{chap:waont}.
+This appendix describes the open-source implementation of the \emph{Mix\&Slice} encryption mode described in Chapter~\ref{chap:waont}.
 
 The implementation is done in C and consists of single-threaded and a
 multi-threaded encryption/decryption functions that make use of AES as
@@ -18,12 +18,12 @@ definitions:
   \texttt{BLOCK\_SIZE}: number of bytes in a cipher block (16 bytes for
   AES).
 \item
-  \texttt{MINI\_SIZE}: number of bytes in a miniblock.
+  \texttt{MINI\_SIZE}: number of bytes in a mini-block.
 \item
   \texttt{MINI\_PER\_MACRO}: number of mini-blocks in a macro-block.
 \end{itemize}
 
-\emph{These entities can be modified at compile time to experiment with
+\emph{These parameters can be modified at compile time to experiment with
 different sizes.}
 
 \subsection{Single-thread APIs}\label{single-thread-apis}
@@ -49,15 +49,15 @@ The parameters are as follows.
 \tightlist
 \item
   \texttt{data}: pointer to the source buffer (plaintext in case of
-  \texttt{mixencrypt} and ciphertext in case of \texttt{mixdecrypt})
+  \texttt{mixencrypt} and ciphertext in case of \texttt{mixdecrypt}).
 \item
-  \texttt{out}: pointer to the destination buffer
+  \texttt{out}: pointer to the destination buffer.
 \item
-  \texttt{size}: number of bytes in source (and destination) buffers
+  \texttt{size}: number of bytes in source (and destination) buffers.
 \item
-  \texttt{key}: symmetric key (string) used for the AES functions
+  \texttt{key}: symmetric key (string) used for the AES functions.
 \item
-  \texttt{iv}: initialization vector for the AES functions
+  \texttt{iv}: initialization vector for the AES functions.
 \end{itemize}
 
 \subsection{Multi-thread APIs}\label{multi-thread-apis}
@@ -86,7 +86,7 @@ use.
 The mixing phase is the real encryption phase. The slicing phase
 strongly depends on the file management and should be implemented
 according to the ratio of policy updates with respect to decryption
-processes and can be easily sped up with as-hoc file management. Because
+processes and can be easily sped up with ad-hoc file management. Because
 of this, the performance of the mixing phase is a good proxy of the
 performance of the whole Mix\&Slice technique.
 
@@ -113,7 +113,7 @@ The \texttt{mixslice} method first uses \texttt{t\_mixencrypt} to
 perform the mixing phase. The slicing phase rearranges the output of the
 mixing phase in slices. The user is responsible for creating the buffer
 that will contain the \texttt{fragdata}. The slices are concatenated and
-written to the \texttt{fragdata} buffer. The user of the function, can
+written to the \texttt{fragdata} buffer. The user of the function can
 read the fragments directly from there as follows:
 
 \begin{itemize}
@@ -135,7 +135,7 @@ read the fragments directly from there as follows:
 \subsection{Installation}
 
 Before proceeding please install the \texttt{openssl/crypto} library
-source and the \texttt{libtool} binary. In ubuntu you can proceed as
+source and the \texttt{libtool} binary. In {\em ubuntu}, you can proceed as
 follows:
 
 \begin{minted}{shell-session}
@@ -189,8 +189,8 @@ wraps both the phases and offers a CLI tool that wraps the
 \texttt{libaesmix} library.
 
 The C implementation has been built with performance in mind, whereas
-the python wrapper and the CLI tool has been implemented to offer a more
-widespread access of the Mix\&Slice capabilities. The mixing and slicing
+the python wrapper and the CLI tool has been implemented to offer
+widespread access to the Mix\&Slice capabilities. The mixing and slicing
 phases use the C implementation, but the python conversion adds a big
 overhead since it has to materialize all the buffers in memory.
 
@@ -205,7 +205,7 @@ library.
 \subsection{Requirements}\label{requirements}
 
 Before proceeding please install the \texttt{openssl/crypto} library
-source. In ubuntu you can proceed as follows:
+source. In ubuntu, you can proceed as follows:
 
 \begin{minted}{shell-session}
 $ sudo apt install libssl-dev
@@ -280,7 +280,7 @@ d3e92d3c3bf278e533f75818ee94d472347fa32a  sample.txt.enc.dec
 
 \section{Key regression mechanism}\label{key-regression-mechanism}
 
-The key regression mechanism implementation is based on
+The key regression implementation is based on
 \href{https://eprint.iacr.org/2005/303.pdf}{``Key Regression: Enabling
 Efficient Key Distribution for Secure Distributed Storage''}~\cite{fkk06}.
 

@@ -10,8 +10,8 @@ their resources while relying on decentralized cloud services for
 their storage.
 %
 \new{
-	In this chapter we present a solution that combines an All-or-Nothing
-	Transform (such as Mix\&Slice) with carefully designed allocation
+	In this chapter, we present a solution that combines an All-or-Nothing
+	Transform (such as Mix\&Slice) with two carefully designed allocation
 	strategies to extend the guarantees obtained in the previous
 	chapter to the decentralized cloud storage scenario.
 }
@@ -1457,12 +1457,12 @@ significant delay in the access.
   
 \new{  
 \subsection{A note on DCS dynamicity}
-Decentralized cloud storage networks rely on the voluntary
+Decentralized cloud storage networks rely on voluntary
 effort of a considerable number of (possibly untrusted) nodes, which
 may dynamically join and leave the network at any time.
 %
 In \cite{globecom}
-we have studied how to combine the method presented in this Chapter with Fountain Codes~\cite{fountain-codes,luby2011raptorq,shokrollahi2006raptor} in order to better exploit the dynamicity of decentralized cloud storage networks.
+we have studied how to combine the method presented in this Chapter with Fountain Codes~\cite{fountain-codes,luby2011raptorq,shokrollahi2006raptor} to better exploit the dynamicity of decentralized cloud storage networks.
 
 Fountain codes are a class of  erasure codes preventing that 
 the loss of one of the transmitted or stored blocks of a resource causes a data loss. Fountain codes, unlike other erasure codes (e.g., Reed-Solomon~\cite{rs:10.1137/0108018}), offer probabilistic reconstruction guarantees, meaning that with a probability $p < 1$, $k$ of the $n$ slices are sufficient for reconstructing the resource. The reconstruction probability $p$ exponentially increases by retrieving additional shards. 
@@ -1471,7 +1471,7 @@ Second, each shard depends on a subset of (and not on all) the $k$ original frag
 
 The rateless characteristic of fountain codes allows the adaptive adjustment of the number of shards available for reconstructing a resource, thus impacting the availability and security guarantees. We use this characteristic  in such a way that, when nodes go offline and the availability goes below a given threshold, we generate a new slice. Analogously, when the risk of confidentiality exposure is above a given threshold due to the presence of a high number of slices, we re-encrypt the resource and generate a new set of slices.
 
-In DCS systems we can rely on the coordinator node to verify that the state is compliant with the thresholds. This can be achieved by offloading Proof-of-Retrievability~\cite{bowers2009proofs} challenges and responses to the coordinator node. The challenges will then be issued to the storage nodes, and their responses compared with the expected ones. In case a response do not match, the coordinator will select another storage node and move the slice accordingly.
+In DCS systems we can rely on the coordinator node to verify that the state is compliant with the thresholds. This can be achieved by offloading Proof-of-Retrievability~\cite{bowers2009proofs} challenges and responses to the coordinator node. The challenges will then be issued to the storage nodes, and their responses compared with the expected ones. In case a response does not match, the coordinator will select another storage node and move the slice accordingly.
 %
 The next Chapter illustrates how the role of the coordinator can be removed by leveraging delegated challenge-response protocols.
 }

@@ -83,25 +83,25 @@
 \paragraph*{Test setup}
 We performed two types of experiment on $\shortname$: (i) simulation of $\shortname$ smart contract instances, and (ii) execution of sMPC network protocols. 
 For both cases, the size of the shares was set to 256 bits (the maximum supported by the FRESCO sMPC framework).
-The tests have been executed on an dual Intel Xeon E5 server with 256 GB memory and 512 GB SSD drive running Ubuntu 18.04 LTS.
+The tests have been executed on a dual Intel Xeon E5 server with 256 GB memory and 512 GB SSD drive running Ubuntu 18.04 LTS.
 
 \medskip
 
 \paragraph*{Simulation of \shortname instances}
-A preliminary version of the $\shortname$ smart contract was derived by the use of FSolidM~\cite{Mavridou2017DesigningSE}, a tool which automatically generates Ethereum smart contracts code from high level Finite State Machine (FSM) representations.
+A preliminary version of the $\shortname$ smart contract was derived by the use of FSolidM~\cite{Mavridou2017DesigningSE}, a tool which automatically generates Ethereum smart contracts code from high-level Finite State Machine (FSM) representations.
 To deploy, test, and debug the contract created, we relied on Brownie~\cite{brownie}, a Python framework that permits to create wallets, inspect transactions and automate the execution of simulations.
 To provide such functionalities, Brownie interacts with Ganache~\cite{ganache}: a local Ethereum blockchain instance used for development purposes.
 
-The experiments mainly focused on estimating of the total cost of execution of each $\shortname$ instance. 
+The experiments mainly focused on estimating the total cost of execution of each $\shortname$ instance. 
 Figure~\ref{fig:costfigs} shows the total execution cost in gas (a proxy for the number of operations) and dollars, for each role, depending on the number of participants.
 %
-Due to the fact that many \shortname actions imply writing a state change to the blockchain, the first shareholder to perform the operations will incur in greater costs compared to the other ones. We name this role {\em active} shareholder.
+Since many \shortname actions imply writing a state change to the blockchain, the first shareholder to perform the operations will incur in greater costs compared to the other ones. We name this role {\em active} shareholder.
 The shareholder cost in Figure~\ref{fig:costfigs} takes into account only the calls needed to collect the reward. A shareholder that only performs these operations is named {\em passive} shareholder.
 In our experiments, the active shareholder was paying approximately $0.40$ USD more compared to the passive one.
 %(depending on the number of participants). 
 It is easy to setup a higher reward for the {\em active} shareholder to offset the additional execution fees.
 %By the previous differentiation it is possible to highlight an upper and a lower cost bound.
-From the owner's perspective the total cost of execution is linear in the number of shareholders, while the contract deployment itself costs 7.39 USD.
+From the owner's perspective, the total cost of execution is linear in the number of shareholders, while the contract deployment itself costs 7.39 USD.
 All the costs were calculated by applying the conversion rate {$20 \cdot 10^{-9}$ ETH} and the exchange rate {1 ETH $=$ 178 USD} (as of September 12, 2019).
 
 \medskip
@@ -113,18 +113,18 @@ First, we implemented a single-phase sMPC protocol compliant with the descriptio
 %(briefly, \owner inputs \key and gets the commitments of all shares; while each $\shareholder$ inputs a seed and receives her $\share$ and the commitment of the key).
 The sMPC algorithm receives as input the key \key from the owner \owner and the seeds from all the participants. Then, it creates the polynomial and generates random shares. After that, the algorithm proceeds in computing the commitments with the MiMC function.
 %In doing so, we adopted both the two existing sMPC implementation approaches: (i) the one based on binary arithmetic (i.e., to compute the Shamir polynomial), and (ii) the one based on modular arithmetic (i.e., to compute the MiMC hash commitments).
-As illustrated in Figure~\ref{fig:timecomp}a, strictly adhering to this protocol leads to a quick performance degradation, as the number of shareholders increases. This is due to the fact that computing MiMC hashes among several participants is computationally expensive and highly affected by network latency (the participants have to exchange several messages to carry out even simple operations in the sMPC setting).
+As illustrated in Figure~\ref{fig:timecomp}a, strictly adhering to this protocol leads to quick performance degradation, as the number of shareholders increases. This is because computing MiMC hashes among several participants is computationally expensive and highly affected by network latency (the participants have to exchange several messages to carry out even simple operations in the sMPC setting).
 
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=0.9\columnwidth]{fig/mpc_rev_2}
 	
-	\caption{Two-phases sMPC protocol: step 1 jointly computed between all the parties, step 2 between owner and each shareholder}\vspace*{-2pt}
+	\caption{Two-phases sMPC protocol: step 1 jointly computed between all the parties, step 2 between the owner and each shareholder}\vspace*{-2pt}
 	\label{fig:mpc2}%
 \end{figure}
 
 To improve performance, we implemented a two-phases sMPC protocol. 
-This in turn is made up of two subsequent sMPC protocols:
+This, in turn, is made up of two subsequent sMPC protocols:
 \begin{itemize}
 	\item {\em Step 1} n-to-n sMPC jointly computed by all participants. The owner inputs \key and receives the polynomial function $f\left( x \right)$ randomly generated inside the sMPC, while each shareholder inputs a seed and receives her share (see Figure~\ref{fig:mpc2}). 
 	\item {\em Step 2} 1-to-1 sMPC computed between the owner and each shareholder $i$. The owner inputs $f\left( x \right)$, and receives the commitment of the $i$-th share, $\commitment_i$, while the $i$-th shareholder inputs her share $\share_{i}$, and receives the commitment of the key (see Figure~\ref{fig:mpc2}). It is easy to verify inside the sMPC that neither the owner nor the shareholder changed the value received as a result of the first step.
@@ -143,9 +143,9 @@ This in turn is made up of two subsequent sMPC protocols:
 \end{figure*}
 
 
-As the reader can notice, the difference between the single-phase and the two-phase sMPC lies in the calculation of the hash primitive. 
+The difference between the single-phase and the two-phase sMPC lies in the calculation of the hash primitive. 
 Unlike the single-phase version, the two-phases solution permits to separate the generation of the shares from the production of commitments.
-It follows that the first step can be carried out even in scenarios with several participants, as it is not computing intensive, whereas the second step, which instead is computing intensive, is always performed among two users.
+It follows that the first step can be carried out even in scenarios with several participants, as it is not computing-intensive, whereas the second step, which instead is computing-intensive, is always performed among two users.
 The improvement of total sMPC execution time between the two variants (i.e., single-phase vs two-phases) is shown in Figure~\ref{fig:timecomp}a.
 More details about the two-phases maximum execution time and maximum memory consumption in case of higher polynomial degree, for each participant, are illustrated in Figures~\ref{fig:timecomp}b-c, respectively.
 

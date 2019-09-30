@@ -8,9 +8,9 @@ As we anticipated in Sections~\ref{sect:introduction} and~\ref{sect:background},
 	\item smart contracts, the framework that permits to trigger economic incentives and penalties in a fully decentralized way, thus avoiding the need of trusted parties.
 	%\item secure Multy-Party Computation, the instrument through which it is possible to securely execute bulletproof cryptographic operations between multiple hosts.
 \end{itemize}
-The combination of the the two with the model described in Section~\ref{sect:model}, constitutes \shortname: a generic protocol to deploy instances of the TL abstraction.
+The combination of the two with the model described in Section~\ref{sect:model}, constitutes \shortname: a generic protocol to deploy instances of the TL abstraction.
 % without the need of trusted third parties or cryptographic puzzles.
-Several realizations of the \shortname protocol can be obtain by changing the implementation of the \texttt{generate\_shares} primitive and the cryptographic techniques (e.g., oblivious transfer, probabilistic encryption, and sMPC) used to provide the shares only to the legitimate shareholder, while sending the commitments to the owner.
+Several realizations of the \shortname protocol can be obtained by changing the implementation of the \texttt{generate\_shares} primitive and the cryptographic techniques (e.g., oblivious transfer, probabilistic encryption, and sMPC) used to provide the shares only to the legitimate shareholder while sending the commitments to the owner.
 In this chapter we implement the \texttt{generate\_shares} primitive leveraging secure Multi-Party Computation.
 %, therefore we discuss the implementation details of $\shortnamempc$.
 In particular, we employ a modular arithmetic sMPC to be able to compute the shares using Shamir's Secret Sharing.
@@ -29,7 +29,7 @@ In addition, we use the {\em \mimc}~\cite{albrecht2016mimc} algorithm to impleme
 \begin{figure*}[t]
 	\centering
 	\includegraphics[width=1.0\textwidth]{fig/protocol_fsm_simple_version.pdf}
-	\caption{State machine representing the valid transitions of the $\shortnamempc$ protocol. Each transition name maps to an action (an Ethereum smart contract function) that can be invoked by each participant in order to modify the state. Square brackets contain additional conditions to be met to make valid transitions}
+	\caption{State machine representing the valid transitions of the $\shortnamempc$ protocol. Each transition name maps to an action (an Ethereum smart contract function) that can be invoked by each participant to modify the state. Square brackets contain additional conditions to be met to make valid transitions}
 	\label{fig:fsm}
 \end{figure*}
 
@@ -37,7 +37,7 @@ In addition, we use the {\em \mimc}~\cite{albrecht2016mimc} algorithm to impleme
  
 We designed $\shortnamempc$ as a finite state machine implemented in an Ethereum smart contract.
 The state of each of its instances can be evolved by performing actions that map to specific smart contract functions.
-Before performing any update, each function checks for the state of the machine to be the expected, and terminates otherwise.
+Before performing any update, each function checks for the state of the machine to be the expected one and terminates otherwise.
 A simplified version of the state machine that only shows valid transitions is presented in Figure~\ref{fig:fsm}.
 The state machine is characterized by three main phases: the \texttt{setup} phase, in which the owner has to deploy the contract and the shareholders have to commit to take part to it; the \texttt{activation} phase, in which the shareholders declare that they received their shares and give their go-ahead; and the \texttt{enforcing} phase, in which the participants comply with the constraints of the contract thus effectively realizing the TL primitive as a consequence.
 %
@@ -65,8 +65,8 @@ The sMPC permits to generate the shares of the secret, confidentially distribute
 However, it is executed when the TL instance is still inactive, or rather when the economic penalties have not been activated yet. 
 To avoid the exposition of \secret, the owner introduces a fictitious random key, \key.
 The key is submitted to the sMPC instead of the secret, and a set of $n$ shares $\left\lbrace \share _1 , \ldots , \share_{n} 	\right\rbrace$, is produced.
-Specifically, the shares are derived from the key using the Shamir's Secret Sharing algorithm~\cite{Shamir:1979:SS:359168.359176}, so that it is possible to reconsruct $\key$ out of \KofN shares.
-Accordingly, the owner can wait to the activation of the TL, and then upload into the smart contract the encrypted version (i.e., the ciphertext) of the secret, $\ciphertext = $ \wrapsecret. 
+Specifically, the shares are derived from the key using the Shamir's Secret Sharing algorithm~\cite{Shamir:1979:SS:359168.359176}, so that it is possible to reconstruct $\key$ out of \KofN shares.
+Accordingly, the owner can wait to the activation of the TL and then upload into the smart contract the encrypted version (i.e., the ciphertext) of the secret, $\ciphertext = $ \wrapsecret. 
 %The scenario is illustrated in 
 Figure~\ref{fig:key_delayed_wrap} illustrates the scenario.
 
@@ -126,4 +126,4 @@ There is no need to materialize \key or \secret in the smart contract, as all th
 Up until now, the protocol has only been based on the key \key, but the \secret has not been offloaded to the TL yet.
 %Indeed, uploading \ciphertext into the smart contract is (counter-intuitively) optional, as the implementation is totally agnostic to the presence of \ciphertext or to the meaning of \secret. 
 The explanation is straightforward: the outcome of $\shortnamempc$ is only bounded to the disclosure of the key, to which all the incentive and penalties are related to. 
-As soon as the state of the TL advances to \texttt{LOCKED} and before going offline, the owner encrypts the secret \secret as shown in Section~\ref{sect:impl_mpc_brief} in order to obtain the \ciphertext. Then she invokes the smart contract function \texttt{loadSecret} to store the \ciphertext in the smart contract.
+As soon as the state of the TL advances to \texttt{LOCKED} and before going offline, the owner encrypts the secret \secret as shown in Section~\ref{sect:impl_mpc_brief} to obtain the \ciphertext. Then she invokes the smart contract function \texttt{loadSecret} to store the \ciphertext in the smart contract.
