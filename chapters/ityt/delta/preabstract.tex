@@ -4,7 +4,7 @@ Decentralized networks can rely on an honest party - the coordinator node - to v
 When dealing with fully distributed networks, instead, it is pivotal to be able to detect misbehaving nodes autonomously. When a misbehaving node is detected, the network itself can reconstruct the slices that were previously assigned to it (for example by leveraging erasure coding techniques) and redistribute them to other nodes.
 This process has to work even when the data owner is offline and without imposing trust or honesty assumption on any of the involved parties.
 
-To address this problem, this Chapter introduces {\em \name (\shortname)}, a novel way of deploying Time-Locks based on smart contracts.
+To address this problem, this chapter introduces {\em \name (\shortname)}, a novel way of deploying Time-Locks based on smart contracts.
 A Time-Lock enables the release of a secret at a specific future point in time. Most current research proposals bind the recovery of the secret to the solution of cryptographic puzzles. These solutions, however, are impractical, as solving the puzzle requires a significant computational effort and provides no timing guarantees.
 Our Time-Lock technique can be used to implement delegated challenge-response protocols that, in turn, can be used to extend the data confidentiality and retrievability properties discussed in Chapter~\ref{chap:dcs} to fully-distributed systems.
 %
